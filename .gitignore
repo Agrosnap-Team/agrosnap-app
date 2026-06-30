@@ -22,4 +22,4 @@ __pycache__/
 #Environment varible
 .env
 .env.local
-saved_image 
+saved_images
