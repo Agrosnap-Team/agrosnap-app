@@ -1,0 +1,48 @@
+Tomato Yellow Leaf Curl Virus (TYLCV)
+1. Overview & Impact
+Pathogen: Begomovirus coheni (TYLCV). A dicot-infecting begomovirus with two main strains: mild (detected in northern Victoria) and severe (infects both beans and tomatoes).
+
+Impact: Can cause devastating yield losses of up to 100% in both field and glasshouse-grown tomatoes.
+
+Vector: Exclusively transmitted by the Silverleaf Whitefly (Bemisia tabaci), which is now considered established in Victoria. It is not known to be seed-transmitted or mechanically transmitted in Australia.
+
+2. Visual Symptoms
+Tomatoes:
+
+Leaves become noticeably smaller and yellow between the veins (interveinal chlorosis).
+
+Leaf margins curl upwards and inwards towards the center.
+
+Seedlings experience shortened shoots, giving them a stunted, bushy look.
+
+New growth on mature plants is significantly reduced in size.
+
+Note: Overall tomato production drops severely, but existing fruit usually remains visually unaffected.
+
+Common Beans (Severe Strain):
+
+Leaflets exhibit yellow mosaic patterning, crumpling, thickening, and upward/downward curling.
+
+Causes abnormal growth/proliferation in apical and side shoots.
+
+3. Host Range & Epidemiology
+Primary Hosts: Tomatoes, Capsicums (glasshouse), Common Beans (Phaseolus vulgaris), Petunias, and Lisianthus.
+
+Weed/Alternative Hosts: Thorn apple (shows symptoms) and Marshmallow (symptomless carrier).
+
+Patterns: Typically spreads randomly or in distinct patches across a crop. Infection severity is strongly tied to local Silverleaf Whitefly population sizes.
+
+
+
+Diagnostic Lookalikes (Differential Diagnosis)
+To prevent misidentification in your project, compare TYLCV against these lookalikes:
+
+Tomato Big Bud: Results in abnormally enlarged buds and green flower structures.
+
+Tomato Yellow Top Virus: Leaves are down-curled or up-curled but are specifically rounded and reduced in size.
+
+Physiological Leaf Roll (Water Stress): Leaves roll but remain soft and pliable (not rigid), and the plant is not stunted.
+
+Phosphate Deficiency: The entire plant develops a distinct purplish tinge, accompanied by stiff, stunted growth.
+
+Magnesium Deficiency: Interveinal yellowing is confined mostly to the middle and lower (older) leaves.
