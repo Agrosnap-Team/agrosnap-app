@@ -39,8 +39,7 @@ class AgrosnapDatabase:
                 plant_name TEXT NOT NULL,
                 disease_name TEXT NOT NULL UNIQUE,
                 organic_treatment TEXT,
-                report TEXT,
-                confidence REAL
+                report TEXT
                 
          )"""
 
@@ -50,11 +49,13 @@ class AgrosnapDatabase:
             save_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER ,
             disease_id INTEGER ,
+            confidence REAL NOT NULL,
             -- 'on delete cascade' this mean if row in the parent table is deleted ,all corresponding rows in the child (reference) table should automatically be deleted as well
             FOREIGN KEY (user_id) REFERENCES users_info (user_id) ON DELETE CASCADE,
             FOREIGN KEY (disease_id) REFERENCES disease_Table (disease_id ) ON DELETE CASCADE, 
             -- Prevent a user from saving the exact same disease record multiple times
             UNIQUE(user_id, disease_id)
+            
         
         )"""
         with self._get_connection() as conn:
@@ -81,7 +82,7 @@ class AgrosnapDatabase:
     def insert_into_disease_Table(self,plant_name,disease_name,organic_treatment,report, confidence):
 
         """Inserts data into the disease_Table securely."""
-        query = """INSERT OR IGNORE INTO disease_Table(plant_name, disease_name, organic_treatment, report, confidence)
+        query = """INSERT OR IGNORE INTO disease_Table(plant_name, disease_name, organic_treatment, report)
                            VALUES (?, ?, ?, ?, ?)"""
 
         # this is context manger "with " connect with database.db just_in_time
@@ -95,7 +96,7 @@ class AgrosnapDatabase:
 
         #Links a user to a disease report (Saves it to their history)
 
-        query = """INSERT OR IGNORE INTO Save_report (user_id , disease_id)  VALUES (?,?)"""
+        query = """INSERT OR IGNORE INTO Save_report (user_id , disease_id,confidence)  VALUES (?,?,?)"""
 
         with self._get_connection() as conn:
             cursor = conn.cursor()
@@ -170,10 +171,10 @@ class AgrosnapDatabase:
             print(f"General database error during deletion: {e}")
             return {"status": "error", "message": "An unexpected database error occurred."}
 
-    def Delet_From_save_report(self, user_id, disease_id  ):
+    def Delet_From_save_report(self, user_id, disease_id ,confidence ):
          #Removes a specific saved report from a user's history.
 
-        query = ''' DELETE FROM save_report WHERE user_id , disease_id VALUES (?,?)'''
+        query = ''' DELETE FROM save_report WHERE user_id , disease_id ,confidence VALUES (?,?,?)'''
 
         with self._get_connection() as conn:
             cursor = conn.cursor()
@@ -249,7 +250,7 @@ class AgrosnapDatabase:
         #-> list: mean the data type of return will be as list
 
         query = """
-                    SELECT r.save_id, d.plant_name, d.disease_name, d.organic_treatment, d.confidence, d.report
+                    SELECT r.save_id, d.plant_name, d.disease_name, d.organic_treatment,  d.report
                     FROM Save_report r
                     JOIN disease_Table d ON r.disease_id = d.disease_id
                     WHERE r.user_id = ?;
@@ -289,8 +290,9 @@ class AgrosnapDatabase:
 
 if __name__ == '__main__':
     db = AgrosnapDatabase()
+    db.init_database()
 
-    print(db.get_user_by_email("raadAlshrayre@gmail.com"))
+    # print(db.get_user_by_email("raadAlshrayre@gmail.com"))
 
     # print(db.Delet_row_from_disease_table(disease_id=10))
     # print(db.Delet_row_from_disease_table(disease_id=11))
