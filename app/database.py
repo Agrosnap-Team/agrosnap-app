@@ -270,12 +270,27 @@ class AgrosnapDatabase:
             return cursor.fetchall()
 
 
+    def get_user_by_email(self, email:str):
+        # Fetches user details using their unique email (used during Login & JWT generation).
+
+        query = """SELECT user_id ,username,  first_name ,last_name, Email ,PASSWORD_HASH FROM users_info WHERE email = ?;"""
+
+        with self._get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(query,(email,))
+            return cursor.fetchall()
+
+
+
+
 
 
 
 
 if __name__ == '__main__':
     db = AgrosnapDatabase()
+
+    print(db.get_user_by_email("raadAlshrayre@gmail.com"))
 
     # print(db.Delet_row_from_disease_table(disease_id=10))
     # print(db.Delet_row_from_disease_table(disease_id=11))
