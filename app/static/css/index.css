@@ -9,7 +9,7 @@ body {
 }
 
 /* Make the logo container responsive */
-#logo {
+#logo_container{
     display: flex;
     justify-content: center;
     align-items: center;
