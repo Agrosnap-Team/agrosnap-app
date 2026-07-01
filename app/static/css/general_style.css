@@ -1,0 +1,9 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh; /* 100% of the viewport height */
+    display: flex;
+    justify-content: center; /* Centers horizontally */
+    align-items: center;     /* Centers vertically */
+    background-color: #ffffff; /* Optional: adds a clean background color */
+}
