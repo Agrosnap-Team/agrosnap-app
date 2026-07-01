@@ -1,0 +1,27 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh; /* 100% of the viewport height */
+    display: flex;
+    justify-content: center; /* Centers horizontally */
+    align-items: center;     /* Centers vertically */
+    background-color: #f9f9f9; /* Optional: adds a clean background color */
+}
+
+/* Make the logo container responsive */
+#logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 500px; /* Limits the maximum size on large screens */
+    padding: 20px;    /* Prevents the image from hitting screen edges on mobile */
+    box-sizing: border-box;
+}
+
+/* Make the image inside scale smoothly */
+#image_agro {
+    width: 100%;      /* Takes up the width of the #logo container */
+    height: auto;     /* Maintains the original aspect ratio so it doesn't stretch */
+    display: block;
+}
