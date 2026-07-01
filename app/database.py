@@ -261,6 +261,9 @@ class AgrosnapDatabase:
             # Returns a list of tuples containing all saved reports for this user
             return cursor.fetchall()
 
+    def get_detalts_report(self , save_id: int) -> list:
+      pass 
+
 
     def get_disease_by_id(self, disease_id : int) :
         # fetches disease report using unique ID (match with AI model  index)
