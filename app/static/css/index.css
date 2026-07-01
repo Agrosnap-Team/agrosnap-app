@@ -5,11 +5,12 @@ body {
     display: flex;
     justify-content: center; /* Centers horizontally */
     align-items: center;     /* Centers vertically */
-    background-color: #f9f9f9; /* Optional: adds a clean background color */
+    background-color: #ffffff; /* Optional: adds a clean background color */
 }
 
 /* Make the logo container responsive */
 #logo_container{
+    opacity:1;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -17,7 +18,18 @@ body {
     max-width: 500px; /* Limits the maximum size on large screens */
     padding: 20px;    /* Prevents the image from hitting screen edges on mobile */
     box-sizing: border-box;
+   }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(1); }
+    to { opacity: 1; transform: scale(1.3);}
 }
+
+.fade-in{
+     animation: fadeIn 3s ease-in-out forwards;
+
+}
+
 
 /* Make the image inside scale smoothly */
 #image_agro {
@@ -25,3 +37,4 @@ body {
     height: auto;     /* Maintains the original aspect ratio so it doesn't stretch */
     display: block;
 }
+
