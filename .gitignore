@@ -23,3 +23,5 @@ __pycache__/
 .env
 .env.local
 saved_images/
+
+app/test.py
