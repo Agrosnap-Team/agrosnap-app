@@ -1,0 +1,25 @@
+body{
+    margin: 0;
+    padding: 0;
+    height: 100vh; 
+    display: flex;
+    flex-direction: column;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), url("../images/agrosnap%20logo.PNG");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    
+}
+
+
+.header{
+    background-color:Transparent;
+    width: 100%;    
+    text-align: center;        /* Spans the entire width of the screen */   /* Gives the text some breathing room inside the bar */
+    font-size: 24px;
+    font-family: 'Agbalumo', system-ui;
+    font-weight: bold;
+    margin-bottom: 90px; /* Adds some space below the header */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Optional: adds a subtle shadow for better readability */
+
+}

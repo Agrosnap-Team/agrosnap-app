@@ -7,3 +7,8 @@ body {
     align-items: center;     /* Centers vertically */
     background-color: #ffffff; /* Optional: adds a clean background color */
 }
+.agbalumo-regular {
+  font-family: "Agbalumo", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
