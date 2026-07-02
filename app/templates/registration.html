@@ -2,9 +2,46 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../static/images/agrosnap%20logo.PNG">
+    <link rel="stylesheet" href="../static/css/general_style.css">
+    <link rel="stylesheet" href="../static/css/signStyle.css">
+    <link rel="stylesheet" href="../static/css/registration.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Agbalumo&display=swap" rel="stylesheet">
+    <script src="../static/js/back_to_sign.js" defer></script>
+
+
+
+    <title>AgroSnap | Signup</title>
 </head>
 <body>
+
+    <div class="signup-container">
+            <header class="header">
+        <h1>Signup</h1>
+    </header>
+    <p id="msg">this is a message to inform the user about their signup status. </p>
+
+        <form action="/signup" method="post">
+            <div class="user_fullname">
+                <input type="text"  class="fields items" id="first_name" name="first_name" placeholder="First Name" required>
+                <input type="text"  class="fields items" id="last_name" name="last_name" placeholder="Last Name" required>
+            </div>
+            <input type="text"  class="fields items" id="username" name="username" placeholder="Username" required>
+            <input type="email"  class="fields items" id="email" name="email" placeholder="Email" required>
+
+            <input type="password" class ="fields items" id="password" name="password" placeholder="Password" required>
+            <input type="password" class="fields items" id="confirm-password" name="confirm-password" placeholder="confirm password" required/>
+            <button type="submit" class="items btns" id="submit">Signup</button>
+            <button type="button" class="items btns" id="back_button" onclick="back_to_sign()">Back</button>
+
+        </form>
+
+        <p>If you have an account please <a href="../templates/login.html">click here</a></p>
+
+    </div>
 
 </body>
 </html>

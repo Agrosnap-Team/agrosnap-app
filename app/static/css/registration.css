@@ -1,0 +1,25 @@
+.user_fullname{
+    display:flex;
+    flex-direction:row;
+    gap:30px;
+    width: 95%;
+
+}
+
+#first_name , #last_name{
+
+    width: 50%;
+
+}
+
+
+.signup-container{
+max-width:500px;
+width:60vw;
+min-width: 300px;
+padding: 30px;
+}
+
+.fields{
+    margin-bottom: 5px;
+}
