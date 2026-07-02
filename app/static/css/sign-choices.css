@@ -18,8 +18,7 @@ body{
     color:#389100;
     width: 100%;    
     text-align: center;        /* Spans the entire width of the screen */   /* Gives the text some breathing room inside the bar */
-    font-size: 40px;
-
+    font-size: 35px;
     font-family: 'Agbalumo', system-ui;
     font-weight: bold;
     margin-bottom: 90px; /* Adds some space below the header */
