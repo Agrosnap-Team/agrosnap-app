@@ -29,18 +29,7 @@ body {
     visibility: hidden;
 }
 
-body{
-    margin: 0;
-    padding: 0;
-    height: 100vh; 
-    display: flex;
-    flex-direction: column;
-    background-image: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url("../images/agrosnap%20logo.PNG");
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    
-}
+
 
 
 .header > h1{
@@ -49,7 +38,7 @@ body{
 }
 
 #msg{
-    visibility: none;
+    visibility: hidden;
     margin: 0px;
     padding: 0px;
 }
