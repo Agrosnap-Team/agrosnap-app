@@ -52,14 +52,6 @@ flex-direction: row;
 
 
 
-
-
-
-
-#sidebar > *{
-    /* border: 2px solid black; */
-}
-
 #sidebar > #user-profile {
     flex: 2;
     display: flex;
