@@ -19,18 +19,18 @@ flex-direction: row;
     background-color: #389100;
     display: flex;
     flex-direction: column;
-    position: fixed;      /* always fixed now, not just on mobile */
+    position: fixed;      
     top: 0;
     left: 0;
     height: 100vh;
-    width: 400px;          /* fixed width instead of flex:1 */
+    width: 400px;          
     overflow-y: auto;
     overflow-x: hidden;
     box-shadow: 1px 1px 3px black;
-    transform: translateX(-100%);  /* hidden by default */
+    transform: translateX(-100%);  
     transition: transform 0.3s ease;
     z-index: 1000;
-    padding: 10px;
+    padding: 10px; 
 }
 
 
