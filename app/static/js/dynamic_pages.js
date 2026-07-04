@@ -1,3 +1,7 @@
+
+localStorage.setItem("current_page",0);
+
+
 async function fit_the_page() {
     let the_url = fetch("scan.html")
     .then(response => {
@@ -11,4 +15,19 @@ async function fit_the_page() {
     }); 
 }
 
-fit_the_page();
+
+window.onload = function(){
+    var current_page = localStorage.getItem("current_page");
+
+    if (current_page == 0){
+        fit_the_page();
+
+    }
+    else{
+        console.log("the current page is " + current_page);
+    }
+    
+
+
+};
+
