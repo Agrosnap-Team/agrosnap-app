@@ -43,3 +43,20 @@ window.addEventListener("resize", () => {
         overlay.classList.remove("show");
     }
 });
+
+
+document.getElementById("main").addEventListener("scroll",() =>{
+    
+    if (document.getElementById("main").scrollTop > 0) {
+        // Add the shadow
+        document.getElementById("header").style.boxShadow="1px 2px 10px gray";
+        
+        // Optional: Add a smooth transition so it doesn't snap suddenly
+        document.getElementById("header").style.transition = "box-shadow 0.3s ease"; 
+    } 
+    else {
+        // Remove the shadow when at the top
+        document.getElementById("header").style.boxShadow = "none";
+    }
+});
+
