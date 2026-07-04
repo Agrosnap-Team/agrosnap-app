@@ -1,0 +1,121 @@
+/* General Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    /* Kept your original background, tweaked for full-screen coverage */
+    background-image: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), url("../images/agrosnap%20logo.PNG");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    
+    font-family: 'Agbalumo', sans-serif;
+    
+    /* Flexbox centers the whole app on the screen */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; 
+    padding: 20px;
+}
+
+/* The Main Wrapper */
+.container {
+    width: 100%;
+    max-width: 400px; /* Stops it from stretching too wide on desktops */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px; /* Creates clean spacing between the title, box, and buttons */
+}
+
+/* Header Text */
+#header {
+    color: black;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15); /* Slight shadow from mockup */
+    text-align: center;
+    font-size: 1.8rem;
+}
+
+/* The Upload Box */
+.upload-box {
+    width: 100%;
+    height: 320px; /* Fixed size, but responsive width */
+    border: 4px dashed #389100; /* Solid green border matching UI */
+    border-radius: 8px;
+    background-color: rgba(56, 145, 0, 0.1); /* Very soft green tint */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    cursor: pointer;
+    position: relative; 
+    overflow: hidden;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.upload-box:hover {
+    background-color: rgba(56, 145, 0, 0.15);
+    transform: translateY(-2px); /* Lifts slightly when hovered */
+}
+
+#boxText {
+    color: #666;
+    font-family: sans-serif; /* Clean font for instructions */
+    font-size: 1.1rem;
+}
+
+/* Uploaded Image Preview */
+.upload-box img {
+    position: absolute; /* Sits completely over the box text */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Prevents image distortion */
+    z-index: 10; 
+}
+
+/* Buttons Container */
+.buttons-box {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 15px;
+}
+
+/* Shared Button Logic */
+.button-group {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.3rem;
+    font-family: 'Agbalumo', sans-serif;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: opacity 0.2s ease;
+}
+
+.button-group:hover {
+    opacity: 0.85;
+}
+
+/* Primary Button (Send) */
+#send {
+    background-color: #389100;
+    color: white;
+    border: none;
+}
+
+/* Secondary Button (Clear) */
+#clear-btn {
+    background-color: white;
+    color: black;
+    border: 2px solid #389100;
+}
