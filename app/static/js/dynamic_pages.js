@@ -21,6 +21,7 @@ listItems.forEach((item, index) => {
 
     fit_the_page(current_page);
     highlightActiveTab(index);
+    change_page_name(index);
     document.getElementById("sidebar").classList.remove("open");
     document.getElementById("sidebar").classList.add("close");
     document.getElementById("overlay").classList.remove("show");
@@ -44,6 +45,7 @@ window.onload = function(){
 
     fit_the_page(current_page);
     highlightActiveTab(current_page);
+    change_page_name(current_page);
 
     
 }
@@ -79,5 +81,12 @@ function highlightActiveTab(activeIndex){
         }
     });
 
+}
+
+
+function change_page_name(index){
+    const pages_names = ["Agrosnap | Scan","Agrosnap | My reports","Agrosnap | Help center","Agrosnap | About Agrosnap"];
+    let index_page = parseInt(index,10);
+    document.title=pages_names[index_page];
 }
 
