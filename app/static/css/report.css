@@ -1,0 +1,206 @@
+/* =========================================
+   1. MAIN CONTAINER & ENCAPSULATION
+   ========================================= */
+.signle-report-container,
+.signle-report-container * {
+    box-sizing: border-box; /* Protects layout from host CSS */
+    margin: 0;
+    padding: 0;
+}
+
+.signle-report-container {
+    /* Using Grid to place arrows on sides and buttons at bottom */
+    display: grid;
+    grid-template-columns: 40px 1fr 40px; 
+    grid-template-areas:
+        "prev details next"
+        "btns btns btns";
+    gap: 20px;
+    width: 100%;
+    max-width: 800px; /* Prevents it from stretching infinitely on large screens */
+    margin: 0 auto;
+    font-family: inherit; /* Blends nicely with the host website */
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Soft shadow for depth */
+}
+
+/* =========================================
+   2. MOVEMENT BUTTONS (ARROWS)
+   ========================================= */
+.prev-box { grid-area: prev; display: flex; align-items: center; justify-content: center; }
+.next-box { grid-area: next; display: flex; align-items: center; justify-content: center; }
+
+.prev, .next {
+    background: none;
+    border: none;
+    font-size: 32px;
+    color: #285429;
+    cursor: pointer;
+    transition: transform 0.2s ease, color 0.2s ease;
+    padding: 10px;
+}
+
+.prev:hover, .next:hover {
+    color: #2D8531;
+    transform: scale(1.1); /* Slight zoom on hover */
+}
+
+.hide-btn {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.active-btn {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* =========================================
+   3. REPORT DETAILS CONTAINER
+   ========================================= */
+.report-details {
+    grid-area: details;
+    min-height: 350px; /* Keeps the container from shrinking awkwardly */
+    position: relative;
+    overflow: hidden;
+}
+
+/* Show/Hide Logic */
+.report-details .hidden { display: none !important; }
+.report-details .active { display: block; animation: fadeIn 0.4s ease; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================
+   4 & 5. PROGRESS BARS & LABELS
+   ========================================= */
+.progresses-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centers items vertically if there's only one */
+    gap: 20px;
+    min-height: 300px; /* Big enough size for aesthetic spacing */
+    padding: 20px 0;
+}
+
+.prograssive-with-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 15px;
+}
+
+.disease-title {
+    width: 30%;
+    font-size: 16px;
+    color: #7D7D7D;
+    font-weight: 600;
+    text-align: right; /* Aligns cleanly next to the bar */
+}
+
+.precentage {
+    width: 15%;
+    font-size: 16px;
+    color: #7D7D7D;
+    font-weight: bold;
+}
+
+/* =========================================
+   6. DYNAMIC & STATIC LINES
+   ========================================= */
+.static-line {
+    flex-grow: 1; /* Takes up all remaining space between label and percentage */
+    height: 14px;
+    background-color: #e0e0e0;
+    border-radius: 20px;
+    overflow: hidden; /* Ensures the dynamic line respects the rounded corners */
+}
+
+.dynamic-line {
+    height: 100%;
+    background-color: #2D8531; /* Active light green */
+    border-radius: 20px;
+    transition: width 0.5s ease; /* Smooth animation if width changes dynamically */
+    /* width: 50%; <-- Ensure you set this inline via JavaScript based on data */
+}
+
+/* =========================================
+   7. GENERAL REPORT TYPOGRAPHY
+   ========================================= */
+.report-details .the-header {
+    color: #285429;
+    font-size: 26px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #2D8531;
+    padding-bottom: 10px;
+}
+
+.report-details h3 {
+    color: #285429;
+    font-size: 18px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.report-details p {
+    color: #4a4a4a;
+    line-height: 1.6;
+    font-size: 15px;
+}
+
+/* =========================================
+   8. BUTTONS GROUP
+   ========================================= */
+.btns-group {
+    grid-area: btns;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #e0e0e0; /* Separates content from actions */
+}
+
+.single-btn {
+    width: 100%;
+    max-width: 300px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    color: #ffffff;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.single-btn:active {
+    transform: scale(0.98); /* Satisfying click effect */
+}
+
+#save-btn, #close-btn { background-color: #285429; }
+#save-btn:hover, #close-btn:hover { background-color: #2D8531; }
+
+#save-download-btn { background-color: #7D7D7D; }
+#save-download-btn:hover { background-color: #5a5a5a; }
+
+/* =========================================
+   MOBILE RESPONSIVENESS
+   ========================================= */
+@media (max-width: 600px) {
+    .signle-report-container {
+        grid-template-columns: 30px 1fr 30px; /* Smaller arrows for mobile */
+        padding: 15px;
+    }
+    
+    .disease-title { text-align: left; width: 40%; }
+    .prograssive-with-label { gap: 8px; }
+}
