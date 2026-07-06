@@ -7,6 +7,8 @@
 // pass it to fetch()
 //change the background of clicked li 
 // if user logged out , the localStorage will reset the page to 0 which is the default page
+import {slideAnimation} from './help.js';
+
 
 
 const listItems = document.querySelectorAll('#pages li');
@@ -17,7 +19,7 @@ listItems.forEach((item, index) => {
   // 3. Add the click listener to each individual item
   item.addEventListener('click', () => {
     localStorage.setItem("current_page",index);//put the index of li inside localStorage
-    current_page = localStorage.getItem("current_page");
+    var current_page = localStorage.getItem("current_page");
 
     fit_the_page(current_page);
     highlightActiveTab(index);
@@ -41,7 +43,7 @@ window.onload = function(){
 
      console.log(saved_page + " " +typeof(saved_page));
     // Convert the string to a number. If it's the first visit (null), default to 0.
-    current_page = saved_page !== null ? parseInt(saved_page, 10) : 0;
+    var current_page = saved_page !== null ? parseInt(saved_page, 10) : 0;
 
     fit_the_page(current_page);
     highlightActiveTab(current_page);
@@ -63,6 +65,10 @@ async function fit_the_page(curr_page) {
     .then(HTML_data =>{
         document.getElementById("main").scrollTop=0; //this to let the page go to top again , if user scrolled down
         document.getElementById("content").innerHTML=HTML_data; // put the new page here
+
+        if (clicked_page === "help-center.html") {
+            slideAnimation();
+        }
     })
     .catch(error =>{
         console.error("something went wrong , " + error);

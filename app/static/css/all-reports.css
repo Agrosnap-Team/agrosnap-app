@@ -97,11 +97,21 @@
     line-height: 0.5;
     cursor: pointer;
     padding: 0;
+    background-image: url("../images/trash.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 17px;
+    height: 17px;
 }
 
 #reports-container .more-btn:hover{
     filter: brightness(0.7);
     cursor: pointer;
+    background-image: url("../images/delete.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
 }
 
 /* 5. Content Truncation */
