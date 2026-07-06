@@ -1,206 +1,306 @@
-/* =========================================
-   1. MAIN CONTAINER & ENCAPSULATION
-   ========================================= */
-.signle-report-container,
-.signle-report-container * {
-    box-sizing: border-box; /* Protects layout from host CSS */
-    margin: 0;
-    padding: 0;
-}
+/* ==========================================================================
+   Report Widget Styles
+   Scoped entirely under .signle-report-container so it can be safely
+   injected into any host page without leaking styles outward.
+   Colors:
+     --report-dark-green : #285429  (headers, primary buttons, borders)
+     --report-gray        : #7D7D7D  (secondary button, track background)
+     --report-mid-green   : #2D8531  (progress fill, accents, active states)
+   ========================================================================== */
 
 .signle-report-container {
-    /* Using Grid to place arrows on sides and buttons at bottom */
-    display: grid;
-    grid-template-columns: 40px 1fr 40px; 
-    grid-template-areas:
-        "prev details next"
-        "btns btns btns";
-    gap: 20px;
-    width: 100%;
-    max-width: 800px; /* Prevents it from stretching infinitely on large screens */
-    margin: 0 auto;
-    font-family: inherit; /* Blends nicely with the host website */
-    background: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Soft shadow for depth */
+  /* Local design tokens - scoped, won't touch host page variables */
+  --report-dark-green: #285429;
+  --report-gray: #7D7D7D;
+  --report-mid-green: #2D8531;
+  --report-border-radius: 10px;
+  --report-gap: 12px;
+
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 480px;      /* sensible cap, but fully fluid below this */
+  min-width: 0;
+  min-height: 0;
+  margin: 0 auto;
+  padding: 20px 48px;     /* extra side padding gives room for arrow buttons */
+  background: #ffffff;
+  border-radius: var(--report-border-radius);
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.12);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  color: #222;
+  overflow: hidden;
 }
 
-/* =========================================
-   2. MOVEMENT BUTTONS (ARROWS)
-   ========================================= */
-.prev-box { grid-area: prev; display: flex; align-items: center; justify-content: center; }
-.next-box { grid-area: next; display: flex; align-items: center; justify-content: center; }
-
-.prev, .next {
-    background: none;
-    border: none;
-    font-size: 32px;
-    color: #285429;
-    cursor: pointer;
-    transition: transform 0.2s ease, color 0.2s ease;
-    padding: 10px;
+.signle-report-container * ,
+.signle-report-container *::before,
+.signle-report-container *::after {
+  box-sizing: border-box;
 }
 
-.prev:hover, .next:hover {
-    color: #2D8531;
-    transform: scale(1.1); /* Slight zoom on hover */
+/* ---------- Movement (prev/next) buttons ----------
+   Always present in the DOM. Visibility toggled with .hide-btn / .active-btn
+   so page navigation logic just swaps classes without re-layout jumps.
+*/
+.signle-report-container .prev-box,
+.signle-report-container .next-box {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.hide-btn {
-    visibility: hidden;
-    opacity: 0;
-    pointer-events: none;
+.signle-report-container .prev-box {
+  left: 8px;
 }
 
-.active-btn {
-    visibility: visible;
-    opacity: 1;
+.signle-report-container .next-box {
+  right: 8px;
 }
 
-/* =========================================
-   3. REPORT DETAILS CONTAINER
-   ========================================= */
-.report-details {
-    grid-area: details;
-    min-height: 350px; /* Keeps the container from shrinking awkwardly */
-    position: relative;
-    overflow: hidden;
+.signle-report-container .prev,
+.signle-report-container .next {
+  width: clamp(28px, 8vw, 36px);
+  height: clamp(28px, 8vw, 36px);
+  border-radius: 50%;
+  border: none;
+  background: var(--report-dark-green);
+  color: #fff;
+  font-size: clamp(14px, 4vw, 18px);
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, opacity 0.2s ease, transform 0.15s ease;
 }
 
-/* Show/Hide Logic */
-.report-details .hidden { display: none !important; }
-.report-details .active { display: block; animation: fadeIn 0.4s ease; }
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(5px); }
-    to { opacity: 1; transform: translateY(0); }
+.signle-report-container .prev:hover,
+.signle-report-container .next:hover {
+  background: var(--report-mid-green);
 }
 
-/* =========================================
-   4 & 5. PROGRESS BARS & LABELS
-   ========================================= */
-.progresses-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* Centers items vertically if there's only one */
-    gap: 20px;
-    min-height: 300px; /* Big enough size for aesthetic spacing */
-    padding: 20px 0;
+.signle-report-container .prev:active,
+.signle-report-container .next:active {
+  transform: scale(0.94);
 }
 
-.prograssive-with-label {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    gap: 15px;
+/* .active-btn = usable / visible state */
+.signle-report-container .prev.active-btn,
+.signle-report-container .next.active-btn {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
 }
 
-.disease-title {
-    width: 30%;
-    font-size: 16px;
-    color: #7D7D7D;
-    font-weight: 600;
-    text-align: right; /* Aligns cleanly next to the bar */
+/* .hide-btn = present in DOM but not interactive/visible (no layout shift) */
+.signle-report-container .prev.hide-btn,
+.signle-report-container .next.hide-btn {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
 }
 
-.precentage {
-    width: 15%;
-    font-size: 16px;
-    color: #7D7D7D;
-    font-weight: bold;
+/* ---------- Report details area ----------
+   Holds every report page. Only the one with .active is shown; all
+   others carry .hidden. Sized to fit content, responsive by nature
+   since it just wraps whichever child is visible.
+*/
+.signle-report-container .report-details {
+  position: relative;
+  width: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
 }
 
-/* =========================================
-   6. DYNAMIC & STATIC LINES
-   ========================================= */
-.static-line {
-    flex-grow: 1; /* Takes up all remaining space between label and percentage */
-    height: 14px;
-    background-color: #e0e0e0;
-    border-radius: 20px;
-    overflow: hidden; /* Ensures the dynamic line respects the rounded corners */
+/* Shared look for every individual report page
+   (first-report / second-report / third-report, or any future ones) */
+.signle-report-container .report-details > div {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  animation: report-fade-in 0.25s ease;
 }
 
-.dynamic-line {
-    height: 100%;
-    background-color: #2D8531; /* Active light green */
-    border-radius: 20px;
-    transition: width 0.5s ease; /* Smooth animation if width changes dynamically */
-    /* width: 50%; <-- Ensure you set this inline via JavaScript based on data */
+.signle-report-container .report-details > div.hidden {
+  display: none;
 }
 
-/* =========================================
-   7. GENERAL REPORT TYPOGRAPHY
-   ========================================= */
-.report-details .the-header {
-    color: #285429;
-    font-size: 26px;
-    margin-bottom: 15px;
-    border-bottom: 2px solid #2D8531;
-    padding-bottom: 10px;
+@keyframes report-fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-.report-details h3 {
-    color: #285429;
-    font-size: 18px;
-    margin-top: 20px;
-    margin-bottom: 10px;
+.signle-report-container .the-header {
+  margin: 0 0 4px;
+  font-size: clamp(1.3rem, 5vw, 1.7rem);
+  color: var(--report-dark-green);
+  border-bottom: 1px solid var(--report-dark-green);
+  padding-bottom: 8px;
 }
 
-.report-details p {
-    color: #4a4a4a;
-    line-height: 1.6;
-    font-size: 15px;
+.signle-report-container .report-details h3 {
+  margin: 6px 0 0;
+  font-size: clamp(1rem, 4vw, 1.2rem);
+  color: var(--report-dark-green);
 }
 
-/* =========================================
-   8. BUTTONS GROUP
-   ========================================= */
-.btns-group {
-    grid-area: btns;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    margin-top: 15px;
-    padding-top: 15px;
-    border-top: 1px solid #e0e0e0; /* Separates content from actions */
+.signle-report-container .about-disease,
+.signle-report-container .about-treatment {
+  margin: 0;
+  font-size: clamp(0.85rem, 3.5vw, 0.95rem);
+  line-height: 1.5;
+  color: #333;
 }
 
-.single-btn {
-    width: 100%;
-    max-width: 300px;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    color: #ffffff;
-    transition: background-color 0.3s ease, transform 0.1s ease;
+/* ---------- Progress / confidence bars ---------- */
+.signle-report-container .progresses-container {
+  width: 100%;
+  min-height: 90px;          /* keeps container from ever feeling too thin */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 14px;
+  padding: 16px 4px;
+  margin-bottom: 8px;
 }
 
-.single-btn:active {
-    transform: scale(0.98); /* Satisfying click effect */
+.signle-report-container .progresses-container.hidden {
+  display: none;
 }
 
-#save-btn, #close-btn { background-color: #285429; }
-#save-btn:hover, #close-btn:hover { background-color: #2D8531; }
+/* One disease row: name, bar, percentage all inline */
+.signle-report-container .prograssive-with-label {
+  display: flex;
+  align-items: center;
+  gap: var(--report-gap);
+  width: 100%;
+  flex-wrap: nowrap;
+}
 
-#save-download-btn { background-color: #7D7D7D; }
-#save-download-btn:hover { background-color: #5a5a5a; }
+.signle-report-container .disease-title {
+  flex: 0 0 auto;
+  width: clamp(64px, 22%, 110px);
+  font-size: clamp(0.75rem, 3vw, 0.9rem);
+  color: var(--report-gray);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
-/* =========================================
-   MOBILE RESPONSIVENESS
-   ========================================= */
-@media (max-width: 600px) {
-    .signle-report-container {
-        grid-template-columns: 30px 1fr 30px; /* Smaller arrows for mobile */
-        padding: 15px;
-    }
-    
-    .disease-title { text-align: left; width: 40%; }
-    .prograssive-with-label { gap: 8px; }
+.signle-report-container .precentage {
+  flex: 0 0 auto;
+  min-width: 42px;
+  text-align: right;
+  font-size: clamp(0.75rem, 3vw, 0.9rem);
+  font-weight: 600;
+  color: var(--report-dark-green);
+}
+
+/* The bar itself */
+.signle-report-container .static-line {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 10px;
+  border-radius: 999px;
+  background: #e2e2e2;
+  overflow: hidden;
+}
+
+.signle-report-container .dynamic-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: var(--progress, 0%);   /* set inline style: style="--progress: 50%" */
+  border-radius: 999px;
+  background: var(--report-mid-green);
+  transition: width 0.4s ease;
+}
+
+/* Narrow screens: shrink label width further instead of wrapping,
+   so the "one line" requirement always holds */
+@media (max-width: 360px) {
+  .signle-report-container .disease-title {
+    width: 56px;
+    font-size: 0.7rem;
+  }
+  .signle-report-container .precentage {
+    min-width: 34px;
+    font-size: 0.7rem;
+  }
+}
+
+/* ---------- Buttons group (always pinned at bottom) ---------- */
+.signle-report-container .btns-group {
+  position: sticky;
+  bottom: 0;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  padding-top: 14px;
+  margin-top: auto;
+  background: #ffffff; /* prevents scrolling content showing through */
+}
+
+.signle-report-container .single-btn {
+  width: 100%;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: clamp(0.85rem, 3.5vw, 1rem);
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  background: var(--report-dark-green);
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.signle-report-container .single-btn:hover {
+  background: var(--report-mid-green);
+}
+
+.signle-report-container .single-btn:active {
+  transform: scale(0.98);
+}
+
+.signle-report-container #save-download-btn {
+  background: var(--report-gray);
+}
+
+.signle-report-container #save-download-btn:hover {
+  background: #949494;
+}
+
+/* ---------- Small screen tune-up ---------- */
+@media (max-width: 480px) {
+  .signle-report-container {
+    max-width: 100%;
+    padding: 16px 40px;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+
+/* ---------- Respect reduced motion preference ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .signle-report-container .dynamic-line,
+  .signle-report-container .prev,
+  .signle-report-container .next,
+  .signle-report-container .single-btn,
+  .signle-report-container .report-details > div {
+    transition: none;
+    animation: none;
+  }
 }
