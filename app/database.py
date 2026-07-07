@@ -131,6 +131,8 @@ class AgrosnapDatabase:
         except FileNotFoundError:
             print(f"Error: file not found at {file_path}")
 
+
+
     def Delet_row_from_disease_table(self,disease_id):
         """Deletes a disease record by its ID."""
         query = "DELETE FROM disease_Table WHERE disease_id = ?;"
@@ -150,6 +152,9 @@ class AgrosnapDatabase:
         except sqlite3.Error as e:
             print(f"General database error during deletion: {e}")
             return {"status": "error", "message": "An unexpected database error occurred."}
+        
+
+
 
     def Delet_row_from_user_table (self,user_id):
         """Deletes a user record by its ID."""
@@ -170,6 +175,9 @@ class AgrosnapDatabase:
         except sqlite3.Error as e:
             print(f"General database error during deletion: {e}")
             return {"status": "error", "message": "An unexpected database error occurred."}
+
+
+
 
     def Delet_From_save_report(self, user_id, disease_id ,confidence ):
          #Removes a specific saved report from a user's history.
@@ -215,6 +223,8 @@ class AgrosnapDatabase:
 
 
 
+
+
     def update_disease(self, disease_id: int, **kwargs) -> dict:
         """Dynamically updates fields for a specific disease record."""
         if not kwargs:
@@ -244,6 +254,8 @@ class AgrosnapDatabase:
 
 
 
+
+
     def get_user_report(self , user_id: int) -> list:
         #this function to get the report that user bookmark in history
         # user_id: int -> ths hint mean  enter integer value
@@ -269,6 +281,8 @@ class AgrosnapDatabase:
             cursor = conn.cursor()
             cursor.execute(query,(disease_id,))
             return cursor.fetchall()
+
+
 
 
     def get_user_by_email(self, email:str):

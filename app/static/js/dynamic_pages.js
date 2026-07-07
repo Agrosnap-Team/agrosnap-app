@@ -12,6 +12,8 @@ import {slideAnimation} from './help.js';
 
 
 const listItems = document.querySelectorAll('#pages li');
+const profile_Btn = document.getElementById("user-profile");
+const close_btn = document.getElementById("close-label");
 
 // 2. Loop through each item
 listItems.forEach((item, index) => {
@@ -32,6 +34,31 @@ listItems.forEach((item, index) => {
   });
 });
 
+profile_Btn.addEventListener("click", () => {
+    localStorage.setItem("previous_page",localStorage.getItem("current_page"));
+    localStorage.setItem("current_page",4);
+    var current_page = localStorage.getItem("current_page");
+    fit_the_page(current_page);
+});
+
+
+
+document.addEventListener("click", (event) => {
+    if (event.target && event.target.id === "close-label") {
+        
+        var prev_page_str = localStorage.getItem("previous_page");
+        var prev_page = prev_page_str !== null ? parseInt(prev_page_str, 10) : 0;
+        
+        if (prev_page !== 4){
+            localStorage.setItem("current_page", prev_page);
+            fit_the_page(prev_page);
+        } else {
+            localStorage.setItem("current_page", 0);
+            fit_the_page(0);
+        }
+    }
+});
+
 
 
 
@@ -48,6 +75,7 @@ window.onload = function(){
     fit_the_page(current_page);
     highlightActiveTab(current_page);
     change_page_name(current_page);
+    fit_the_page(current_page);
 
     
 }
@@ -55,7 +83,7 @@ window.onload = function(){
 
 async function fit_the_page(curr_page) {
 
-    const all_pages = ["scan.html","single-report.html","help-center.html","about.html"];
+    const all_pages = ["scan.html","single-report.html","help-center.html","about.html","profile.html"];
     var clicked_page = all_pages[curr_page]; //get the name of page
 
     let the_url = fetch(clicked_page) //this method will go and search about this page
