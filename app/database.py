@@ -78,6 +78,15 @@ class AgrosnapDatabase:
             cursor.execute(query, (username, firstname, last_name, email, password))
             conn.commit()
 
+    def get_user_by_id(self,user_id: int) -> dict:
+
+        query = "SELECT user_id , username, first_name ,last_name, Email ,PASSWORD_HASH FROM users_info WHERE user_id = ?;"
+
+        with self._get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(query, (user_id,))
+            return cursor.fetchall()
+
     # this def to insert data into disease_Table
     def insert_into_disease_Table(self,plant_name,disease_name,organic_treatment,report, confidence):
 
@@ -273,6 +282,9 @@ class AgrosnapDatabase:
             # Returns a list of tuples containing all saved reports for this user
             return cursor.fetchall()
 
+    def get_detalts_report(self , save_id: int) -> list:
+      pass 
+
 
     def get_disease_by_id(self, disease_id : int) :
         # fetches disease report using unique ID (match with AI model  index)
@@ -302,9 +314,18 @@ class AgrosnapDatabase:
 
 
 
+
+
+
+
+
+
 if __name__ == '__main__':
     db = AgrosnapDatabase()
     db.init_database()
+
+    # db.insert_into_users_info("tala","tala","sharayre","talasharayre@gmail.com","123456")
+    print(  db.get_user_by_id(1))
 
     # print(db.get_user_by_email("raadAlshrayre@gmail.com"))
 
