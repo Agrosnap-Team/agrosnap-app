@@ -34,6 +34,24 @@
     justify-content: center;
 }
 
+.signle-report-container .movement-btns{
+    padding: 0px 5px;
+}
+
+.signle-report-container .movement-btns  .move{
+
+    background-color: #285429;
+    background-image: url("../images/next.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 60%;
+    width: 60px;
+    border-radius: 12px;
+    height: 130px;
+
+}
+
+
 .signle-report-container button.prev,
 .signle-report-container button.next {
     background: transparent;
@@ -42,12 +60,17 @@
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
-    transition: transform 0.2s ease;
+    transition: filter 0.2s ease;
+}
+
+.signle-report-container button.prev{
+    transform: rotate(-180deg);
 }
 
 .signle-report-container button.prev:hover,
 .signle-report-container button.next:hover {
-    transform: scale(1.2);
+    filter: brightness(1.4);
+
 }
 
 /* -----------------------------
@@ -59,12 +82,33 @@
     padding: 0 10px;
 }
 
+.disease-image-container{
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.disease-image-container #disease-image{
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
 /* Typography matching the screenshot */
 .signle-report-container .the-header {
     color: #285429;
+    font-size: 7vw;
     border-bottom: 2px solid #2D8531;
     padding-bottom: 8px;
     margin-bottom: 15px;
+    text-align: center;
+}
+
+
+.all-report>h3{
+    color: #285429;
+    font-size: 4.5vw;
 }
 
 .signle-report-container .treatment {
@@ -76,6 +120,8 @@
     line-height: 1.6;
     color: #333333;
     text-align: left;
+    font-size: 2.5vw;
+    
 
 }
 
@@ -90,6 +136,7 @@
     min-height: 300px;
     max-width: 400px;
     margin: auto;
+    align-content: center;
 }
 
 .signle-report-container .prograssive-with-label {
@@ -102,7 +149,7 @@
 
 .signle-report-container .disease-title {
     color: #7D7D7D;
-    flex: 1 1 0; 
+    flex: 3 1 0; 
 }
 
 .signle-report-container .precentage {
