@@ -7,6 +7,7 @@ let dbConnection;
 const user_table = "user_info"; 
 const disease_table = "diseases_info";
 const saved_reports_table = "saved_reports";
+const report_details = "report_details";
 
 async function openConnection() {
 
@@ -45,6 +46,28 @@ function create_disease_table(db){
     if(!db.objectStoreNames.contains(disease_table)){
         const diseaseTable = db.createObjectStore(disease_table, {keyPath:"disease_id"});
     }
+}
+
+
+function create_saved_reports(db){
+    if(!db.objectStoreNames.contains(saved_reports_table)){
+
+        const saved_report = db.createObjectStore(saved_reports_table,{keyPath:"report_id"});
+
+    }
+
+}
+
+function create_reports_details(db){
+
+        if(!db.objectStoreNames.contains(report_details)){
+
+        const saved_report = db.createObjectStore(report_details,{keyPath:"unique_report"});
+
+        saved_report.createIndex("reports_id_group","reports_id");
+
+    }
+
 }
 
 
