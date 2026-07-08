@@ -267,4 +267,10 @@ flex-direction: row;
     #sidebar > #pages > li > a{
         font-size: 20px;
     }
+
+    #sidebar > #user-profile > #img > #profile-pic{
+    width: 60%;
+    height: 40%;
+    border-radius: 30px;
+}
 }
