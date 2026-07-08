@@ -27,7 +27,6 @@ listItems.forEach((item, index) => {
     highlightActiveTab(index);
     change_page_name(index);
     document.getElementById("sidebar").classList.remove("open");
-    document.getElementById("sidebar").classList.add("close");
     document.getElementById("overlay").classList.remove("show");
     
 
@@ -75,7 +74,6 @@ window.onload = function(){
     fit_the_page(current_page);
     highlightActiveTab(current_page);
     change_page_name(current_page);
-    fit_the_page(current_page);
 
     
 }

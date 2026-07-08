@@ -7,14 +7,12 @@ function is_mobile(){
 }
 
 function open_sidebar(){
-    sidebar.classList.remove("closed");
     sidebar.classList.add("open");
     if(is_mobile()) overlay.classList.add("show");
 }
 
 function close_sidebar(){
     sidebar.classList.remove("open");
-    sidebar.classList.add("closed");
     overlay.classList.remove("show");
 }
 
