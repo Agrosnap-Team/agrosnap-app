@@ -9,6 +9,9 @@ const disease_table = "diseases_info";
 const saved_reports_table = "saved_reports";
 const report_details = "report_details";
 
+
+
+//will use for create the db and open a connection
 async function openConnection() {
 
     dbConnection = await idb.openDB("Agrosnap_database",2,{
@@ -18,6 +21,9 @@ async function openConnection() {
             // here where we create our tables
             create_users_table(db);
             create_disease_table(db);
+            create_saved_reports(db);
+            create_reports_details(db)
+            
         }
     });
     
@@ -64,7 +70,7 @@ function create_reports_details(db){
 
         const saved_report = db.createObjectStore(report_details,{keyPath:"unique_report"});
 
-        saved_report.createIndex("reports_id_group","reports_id");
+        saved_report.createIndex("reports_id_group","reports_id",{unique:false});
 
     }
 
