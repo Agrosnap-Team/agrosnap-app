@@ -83,7 +83,7 @@ window.onload = function(){
 
 async function fit_the_page(curr_page) {
 
-    const all_pages = ["scan.html","single-report.html","help-center.html","about.html","profile.html"];
+    const all_pages = ["scan.html","all-saved-reports.html","help-center.html","about.html","profile.html"];
     var clicked_page = all_pages[curr_page]; //get the name of page
 
     let the_url = fetch(clicked_page) //this method will go and search about this page

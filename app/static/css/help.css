@@ -2,7 +2,7 @@
 .hints-container {
     width: 100%;
     max-width: 800px; /* Prevents it from getting too wide on large screens */
-    margin: 0 auto;
+    margin: 90px auto;
     font-family: inherit; /* Blends in with the host website's font */
 }
 
@@ -72,16 +72,17 @@
 .hints-container .answer-container {
     max-height: 0; /* Hidden by default */
     overflow: hidden;
-    background-color: rgb(130, 145, 128);
+    background-color: rgb(144, 169, 140);
     transition: max-height 0.4s ease-out; /* The slide effect */
 }
 
 .hints-container .answer-content {
     padding: 0 20px 20px 20px;
     margin: 0;
-    color: #555; /* Neutral text color */
+    color: #ffffff; /* Neutral text color */
     line-height: 1.6;
     text-align: left;
+    text-shadow: 0px 2px 9px #454545;
 }
 
 /* When the 'active' class is added via JS */
