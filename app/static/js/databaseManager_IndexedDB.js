@@ -33,8 +33,8 @@ function create_users_table(db){
 
 
         //to enable us to query in many keys instead of only the keyPath 
-        userTable.createIndex("username","username");
-        userTable.createIndex("user_email","email");
+        userTable.createIndex("username","username",{unique:true});
+        userTable.createIndex("user_email","email",{unique:true});
 
     }
 }
