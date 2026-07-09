@@ -78,16 +78,7 @@ def signup(user_data: UserSign_Up):
 
 
 
-#  Hybrid Login (will login use email or username and password)
 
-class userSign_in(BaseModel):
-
-
-
-@app.post("/login")
-def login(user_data: userSign_in): # login into user account
-    try:
-        check_existe_user = database_instance.get_user_by_email(email=user_data.email)
 
 
     
