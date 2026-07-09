@@ -34,7 +34,7 @@ class UserSign_Up(BaseModel):
         if not any(char.islower() for char in v):
             raise HTTPException(status_code=400, detail="Password must contain only letters")
 
-        # check if password has at lest one small letter
+        # check if password has at lest one cabital letter(upper)
         if not any(char.isupper() for char in v):
             raise HTTPException(status_code=400, detail="Password must contain only uppercase letters")
 
