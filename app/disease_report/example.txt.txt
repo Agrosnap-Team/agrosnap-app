@@ -1,0 +1,12 @@
+#  Hybrid Login (will login use email or username and password)
+
+class userSign_in(BaseModel):
+    #email:EmailStr
+    username: str
+    password: str
+
+@app.post("/login")
+def login(user_data: userSign_in): # login into user account
+    try:
+        check_existe_user = database_instance.get_user_by_email(email=user_data.)
+
