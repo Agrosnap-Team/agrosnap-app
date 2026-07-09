@@ -36,7 +36,6 @@ async function openConnection() {
 
 
 
-
 //==========================================================
 // Create the needed tables which are already in sqlite3
 //==========================================================
@@ -120,7 +119,7 @@ async function add_new_user(db,newData){
             console.log("his Id is " , the_new_user_id);
             await trans.done; //end the transaction
         }
-        
+
         else{
             console.log("there is no data to add");
         }
