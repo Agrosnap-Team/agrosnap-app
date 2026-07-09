@@ -70,13 +70,17 @@ class AgrosnapDatabase:
     #this def to use to insert data into users_info
     def insert_into_users_info(self ,username,firstname,last_name,email,password):
 
-        query = """INSERT OR IGNORE INTO users_info (username, first_name, last_name, email, PASSWORD_HASH)
+        query = """INSERT INTO users_info (username, first_name, last_name, email, PASSWORD_HASH)
                             VALUES (?, ?, ?, ?, ?)"""
         # this is context manger "with " connect with database.db just_in_time
-        with self._get_connection() as conn:
-            cursor = conn.cursor()
-            cursor.execute(query, (username, firstname, last_name, email, password))
-            conn.commit()
+
+        try:
+            with self._get_connection() as conn:
+                cursor = conn.cursor()
+                cursor.execute(query, (username, firstname, last_name, email, password))
+                conn.commit()
+        except sqlite3.Error as  db_error:
+            print(f"Error occured while inserting into users info: {db_error}")
 
     def get_user_by_id(self,user_id: int) -> dict:
 
@@ -306,12 +310,13 @@ class AgrosnapDatabase:
 
 
 
+
 if __name__ == '__main__':
     db = AgrosnapDatabase()
     db.init_database()
 
     # db.insert_into_users_info("tala","tala","sharayre","talasharayre@gmail.com","123456")
-    print(  db.get_user_by_id(1))
+    print(  db.get_user_by_id(4))
 
     # print(db.get_user_by_email("raadAlshrayre@gmail.com"))
 
