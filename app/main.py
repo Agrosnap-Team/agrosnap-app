@@ -34,7 +34,7 @@ class UserSign_Up(BaseModel):
         if not any(char.islower() for char in v):
             raise HTTPException(status_code=400, detail="Password must contain only letters")
 
-        # check if password has at lest one small letter
+        # check if password has at lest one cabital letter(upper)
         if not any(char.isupper() for char in v):
             raise HTTPException(status_code=400, detail="Password must contain only uppercase letters")
 
@@ -56,7 +56,6 @@ def signup(user_data: UserSign_Up):
         # if not exist add_new_user & hash the password
         print("password length:" ,len(user_data.PASSWORD_HASH))
 
-        # hash_password = pwd_hash.hash(user_data.PASSWORD_HASH)
         # convert the password to bytes
         password_bytes = user_data.PASSWORD_HASH.encode('utf-8')
          #encript the password and c=generate the salt
