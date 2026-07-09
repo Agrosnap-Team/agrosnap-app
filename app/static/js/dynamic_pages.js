@@ -64,7 +64,6 @@ document.addEventListener("click", (event) => {
 
 window.onload = function(){
      
-
      let saved_page = localStorage.getItem("current_page");
 
      console.log(saved_page + " " +typeof(saved_page));
