@@ -56,7 +56,6 @@ def signup(user_data: UserSign_Up):
         # if not exist add_new_user & hash the password
         print("password length:" ,len(user_data.PASSWORD_HASH))
 
-        # hash_password = pwd_hash.hash(user_data.PASSWORD_HASH)
         # convert the password to bytes
         password_bytes = user_data.PASSWORD_HASH.encode('utf-8')
          #encript the password and c=generate the salt
