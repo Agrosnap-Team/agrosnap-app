@@ -70,7 +70,6 @@ function create_disease_table(db){
 
 
 
-
 function create_saved_reports(db){
     if(!db.objectStoreNames.contains(saved_reports_table)){
 
@@ -94,6 +93,7 @@ function create_reports_details(db){
     }
 
 }
+
 
 
 
