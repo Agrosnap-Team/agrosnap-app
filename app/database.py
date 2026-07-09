@@ -184,21 +184,21 @@ class AgrosnapDatabase:
             print(f"General database error during deletion: {e}")
             return {"status": "error", "message": "An unexpected database error occurred."}
 
-    def Delet_From_save_report(self, user_id, disease_id ,confidence ):
-         #Removes a specific saved report from a user's history.
 
-        query = ''' DELETE FROM save_report WHERE user_id , disease_id ,confidence VALUES (?,?,?)'''
+
+    def Delete_From_save_report(self, save_report_id):
+        #Removes a specific saved report from a user's history.
+
+        query = ''' DELETE FROM save_report WHERE save_report_id = ? '''
 
         with self._get_connection() as conn:
             cursor = conn.cursor()
-            cursor.execute(query,(user_id , disease_id ))
-            cursor.commit()
-
+            cursor.execute(query, (save_report_id,))
+            conn.commit()
             if cursor.rowcount == 0:
-                return {"status": "not_found", "message": "Report not found in history "}
+                return {"status": "not_found", "message": "Report not found in history."}
 
-            return {"status": "succsse" , "message":"Report deleted successfully."}
-
+            return {"status": "success", "message": "Report deleted successfully."}
 
 
     def update_user(self, user_id: int, **kwargs) -> dict:
