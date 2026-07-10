@@ -18,20 +18,27 @@ const report_details = "report_details";
 
 async function openConnection() {
 
-    dbConnection = await idb.openDB("Agrosnap_database", 2 ,{
+    try{
 
-        upgrade(db){
+        dbConnection = await idb.openDB("Agrosnap_database", 2 ,{
 
-            console.log("DB and connection has been created successfully");
-            // here where we create our tables
-            create_users_table(db);
-            create_disease_table(db);
-            create_saved_reports(db);
-            create_reports_details(db)
-            
-        }
+            upgrade(db){
 
-    });  
+                console.log("DB and connection has been created successfully");
+                // here where we create our tables
+                create_users_table(db);
+                create_disease_table(db);
+                create_saved_reports(db);
+                create_reports_details(db);
+                
+            }
+
+        });  
+    }
+
+    catch(error){
+        console.log("something went wrong in connection " , e);
+    }
 }
 
 
@@ -132,6 +139,34 @@ async function add_new_user(db,newData){
 }
 
 
+async function add_disease_info(db,all_reports) {
+    //After got the disease from fastAPI we add it to indexedDB
+    if(all_reports){
+    const trans = db.transaction(disease_table,"readwrite");
+    const current_table = trans.objectStore(disease_table);
+
+    await Promise.all(  all_reports.map(  row => current_table.put(row)  ) );
+
+    trans.done;
+    console.log("add all successfully");
+
+    }
+
+
+
+
+
+    
+    
+}
+
+
+async function add_saved_disease(db,all_saved_disease) {
+
+    //will all saved disease
+    
+}
+
 
 //==========================================================
 // This for get information from Sqlite3
@@ -155,9 +190,26 @@ async function get_new_user_info(db){
 
 
 
+
 async function get_diseases_info(db) {
 
-    //we get the diseases
+    //we get the diseases from FastAPI
+    const all_disease = [
+        {"disease_id":0,"disease_name":"leaf_mold","report":"this is the report of disease and dummy data","treatment":"this is the treatment section"},
+        {"disease_id":1,"disease_name":"early_blight","report":"this is the report of  early blight disease and dummy data","treatment":"this is the rearly blight treatment section"},
+        {"disease_id":2,"disease_name":"late_blight","report":"this is the report of late blight disease and dummy data","treatment":"this is the late blight treatment section"}
+    ];//this is fake data
+
+    add_disease_info(db,all_disease);
+
+
+    
+}
+
+
+async function get_saved_reports(db) {
+
+
     
 }
 
@@ -170,11 +222,11 @@ async function get_diseases_info(db) {
 // Start the info and this will export to dynamic.js 
 //==========================================================
 
-
-export async function start() {
+async function start() {
 
     await openConnection();
     await get_new_user_info(dbConnection);
+    await get_diseases_info(dbConnection);
     
 }
 

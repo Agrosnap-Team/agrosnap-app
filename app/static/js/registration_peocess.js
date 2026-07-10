@@ -3,10 +3,10 @@
 console.log("this is one");
 document.getElementById("submit").addEventListener('click',complete_registration_process);
 
-
-const based_url = "http://127.0.0.1:8001/signup";
-
 async function complete_registration_process(event) {
+    debugger;
+    const based_url = "http://127.0.0.1:8080/signup";
+    event.stopPropagation();
     event.preventDefault();//prevent the page to make refresh 
 
     try{
@@ -21,32 +21,14 @@ async function complete_registration_process(event) {
         });
 
         console.log(response);
-
-        if(response.ok){
-
-            const process_results = await response.json();
-            console.log(process_results);
-            let process_status = process_results.status;
-            localStorage.setItem("proc",process_status);
-            if(process_status=="success"){
-                // alert(window.location.origin);
-                window.location.href= "./login.html";
-            }
-            else{
-                console.log("didn't registered");
-            }
+        const process_results = await response.json();
+        console.log(process_results.status);
+        if(process_results.status=="success"){
+            console.log("again");
+            window.location.href="./login.html";
         }
-        else{
-            const error_data = await response.json();
-            console.log("Backend rejected the request. Details:", error_data);
-            alert(error_data.details);
-        }
-
-
-        console.log("i reached here");
-
- 
-        
+        else{console.log("failed: " , process_results.status);}
+ئ
     }
     catch(error){
         console.log("failed send: " , error);

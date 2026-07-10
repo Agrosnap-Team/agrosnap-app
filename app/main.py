@@ -1,15 +1,30 @@
 import re
 
 from fastapi import FastAPI, HTTPException
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, EmailStr,field_validator
+from fastapi.middleware.cors import CORSMiddleware
 from app import database as db
-import bcrypt
+from fastapi import FastAPI, Request
+from fastapi.templating import Jinja2Templates
 
+
+import bcrypt
 
 app =  FastAPI() # this is the CEO have archive (contains all URL & Method write in this class)
 
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
+
+
 database_instance = db.AgrosnapDatabase()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],   #https://excursion-lego-reproach.ngrok-free.dev","http://127.0.0.1:5501"
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class UserSign_Up(BaseModel):
 
