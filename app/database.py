@@ -299,6 +299,36 @@ class AgrosnapDatabase:
 
 
 
+    def get_user_by_identifier(self, identifier:str):
+        # this def to let user enter by email /username and return (dictionary [key value]) to use the data by there name in fastApi
+        #identifier represnt username and email
+
+        query = ("SELECT username, first_name, last_name, Email,  PASSWORD_HASH"
+                 " WHERE username =? or email =? ")
+
+        try :
+            with self._get_connection() as conn:
+                cursor = conn.cursor()
+                cursor.execute(query, (identifier,identifier))
+                row = cursor.fetchall()
+                # return dictionary not tuple
+                if row :
+                    return {
+
+                        "username": row[0],
+                        "first_name": row[1],
+                        "last_name": row[2],
+                        "Email": row[3],
+                        " PASSWORD_HASH": row[4],
+
+
+                    }
+
+                return None
+        except sqlite3.Error as db_error:
+            print(f"Database error: {db_error}")
+            raise db_error
+
 
 
 
