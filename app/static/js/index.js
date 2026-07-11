@@ -17,7 +17,8 @@ function move_to_sign_page(){
 
     setTimeout(() => {
         console.log("i'am in the timeout");
-        window.location.href = "../templates/sign_choices.html";
+        // window.location.href = "../templates/sign_choices.html";
+        window.location.href="/sign";
     }, 2000);
 
 }

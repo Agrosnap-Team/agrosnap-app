@@ -66,7 +66,6 @@ window.onload = function(){
      
      let saved_page = localStorage.getItem("current_page");
 
-     console.log(saved_page + " " +typeof(saved_page));
     // Convert the string to a number. If it's the first visit (null), default to 0.
     var current_page = saved_page !== null ? parseInt(saved_page, 10) : 0;
 
@@ -80,7 +79,7 @@ window.onload = function(){
 
 async function fit_the_page(curr_page) {
 
-    const all_pages = ["scan.html","all-saved-reports.html","help-center.html","about.html","profile.html"];
+    const all_pages = ["/scan","/all_saved_reports","/help","/about","/profile"];
     var clicked_page = all_pages[curr_page]; //get the name of page
 
     let the_url = fetch(clicked_page) //this method will go and search about this page
@@ -91,7 +90,7 @@ async function fit_the_page(curr_page) {
         document.getElementById("main").scrollTop=0; //this to let the page go to top again , if user scrolled down
         document.getElementById("content").innerHTML=HTML_data; // put the new page here
 
-        if (clicked_page === "help-center.html") {
+        if (clicked_page === "/help") {
             slideAnimation();
         }
     })

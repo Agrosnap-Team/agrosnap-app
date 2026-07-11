@@ -37,7 +37,7 @@ async function openConnection() {
     }
 
     catch(error){
-        console.log("something went wrong in connection " , e);
+        console.log("something went wrong in connection " );
     }
 }
 

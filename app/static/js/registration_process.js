@@ -6,13 +6,13 @@ document.getElementById("submit").addEventListener('click',complete_registration
 
 async function complete_registration_process(event) {
      
-    const based_url = "http://127.0.0.1:8080/signup";
+    const based_url = "/signup";
     event.stopPropagation();
     event.preventDefault();//prevent the page to make refresh 
 
     try{
         let user_data = get_user_info();
-        if (user_data !="null"){
+        if (user_data != null){
             const response = await fetch(based_url,
             {
                 method:"POST",
@@ -20,28 +20,48 @@ async function complete_registration_process(event) {
                 body:JSON.stringify(user_data)
             });
 
-            console.log(response);
+
             const process_results = await response.json();
-            console.log(process_results.status);
+
+
+            if (!response.ok) {
+                // const the_msg = process_results.detail;
+                let errorMessage;
+                if(Array.isArray(process_results.detail)){ //pyndatic errors
+                    errorMessage=process_results.detail[0].msg;
+                }
+                else{
+                    errorMessage=process_results.detail;
+                }
+                document.getElementById("msg").style.visibility="visible";
+                document.getElementById("msg").innerHTML = errorMessage; 
+                alert("something went wrong");
+                return;
+            }
+
             if(process_results.status=="success"){
                 // alert("Origin : "+window.location.origin + "\nPathname: " + window.location.pathname);
-                document.getElementById("submit").innerHTML="Loading..."
-                window.location.href="./login.html";
+                document.getElementById("submit").innerHTML="Loading...";
+                
+
+
+                // await new Promise(resolve => setTimeout(resolve, 400));
+
+                // window.location.href="./login.html"
+
+                window.location.href="/loginForm";
+                
+                // alert("here");
                 // alert("Origin : "+window.location.origin + "\nPathname: " + window.location.pathname);
             }
-            else{
-                const the_msg = process_results.detail;
-                document.getElementById("msg").style.visibility="visible";
-                document.getElementById("msg").innerHTML = the_msg; 
-                alert("something went wrong");
-                // console.log("failed: " , process_results.detail);
-                // alert("Read the console log");
-                }
-        }
+
+
+        }//end of check the empty of user_data
 
     }
     catch(error){
-        console.log("failed send: " , error);
+            document.getElementById("msg").style.visibility = "visible";
+            document.getElementById("msg").innerHTML = "Unable to connect to the server.";
     }
 
     
@@ -68,11 +88,22 @@ function get_user_info(){
         if(anyValueIsEmpty){
             document.getElementById("msg").style.visibility="visible";
             document.getElementById("msg").innerHTML = "Please fill all fields!"; 
-            return "null";            
+            return null;            
         }
         else{
             return user_data;
         }
 
+}
+
+function appear_Successfully(){
+     document.getElementById("msg").style.visibility="visible";
+     document.getElementById("msg").innerHTML = "Registered successfully !"; 
+     document.getElementById("msg").style.color="#0a861e";
+     document.getElementById("msg").style.backgroundColor="#487550";
+     
+
+
+    
 }
 
