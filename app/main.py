@@ -130,7 +130,7 @@ def login(login_data: userSign_in):
 
 
         #compute expire time of JWT depending on UTC
-        expire = datetime.now(timezone) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        expire = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
 
         # the data that we want save inside token
         token_payload = {
