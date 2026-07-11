@@ -1,7 +1,7 @@
 
 
-console.log("this is one");
-alert("Origin : "+window.location.origin + "\nPathname: " + window.location.pathname);
+// console.log("this is one");
+// alert("Origin : "+window.location.origin + "\nPathname: " + window.location.pathname);
 document.getElementById("submit").addEventListener('click',complete_registration_process);
 
 async function complete_registration_process(event) {
@@ -11,26 +11,34 @@ async function complete_registration_process(event) {
     event.preventDefault();//prevent the page to make refresh 
 
     try{
-        localStorage.setItem("proc","null");
         let user_data = get_user_info();
-        console.log(user_data)
-        const response = await fetch(based_url,
-        {
-            method:"POST",
-            headers:{"Content-Type": "application/json","ngrok-skip-browser-warning": "true"},
-            body:JSON.stringify(user_data)
-        });
+        if (user_data !="null"){
+            const response = await fetch(based_url,
+            {
+                method:"POST",
+                headers:{"Content-Type": "application/json","ngrok-skip-browser-warning": "true"},
+                body:JSON.stringify(user_data)
+            });
 
-        console.log(response);
-        const process_results = await response.json();
-        console.log(process_results.status);
-        if(process_results.status=="success"){
-            alert("Origin : "+window.location.origin + "\nPathname: " + window.location.pathname);
-            window.location.href="./login.html";
-            alert("Origin : "+window.location.origin + "\nPathname: " + window.location.pathname);
+            console.log(response);
+            const process_results = await response.json();
+            console.log(process_results.status);
+            if(process_results.status=="success"){
+                // alert("Origin : "+window.location.origin + "\nPathname: " + window.location.pathname);
+                document.getElementById("submit").innerHTML="Loading..."
+                window.location.href="./login.html";
+                // alert("Origin : "+window.location.origin + "\nPathname: " + window.location.pathname);
+            }
+            else{
+                const the_msg = process_results.detail;
+                document.getElementById("msg").style.visibility="visible";
+                document.getElementById("msg").innerHTML = the_msg; 
+                alert("something went wrong");
+                // console.log("failed: " , process_results.detail);
+                // alert("Read the console log");
+                }
         }
-        else{console.log("failed: " , process_results.status);}
-ئ
+
     }
     catch(error){
         console.log("failed send: " , error);
@@ -48,9 +56,23 @@ function get_user_info(){
         "email" : document.getElementById("email").value,
         "PASSWORD_HASH": document.getElementById("password").value
         };
+        // create an array of all values to check whether any of them is empty later
+        const all_values = Object.values(user_data);
+        
+        
+        //remove all spaces at the end and start 
+        const anyValueIsEmpty = all_values.some(value => value.trim() === "");
 
-        console.log("this the data");
+        //check then if it empty of not 
 
-        return user_data;
+        if(anyValueIsEmpty){
+            document.getElementById("msg").style.visibility="visible";
+            document.getElementById("msg").innerHTML = "Please fill all fields!"; 
+            return "null";            
+        }
+        else{
+            return user_data;
+        }
+
 }
 

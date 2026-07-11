@@ -43,15 +43,15 @@ class UserSign_Up(BaseModel):
             raise HTTPException(status_code=400, detail="Password must be at least 8 characters long")
         #check if password have at lest one digit
         if not any(char.isdigit() for char in v):
-            raise HTTPException(status_code=400, detail="Password must contain only digits")
+            raise HTTPException(status_code=400, detail="Password must contain at least 1 digits")
 
         # check if password has at lest one small letter
         if not any(char.islower() for char in v):
-            raise HTTPException(status_code=400, detail="Password must contain only letters")
+            raise HTTPException(status_code=400, detail="Password must contain at least 1 lowercase letter")
 
         # check if password has at lest one cabital letter(upper)
         if not any(char.isupper() for char in v):
-            raise HTTPException(status_code=400, detail="Password must contain only uppercase letters")
+            raise HTTPException(status_code=400, detail="Password must contain at least 1 uppercase letter")
 
         # check on password if have any (symbol/ special character)
         if not re.search(r"[@$!%*?&#_.:+-]", v):
