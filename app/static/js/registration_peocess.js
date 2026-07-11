@@ -1,10 +1,11 @@
 
 
 console.log("this is one");
+alert("Origin : "+window.location.origin + "\nPathname: " + window.location.pathname);
 document.getElementById("submit").addEventListener('click',complete_registration_process);
 
 async function complete_registration_process(event) {
-    debugger;
+     
     const based_url = "http://127.0.0.1:8080/signup";
     event.stopPropagation();
     event.preventDefault();//prevent the page to make refresh 
@@ -24,8 +25,9 @@ async function complete_registration_process(event) {
         const process_results = await response.json();
         console.log(process_results.status);
         if(process_results.status=="success"){
-            console.log("again");
+            alert("Origin : "+window.location.origin + "\nPathname: " + window.location.pathname);
             window.location.href="./login.html";
+            alert("Origin : "+window.location.origin + "\nPathname: " + window.location.pathname);
         }
         else{console.log("failed: " , process_results.status);}
 ئ
