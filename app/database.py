@@ -191,22 +191,19 @@ class AgrosnapDatabase:
 
 
 
+    def Delete_From_save_report(self, save_report_id):
+        #Removes a specific saved report from a user's history.
 
-    def Delet_From_save_report(self, user_id, disease_id ,confidence ):
-         #Removes a specific saved report from a user's history.
-
-        query = ''' DELETE FROM save_report WHERE user_id , disease_id ,confidence VALUES (?,?,?)'''
+        query = ''' DELETE FROM save_report WHERE save_report_id = ? '''
 
         with self._get_connection() as conn:
             cursor = conn.cursor()
-            cursor.execute(query,(user_id , disease_id ))
-            cursor.commit()
-
+            cursor.execute(query, (save_report_id,))
+            conn.commit()
             if cursor.rowcount == 0:
-                return {"status": "not_found", "message": "Report not found in history "}
+                return {"status": "not_found", "message": "Report not found in history."}
 
-            return {"status": "succsse" , "message":"Report deleted successfully."}
-
+            return {"status": "success", "message": "Report deleted successfully."}
 
 
     def update_user(self, user_id: int, **kwargs) -> dict:
@@ -312,6 +309,36 @@ class AgrosnapDatabase:
             return cursor.fetchall()
 
 
+
+    def get_user_by_identifier(self, identifier:str):
+        # this def to let user enter by email /username and return (dictionary [key value]) to use the data by there name in fastApi
+        #identifier represnt username and email
+
+        query = ("SELECT username, first_name, last_name, Email,  PASSWORD_HASH"
+                 " WHERE username =? or email =? ")
+
+        try :
+            with self._get_connection() as conn:
+                cursor = conn.cursor()
+                cursor.execute(query, (identifier,identifier))
+                row = cursor.fetchall()
+                # return dictionary not tuple
+                if row :
+                    return {
+
+                        "username": row[0],
+                        "first_name": row[1],
+                        "last_name": row[2],
+                        "Email": row[3],
+                        " PASSWORD_HASH": row[4],
+
+
+                    }
+
+                return None
+        except sqlite3.Error as db_error:
+            print(f"Database error: {db_error}")
+            raise db_error
 
 
 
