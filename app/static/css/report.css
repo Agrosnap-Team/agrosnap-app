@@ -108,7 +108,9 @@
 
 .all-report>h3{
     color: #285429;
-    font-size: 4.5vw;
+    margin-bottom: 25px;
+    font-size: 4.2vw;
+    height: fit-content;
 }
 
 .signle-report-container .treatment {

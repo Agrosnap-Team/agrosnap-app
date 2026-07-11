@@ -7,24 +7,86 @@ from fastapi.middleware.cors import CORSMiddleware
 from app import database as db
 from fastapi import FastAPI, Request
 from fastapi.templating import Jinja2Templates
-
-
+from fastapi.responses import FileResponse,HTMLResponse
 import bcrypt
 
 app =  FastAPI() # this is the CEO have archive (contains all URL & Method write in this class)
 
-app.mount("/static", StaticFiles(directory="app/static"), name="static")
+
+
+#========================================================================
+# These are mendatory for let fastAPI know the locations of files/folders
+#========================================================================
+app.mount("/app",StaticFiles(directory="app"),name="app")
+app.mount("/static",StaticFiles(directory="app/static"),name="static")
+app.mount("/node_modules", StaticFiles(directory="node_modules"), name="node_modules") #library related to indexedDB 
+
 
 
 database_instance = db.AgrosnapDatabase()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],   #https://excursion-lego-reproach.ngrok-free.dev","http://127.0.0.1:5501"
+    allow_origins=["*"], #specify the paths which send requests to fastAPI
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["*"], #allow all methods GET,POST,etc...
     allow_headers=["*"],
 )
+
+#======================================================
+#the codes below are for routing and move between pages 
+#======================================================
+
+
+# This is mendatory and tell the FastAPI which page is the main/start page to run it 
+@app.get("/")
+def indexPage():
+    return FileResponse("app/templates/index.html")
+
+@app.get("/sign")
+def signChoices():
+    return FileResponse("app/templates/sign_choices.html")
+
+@app.get("/loginForm")
+def loginPage():
+    return FileResponse("app/templates/login.html")
+
+@app.get("/signupForm")
+def signPage():
+    return FileResponse("app/templates/registration.html")
+
+@app.get("/sidebar")
+def sidebar():
+    return FileResponse("app/templates/sidebar.html")
+
+@app.get("/profile")
+def profilePage():
+    return FileResponse("app/templates/profile.html")
+
+@app.get("/scan")
+def scanPage():
+    return FileResponse("app/templates/scan.html")
+
+@app.get("/all_saved_reports")
+def saved_report():
+    return FileResponse("app/templates/all-saved-reports.html")
+
+@app.get("/help")
+def help_center():
+    return FileResponse("app/templates/help-center.html")
+
+@app.get("/about")
+def aboutPage():
+    return FileResponse("app/templates/about.html")
+
+@app.get("/single_report")
+def show_report():
+    return FileResponse("app/templates/single-report.html")
+
+#================================================
+#================================================
+
+
 
 class UserSign_Up(BaseModel):
 
@@ -89,6 +151,8 @@ def signup(user_data: UserSign_Up):
         raise http_ex
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"this error occured :str {str(e)}")
+
+
 
 
 
