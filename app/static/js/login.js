@@ -33,7 +33,6 @@ async function check_user_data(element) {
                 }
                 document.getElementById("msg").style.visibility="visible";
                 document.getElementById("msg").innerHTML = errorMessage; 
-                alert("something went wrong");
                 return;
             }
 
