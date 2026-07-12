@@ -314,14 +314,14 @@ class AgrosnapDatabase:
         # this def to let user enter by email /username and return (dictionary [key value]) to use the data by there name in fastApi
         #identifier represnt username and email
 
-        query = ("SELECT username, first_name, last_name, Email,  PASSWORD_HASH"
-                 " WHERE username =? or email =? ")
+        query = "SELECT username, first_name, last_name, Email,  PASSWORD_HASH FROM users_info WHERE username =? or email = ? "
 
         try :
             with self._get_connection() as conn:
                 cursor = conn.cursor()
                 cursor.execute(query, (identifier,identifier))
                 row = cursor.fetchall()
+                row=row[0]
                 # return dictionary not tuple
                 if row :
                     return {
@@ -330,9 +330,7 @@ class AgrosnapDatabase:
                         "first_name": row[1],
                         "last_name": row[2],
                         "Email": row[3],
-                        " PASSWORD_HASH": row[4],
-
-
+                        "PASSWORD_HASH": row[4],
                     }
 
                 return None
@@ -357,7 +355,7 @@ if __name__ == '__main__':
     db.init_database()
 
     # db.insert_into_users_info("tala","tala","sharayre","talasharayre@gmail.com","123456")
-    print(  db.get_user_by_id(4))
+    print(  db.get_user_by_identifier("aseel.a.kh01234@gmail.com"))
 
     # print(db.get_user_by_email("raadAlshrayre@gmail.com"))
 

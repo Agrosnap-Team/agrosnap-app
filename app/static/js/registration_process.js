@@ -74,7 +74,8 @@ function get_user_info(){
         "first_name": document.getElementById("first_name").value,
         "last_name" : document.getElementById("last_name").value,
         "email" : document.getElementById("email").value,
-        "PASSWORD_HASH": document.getElementById("password").value
+        "PASSWORD_HASH": document.getElementById("password").value,
+        "confirm_password":document.getElementById("confirm-password").value
         };
         // create an array of all values to check whether any of them is empty later
         const all_values = Object.values(user_data);

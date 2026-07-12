@@ -204,7 +204,7 @@ def login(login_data: userSign_in):
 
         # check if password that user enter matching what was sorted in database
         if not bcrypt.checkpw(login_password, password_hash_db):
-            raise HTTPException(status_code=400, detail="Invalid Email /UserName or Password")
+            raise HTTPException(status_code=400, detail=f"Invalid Email /UserName or Password , login pass :{login_password} and password hash {password_hash_db}")
 
 
         #compute expire time of JWT depending on UTC
@@ -213,7 +213,7 @@ def login(login_data: userSign_in):
         # the data that we want save inside token
         token_payload = {
             "username": user["username"],
-            "email": user["email"],
+            "email": user["Email"], #changes from user["email"] to user["Email"]
             "exp": expire
 
         }
