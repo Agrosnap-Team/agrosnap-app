@@ -144,13 +144,13 @@ class UserSign_Up(BaseModel):
 
 @app.post("/signup")  # this called decorator tell app to save this URL
 def signup(user_data: UserSign_Up):
-    #  check if user is registered by there email
+    # check if email is already existe
     try:
         email_existe = database_instance.get_user_by_email(email=user_data.email )
         if email_existe:
             raise HTTPException(status_code=400, detail="Email or Username is already registered")
 
-        # check if user registered by there  username
+        # check if username is already existe
 
         username_existe = database_instance.get_user_by_username(username=user_data.username)
         if username_existe:
