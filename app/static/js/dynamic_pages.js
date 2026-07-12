@@ -15,6 +15,8 @@ const listItems = document.querySelectorAll('#pages li');
 const profile_Btn = document.getElementById("user-profile");
 const close_btn = document.getElementById("close-label");
 
+document.getElementById("logout-btn").addEventListener('click',logout_process);
+
 // 2. Loop through each item
 listItems.forEach((item, index) => {
   
@@ -118,5 +120,13 @@ function change_page_name(index){
     const pages_names = ["Agrosnap | Scan","Agrosnap | My reports","Agrosnap | Help center","Agrosnap | About Agrosnap"];
     let index_page = parseInt(index,10);
     document.title=pages_names[index_page];
+}
+
+
+
+
+function logout_process(){
+    localStorage.removeItem("user_token");
+    window.location.href="/sign";
 }
 
