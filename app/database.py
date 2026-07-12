@@ -1,6 +1,8 @@
 import sqlite3
 import os
 
+from dns.e164 import query
+
 
 class AgrosnapDatabase:
 
@@ -303,10 +305,32 @@ class AgrosnapDatabase:
 
         query = """SELECT user_id ,username,  first_name ,last_name, Email ,PASSWORD_HASH FROM users_info WHERE email = ?;"""
 
-        with self._get_connection() as conn:
-            cursor = conn.cursor()
-            cursor.execute(query,(email,))
-            return cursor.fetchall()
+        try:
+            with self._get_connection() as conn:
+                cursor = conn.cursor()
+                cursor.execute(query, (email,))
+                return cursor.fetchall()
+        except sqlite3.Error as e:
+            return {"status": "error", "message": f"Database error: {e}"}
+        except Exception as e:
+            return {"status": "error", "message": f"Database error: {e}"}
+
+
+    # Fetches user details using their unique username
+    def get_user_by_username(self, username:str):
+
+        query = """ SELECT user_id ,username,  first_name ,last_name, Email ,PASSWORD_HASH FROM users_info WHERE username = ?; """
+        try:
+            with self._get_connection() as conn:
+                cursor = conn.cursor()
+                cursor.execute(query, (username,))
+                return cursor.fetchall()
+
+        except sqlite3.Error as e:
+            return {"status": "error", "message": f"Database error: {e}"}
+        except Exception as e:
+            return {"status": "error", "message": f"Database error: {e}"}
+
 
 
 
