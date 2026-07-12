@@ -6,9 +6,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr,field_validator,model_validator
 from app import database as db
-from fastapi import FastAPI, Request
-from fastapi.templating import Jinja2Templates
-from fastapi.responses import FileResponse,HTMLResponse
+from fastapi.responses import FileResponse
 import bcrypt
 import jwt
 from datetime import datetime ,timedelta,timezone
@@ -146,14 +144,18 @@ class UserSign_Up(BaseModel):
 
 @app.post("/signup")  # this called decorator tell app to save this URL
 def signup(user_data: UserSign_Up):
-    # farst check if user is registered in database
+    #  check if user is registered by there email
     try:
-        user_existe = database_instance.get_user_by_email(email=user_data.email)
-        if user_existe:
-            raise HTTPException(status_code=400, detail="this email is already registered")
+        email_existe = database_instance.get_user_by_email(email=user_data.email )
+        if email_existe:
+            raise HTTPException(status_code=400, detail="Email or Username is already registered")
 
-        # if not exist add_new_user & hash the password
-        print("password length:" ,len(user_data.PASSWORD_HASH))
+        # check if user registered by there  username
+
+        username_existe = database_instance.get_user_by_username(username=user_data.username)
+        if username_existe:
+            raise HTTPException(status_code=400, detail="Email or Username is already registered")
+
 
         # convert the password to bytes
         password_bytes = user_data.PASSWORD_HASH.encode('utf-8')
@@ -204,7 +206,7 @@ def login(login_data: userSign_in):
 
         # check if password that user enter matching what was sorted in database
         if not bcrypt.checkpw(login_password, password_hash_db):
-            raise HTTPException(status_code=400, detail=f"Invalid Email /UserName or Password , login pass :{login_password} and password hash {password_hash_db}")
+            raise HTTPException(status_code=400, detail=f"Invalid Email /UserName or Password ")
 
 
         #compute expire time of JWT depending on UTC
