@@ -135,7 +135,7 @@ def login(login_data: userSign_in):
         # the data that we want save inside token
         token_payload = {
             "username": user["username"],
-            "email": user["email"],
+            "Email": user["Email"],
             "exp": expire
 
         }
@@ -165,3 +165,12 @@ def login(login_data: userSign_in):
 
 
 
+# {
+#   "username": "toto",
+#   "first_name": "aseel",
+#   "last_name": "sharayre",
+#   "email": "aseelsharayre@gmail.com",
+#   "PASSWORD_HASH": "Aseel2003&",
+#   "confirm_password": "Aseel2003&"
+#
+# }
