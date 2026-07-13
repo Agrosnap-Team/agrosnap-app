@@ -38,7 +38,6 @@ class AgrosnapDatabase:
         # table fo store information abot plant ,disease and the treatment
         query_disease = """CREATE TABLE IF NOT EXISTS disease_Table (
                 disease_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-                plant_name TEXT NOT NULL,
                 disease_name TEXT NOT NULL UNIQUE,
                 organic_treatment TEXT,
                 report TEXT
@@ -51,6 +50,7 @@ class AgrosnapDatabase:
             save_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER ,
             disease_id INTEGER ,
+            plant_name TEXT NOT NULL,
             confidence REAL NOT NULL,
             -- 'on delete cascade' this mean if row in the parent table is deleted ,all corresponding rows in the child (reference) table should automatically be deleted as well
             FOREIGN KEY (user_id) REFERENCES users_info (user_id) ON DELETE CASCADE,
