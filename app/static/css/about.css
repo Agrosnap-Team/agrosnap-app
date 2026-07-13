@@ -2,7 +2,7 @@
 .about-container {
     max-width: 800px; /* Limits the width on large monitors */
     margin: 0 auto; /* Centers the whole component */
-    padding: 20px;
+    padding: 30px;
     box-sizing: border-box;
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; /* Clean, modern base font */
 }

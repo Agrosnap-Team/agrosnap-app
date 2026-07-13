@@ -2,7 +2,7 @@
 
 function display_Agrosnap_logo(){
     try{
-    check_if_user_logged_in()
+    console.log("display logo called");
     document.getElementById("logo_container").style.visibility = "visible";
     document.getElementById("logo_container").classList.add("fade-in");
 // 2. Professionally detect exactly when the animation ends
@@ -15,10 +15,7 @@ function display_Agrosnap_logo(){
 
 function move_to_sign_page(){
     console.log("we are in the move_to_sign_page");
-
     setTimeout(() => {
-        
-        // window.location.href = "../templates/sign_choices.html";
         window.location.href="/sign";
     }, 500);
 

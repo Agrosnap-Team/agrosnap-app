@@ -13,7 +13,7 @@
 
 
 
-const CACHE_NAME = "agrosnap-v4";
+const CACHE_NAME = "agrosnap-v6";
 
 const FILES_TO_CACHE = [
 

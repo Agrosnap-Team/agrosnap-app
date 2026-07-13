@@ -2,8 +2,9 @@
 .hints-container {
     width: 100%;
     max-width: 800px; /* Prevents it from getting too wide on large screens */
-    margin: 90px auto;
+    margin: 0px auto;
     font-family: inherit; /* Blends in with the host website's font */
+    padding: 30px;
 }
 
 /* Ensure padding/borders don't break widths inside this container */

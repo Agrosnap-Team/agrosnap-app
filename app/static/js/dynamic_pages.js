@@ -22,8 +22,8 @@ listItems.forEach((item, index) => {
   
   // 3. Add the click listener to each individual item
   item.addEventListener('click', () => {
-    localStorage.setItem("current_page",index);//put the index of li inside localStorage
-    var current_page = localStorage.getItem("current_page");
+    sessionStorage.setItem("current_page",index);//put the index of li inside localStorage
+    var current_page = sessionStorage.getItem("current_page");
 
     fit_the_page(current_page);
     highlightActiveTab(index);
@@ -36,9 +36,9 @@ listItems.forEach((item, index) => {
 });
 
 profile_Btn.addEventListener("click", () => {
-    localStorage.setItem("previous_page",localStorage.getItem("current_page"));
-    localStorage.setItem("current_page",4);
-    var current_page = localStorage.getItem("current_page");
+    sessionStorage.setItem("previous_page",sessionStorage.getItem("current_page"));
+    sessionStorage.setItem("current_page",4);
+    var current_page = sessionStorage.getItem("current_page");
     fit_the_page(current_page);
 });
 
@@ -47,14 +47,14 @@ profile_Btn.addEventListener("click", () => {
 document.addEventListener("click", (event) => {
     if (event.target && event.target.id === "close-label") {
         
-        var prev_page_str = localStorage.getItem("previous_page");
+        var prev_page_str = sessionStorage.getItem("previous_page");
         var prev_page = prev_page_str !== null ? parseInt(prev_page_str, 10) : 0;
         
         if (prev_page !== 4){
-            localStorage.setItem("current_page", prev_page);
+            sessionStorage.setItem("current_page", prev_page);
             fit_the_page(prev_page);
         } else {
-            localStorage.setItem("current_page", 0);
+            sessionStorage.setItem("current_page", 0);
             fit_the_page(0);
         }
     }
@@ -66,7 +66,7 @@ document.addEventListener("click", (event) => {
 
 window.onload = function(){
      
-     let saved_page = localStorage.getItem("current_page");
+     let saved_page = sessionStorage.getItem("current_page");
 
     // Convert the string to a number. If it's the first visit (null), default to 0.
     var current_page = saved_page !== null ? parseInt(saved_page, 10) : 0;
