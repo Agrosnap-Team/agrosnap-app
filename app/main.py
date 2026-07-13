@@ -93,6 +93,10 @@ def aboutPage():
 def show_report():
     return FileResponse("app/templates/single-report.html")
 
+@app.get("/service-worker.js")
+async def initiatSW():
+    return FileResponse("app/static/service-worker.js")
+
 #================================================
 #================================================
 
