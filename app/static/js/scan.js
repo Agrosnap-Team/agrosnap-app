@@ -6,6 +6,7 @@ let closeMark;
 let cameraButton;
 let fileManagerButton;
 let camera;
+let popupElement;
 
 export function initElements(){
     console.log("this function called");
@@ -21,7 +22,7 @@ export function initElements(){
      cameraButton=document.getElementById("cameraChoice");
      fileManagerButton=document.getElementById("fileManager");
      camera=document.getElementById("cameraInput");
-     let popupElement = document.getElementById("popup");
+     popupElement = document.getElementById("popup");
      closeMark=document.getElementById("closePopup");
 
     //=============================================
@@ -30,7 +31,6 @@ export function initElements(){
 
 
     
-
     //==================================================================
     //when user click and open popup , choose to open camera or gallery
     //==================================================================
@@ -43,7 +43,7 @@ export function initElements(){
 
 
     //==============================================================
-    // let user click anywhere pr click on x mark to close the popup
+    // let user click anywhere or click on x mark to close the popup
     //==============================================================
     popupElement.addEventListener('click', (event) => {
          
@@ -57,7 +57,18 @@ export function initElements(){
     //==============================================================
 
 
+    //===============================================================
+    //when user choose or capture a photo , so should appear
+    // in previewImage
+    //=================================================================
+    fileInput.addEventListener("change",showImage);
+    camera.addEventListener("change",showImage);
 
+
+    //===============================================================
+    //when user choose or capture a photo , so should appear
+    // in previewImage
+    //=================================================================
 
 
 }
@@ -82,5 +93,30 @@ function openPopup(){
 }
 function closePopup(){
     document.getElementById("popup").classList.remove("showPopup");
+
+}
+
+function showImage(event){
+
+
+     console.log("showImage called");
+     console.log(event.target.files);
+    //files always return a group of images so we always need the first photo has been selected
+    const selected_image = event.target.files[0];
+    //if no photo selected , then don't do anything 
+    if(!selected_image){
+        console.log("no image selected");
+        return;}
+
+
+    closePopup(0);
+    previewImage.src = URL.createObjectURL(selected_image);
+    previewImage.style.display="block";
+
+
+
+
+
+
 
 }
