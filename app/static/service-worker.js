@@ -10,10 +10,7 @@
 // └── ...
 
 
-
-
-
-const CACHE_NAME = "agrosnap-v6";
+const CACHE_NAME = "agrosnap-v12";
 
 const FILES_TO_CACHE = [
 
@@ -54,6 +51,7 @@ const FILES_TO_CACHE = [
     "/static/js/back_to_sign.js",
     "/static/js/help.js",
     "/static/js/all_reports.js",
+    "/static/js/fill-Profile-Info.js",
 
     
     // Images
@@ -117,6 +115,5 @@ self.addEventListener("fetch", event => {
         })
 
     );
-
 
 });

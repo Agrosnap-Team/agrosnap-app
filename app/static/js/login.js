@@ -39,7 +39,9 @@ async function check_user_data(element) {
             console.log(result);
             if(result.create_token){
                 localStorage.setItem("user_token",result.create_token);
+                localStorage.setItem("username",result.username);
                 window.location.href="/sidebar";
+                
             }
             
             
