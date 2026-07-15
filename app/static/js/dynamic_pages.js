@@ -86,7 +86,6 @@ window.onload = function(){
 
 async function fit_the_page(curr_page) {
 
-    const all_pages = ["/scan","/all_saved_reports","/help","/about","/profile"];
     const allPages = [
         {path:"/scan",initJSFunction:initElements},
         {path:"/all_saved_reports",initJSFunction:showReports},
@@ -95,7 +94,8 @@ async function fit_the_page(curr_page) {
         {path:"/profile",initJSFunction:init}
 
     ];
-    var clicked_page = allPages[curr_page]; //get the name of page
+
+    var clicked_page = allPages[curr_page]; //get part of name by the index -> curr_page
 
     fetch(clicked_page.path) //this method will go and search about this page
     .then(response => {
@@ -104,11 +104,11 @@ async function fit_the_page(curr_page) {
     .then(HTML_data =>{
         document.getElementById("main").scrollTop=0; //this to let the page go to top again , if user scrolled down
         document.getElementById("content").innerHTML=HTML_data; // put the new page here
-        if(clicked_page.initJSFunction){
-            clicked_page.initJSFunction();
+
+        if(clicked_page.initJSFunction){ //if we have an exported functions that should work once the page called
+
+            clicked_page.initJSFunction();//call the function that belong to specific page
         }
-
-
     })
 
 

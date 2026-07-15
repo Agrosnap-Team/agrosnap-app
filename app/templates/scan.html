@@ -14,14 +14,22 @@
     <title>AgroSnap | Scan</title>
 </head>
 <body id="scan_page_body">
+    <div id="popup">
+        <div id="choices">
+            <div id="closePopup"></div>
+            <button id="cameraChoice" class="choose">Take a photo</button>
+            <button id="fileManager" class="choose">Upload a photo</button>
+        </div>
+    </div>
 
     <div class="container">
     <h2 id="title">Upload your photo below</h2>
+    <input type="file" id="fileInput" accept="image/*" hidden />
+    <input type="file" id="cameraInput" accept="image/*" capture hidden />
 
     <div class="upload-box items" id="uploadBox">
         <span id="boxText">Click here to upload a photo</span>
         <img id="previewImage" style="display: none;" alt="Preview" />
-        <input type="file" id="fileInput" accept="image/*" capture="environment" hidden />
     </div>
 
     <div class="buttons-box items" id="btns-container">
