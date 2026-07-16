@@ -93,6 +93,7 @@ def Token_decoding(data_token):
 
        return {"user_id": user_id, "username": username, "email": email}
 
+
    except jwt.ExpiredSignatureError:
        # if token is expire
        raise HTTPException(status_code=401, detail="Token has expired!")
