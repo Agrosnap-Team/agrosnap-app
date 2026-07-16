@@ -57,3 +57,13 @@ class userSign_in(BaseModel):
     identifier : str # get email / username
     password :str
 
+# this schema for what data should send to save report
+class Data_to_save(BaseModel):
+    user_id : str
+    disease_id : str
+    plant_name :str
+    confidence : float
+
+
+
+
