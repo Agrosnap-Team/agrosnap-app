@@ -66,7 +66,7 @@ def signup(user_data: UserSign_Up):
 # function that create the token
 def create_access_token(token_payload: Data_of_Token):
     # this variable save data token that convert from pydantic class to dictionary because jwt library does not understand pydantic object (token_payload) it is just deal with dict
-    # .model_dum this is the methode use to convert
+    # .model_dum this is the methode use for convert to dictionary
     data_to_but_in_token = token_payload.model_dump()
 
     # compute expire time of JWT depending on UTC
@@ -75,9 +75,31 @@ def create_access_token(token_payload: Data_of_Token):
     #merge expire  time with  token
     data_to_but_in_token.update({"exp": expire})
 
+    # encode the token
     create_encod_token = jwt.encode( data_to_but_in_token, SECRET_KEY, algorithm=ALGORITHM)
 
     return create_encod_token
+
+
+def Token_decoding(data_token):
+
+   try :
+
+       get_payload = jwt.decode(data_token, SECRET_KEY, algorithms=[ALGORITHM])
+
+       user_id = get_payload.get("user_id")
+       username = get_payload.get("username")
+       email = get_payload.get("email")
+
+       return {"user_id": user_id, "username": username, "email": email}
+
+   except jwt.ExpiredSignatureError:
+       # if token is expire
+       raise HTTPException(status_code=401, detail="Token has expired!")
+
+   except jwt.JWTError:
+       # if the token was fake
+       raise HTTPException(status_code=400, detail="Invalid Token")
 
 
 
