@@ -11,6 +11,7 @@ import {slideAnimation} from './help.js';
 import { init } from './fill-Profile-Info.js';
 import { initElements } from "./scan.js";
 import { showReports } from './saved-reports.js';
+import handleToken from "./tokenDecoding.js";
 import DB from "./databaseManager_IndexedDB.js";
 
 
@@ -142,7 +143,11 @@ function change_page_name(index){
 
 
 
-function logout_process(){
+async function logout_process(){
+    const userID = handleToken.getUserIdFromToken(localStorage.getItem("user_token"));
+    alert(userID);
+    await DB.delete_user(userID);
+    alert("deleted data");
     localStorage.removeItem("user_token");
     localStorage.removeItem("user_data");
     window.location.href="/sign";

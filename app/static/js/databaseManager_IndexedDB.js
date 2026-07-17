@@ -215,7 +215,7 @@ async function getUserByID(userID) {
         const db = await openConnection();
 
         const trans = db.transaction(user_table,"readonly");
-        const current_table = objectStore(user_table);
+        const current_table = trans.objectStore(user_table);
 
         const userData = await current_table.get(userID);
 
@@ -271,7 +271,7 @@ async function delete_user(user_id){
             return
         }
         const trans = db.transaction(user_table,"readwrite");
-        const current_table = db.objectStore(user_table);
+        const current_table = trans.objectStore(user_table);
 
         await current_table.delete(user_id);
 
@@ -279,7 +279,7 @@ async function delete_user(user_id){
         console.log("deleted successfully");
     }
     catch(error){
-        console.log("deletion failed , ",error);
+        console.log("deletion failed , " ,error);
     }
 
 
@@ -314,5 +314,7 @@ export default {
     add_disease_info,
     get_diseases_info,
     prepareDataAndStoreIt,
-    get_saved_reports
+    get_saved_reports,
+    getUserByID,
+    delete_user
 }

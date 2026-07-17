@@ -1,5 +1,5 @@
 
-import { decodeToken } from "./tokenDecoding.js";
+import handleData from "./tokenDecoding.js";
 import DB from "./databaseManager_IndexedDB.js";
 
 
@@ -44,7 +44,7 @@ async function check_user_data(element) {
 
                     localStorage.setItem("user_token",result.create_token);
 
-                    const decodedData = decodeToken(result.create_token);
+                    const decodedData = handleData.decodeToken(result.create_token);
 
                     DB.prepareDataAndStoreIt(decodedData);
                     //store all user data in indexedDB

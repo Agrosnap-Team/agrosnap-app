@@ -1,5 +1,5 @@
 import { jwtDecode } from "/node_modules/jwt-decode/build/esm/index.js";
-export function decodeToken(encodedToken) {
+function decodeToken(encodedToken) {
         // decode the token 
         const decodedData = jwtDecode(encodedToken);
         console.log(decodedData);
@@ -7,3 +7,20 @@ export function decodeToken(encodedToken) {
         return decodedData;
 
   }
+
+function getUserIdFromToken(token) {
+    const userData = decodeToken(token);
+    return userData.user_id;
+  }
+
+function getUserUsernameFromToken(token){
+    const userData = decodeToken(token);
+    return userData.username;
+}
+
+
+export default{
+    decodeToken,
+    getUserIdFromToken,
+    getUserUsernameFromToken
+}
