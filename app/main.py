@@ -12,7 +12,7 @@ app = FastAPI(
     version="1.0",
 )
 
-#connect the routers to the application core
+#connect the routers  with main server
 app.include_router(authentication.router)
 app.include_router(reports.router)
 

@@ -1,21 +1,18 @@
 # this file contain @router.post ("/signup") @router.post("/login")
 
 
-
-import re
-
 from fastapi import  HTTPException, APIRouter
-from pydantic import BaseModel, EmailStr,field_validator,model_validator
 from app import database as db
 import bcrypt
 import jwt
 from datetime import datetime ,timedelta,timezone
+from app.routers.schema_classes import userSign_in, Data_of_Token,UserSign_Up
 
 database_instance = db.AgrosnapDatabase()
 
 
 
-# setting of JWT
+# setting of JWT this is the super key of the token
 SECRET_KEY = "SUPER_SECRET_KEY_DONT_TELL_ANYONE"
 
 # the algorthm use to encrypt the token
@@ -27,49 +24,6 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 60
 router = APIRouter()
 
 
-
-
-class UserSign_Up(BaseModel):
-
-    # pydantic class that will tell Aseel what data to be passed
-    username: str
-    first_name: str
-    last_name : str
-    email : EmailStr
-    PASSWORD_HASH: str
-    confirm_password: str
-
-    @field_validator('PASSWORD_HASH')
-    @classmethod
-    # v is represent the password you enter
-    def check_password_strength(cls, v:str) -> str:
-        # check if the length of pass is  equal or grater thane 8
-        if len(v) < 8 :
-            raise HTTPException(status_code=400, detail="Password must be at least 8 characters long")
-        #check if password have at lest one digit
-        if not any(char.isdigit() for char in v):
-
-            raise HTTPException(status_code=400, detail="Password must contain at least one digit ")
-
-        # check if password has at lest one small letter
-        if not any(char.islower() for char in v):
-            raise HTTPException(status_code=400, detail="Password must contain at least one uppercase letter")
-
-        # check if password has at lest one cabital letter(upper)
-        if not any(char.isupper() for char in v):
-            raise HTTPException(status_code=400, detail="Password must contain at least one lowercase letter")
-
-        # check on password if have any (symbol/ special character)
-        if not re.search(r"[@$!%*?&#_.:+-]", v):
-            raise ValueError('Password must contain at least one special character (e.g., @, $, !, %, *, #)')
-
-        return v
-
-    @model_validator(mode='after')
-    def check_confirm_password(self):
-        if self.confirm_password != self.PASSWORD_HASH:
-            raise HTTPException(status_code=400, detail="password does not match")
-        return self
 
 
 
@@ -103,24 +57,55 @@ def signup(user_data: UserSign_Up):
                                                  password=hash_password)
         return {"status": "success", "message": f"user{user_data.username} registered successfully"}
 
-
-
     except HTTPException as http_ex:
         raise http_ex
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"this error occured :str {str(e)}")
 
 
-#  Hybrid Login (will login use email or username and password)
-class userSign_in(BaseModel):
-    identifier : str # get email / username
-    password :str
+# function that create the token
+def create_access_token(token_payload: Data_of_Token):
+    # this variable save data token that convert from pydantic class to dictionary because jwt library does not understand pydantic object (token_payload) it is just deal with dict
+    # .model_dum this is the methode use for convert to dictionary
+    data_to_but_in_token = token_payload.model_dump()
+
+    # compute expire time of JWT depending on UTC
+    expire = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+
+    #merge expire  time with  token
+    data_to_but_in_token.update({"exp": expire})
+
+    # encode the token
+    create_encod_token = jwt.encode( data_to_but_in_token, SECRET_KEY, algorithm=ALGORITHM)
+
+    return create_encod_token
+
+
+def Token_decoding(data_token):
+
+   try :
+
+       get_payload = jwt.decode(data_token, SECRET_KEY, algorithms=[ALGORITHM])
+
+       user_id = get_payload.get("user_id")
+       username = get_payload.get("username")
+       email = get_payload.get("email")
+
+       return {"user_id": user_id, "username": username, "email": email}
+
+
+   except jwt.ExpiredSignatureError:
+       # if token is expire
+       raise HTTPException(status_code=401, detail="Token has expired!")
+
+   except jwt.JWTError:
+       # if the token was fake
+       raise HTTPException(status_code=400, detail="Invalid Token")
+
+
 
 @router.post("/login")
 def login(login_data: userSign_in):
-
-
-
     try:
         user = database_instance.get_user_by_identifier(login_data.identifier)
         # check if user is registered .
@@ -137,33 +122,24 @@ def login(login_data: userSign_in):
         if not bcrypt.checkpw(login_password, password_hash_db):
             raise HTTPException(status_code=400, detail=f"Invalid Email /UserName or Password ")
 
+        # create object  from Data_of_token
+        payload_token = Data_of_Token (user_id=str(user["user_id"]), username = user["username"], Email = user[ "Email"] )
 
-        #compute expire time of JWT depending on UTC
-        expire = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        # call function that create token send to it payload
+        create_token = create_access_token(payload_token)
 
-        # the data that we want save inside token
-        token_payload = {
-            "username": user["username"],
-            "Email": user["Email"],
-            "exp": expire
-
-        }
-
-        create_token = jwt.encode(token_payload, SECRET_KEY, algorithm=ALGORITHM)
-
-        #return token to user
-        return {
-            "create_token": create_token,
-            "username": user["username"],
-            "message": f"welcome {user['username']}"
-        }
-
+        return {"create_token": create_token}
 
 
     except HTTPException as http_ex:
         raise http_ex
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal error: {str(e)}")
+
+
+
+
+
 
 
 

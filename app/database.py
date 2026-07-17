@@ -84,14 +84,9 @@ class AgrosnapDatabase:
         except sqlite3.Error as  db_error:
             print(f"Error occured while inserting into users info: {db_error}")
 
-    def get_user_by_id(self,user_id: int) -> dict:
 
-        query = "SELECT user_id , username, first_name ,last_name, Email ,PASSWORD_HASH FROM users_info WHERE user_id = ?;"
 
-        with self._get_connection() as conn:
-            cursor = conn.cursor()
-            cursor.execute(query, (user_id,))
-            return cursor.fetchall()
+
 
     # this def to insert data into disease_Table
     def insert_into_disease_Table(self,plant_name,disease_name,organic_treatment,report, confidence):
@@ -333,12 +328,38 @@ class AgrosnapDatabase:
 
 
 
+    def get_user_by_id(self,user_id: int) -> dict:
+
+        query = "SELECT user_id , username, first_name ,last_name, Email ,PASSWORD_HASH FROM users_info WHERE user_id = ?;"
+        try:
+            with self._get_connection() as conn:
+                cursor = conn.cursor()
+                cursor.execute(query, (user_id,))
+                row =cursor.fetchone()
+                if row :
+                    return {
+                        "user_id": row[0],
+                        "username": row[1],
+                        "first_name": row[2],
+                        "last_name": row[3],
+                        "Email": row[4],
+                    }
+
+                return None
+
+
+        except sqlite3.Error as db_error:
+            print(f"Database Error: {db_error}")
+        raise db_error
+
+
+
 
     def get_user_by_identifier(self, identifier:str):
         # this def to let user enter by email /username and return (dictionary [key value]) to use the data by there name in fastApi
         #identifier represnt username and email
 
-        query = ("SELECT username, first_name, last_name, Email,  PASSWORD_HASH FROM users_info "
+        query = ("SELECT user_id, username, first_name, last_name, Email,  PASSWORD_HASH FROM users_info "
                  " WHERE username =? or email =? ")
 
         try :
@@ -350,11 +371,12 @@ class AgrosnapDatabase:
                 if row :
                     return {
 
-                        "username": row[0],
-                        "first_name": row[1],
-                        "last_name": row[2],
-                        "Email": row[3],
-                        "PASSWORD_HASH": row[4],
+                        "user_id": row[0],
+                        "username": row[1],
+                        "first_name": row[2],
+                        "last_name": row[3],
+                        "Email": row[4],
+                        "PASSWORD_HASH": row[5],
 
 
                     }
