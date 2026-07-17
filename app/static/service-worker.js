@@ -10,7 +10,7 @@
 // └── ...
 
 
-const CACHE_NAME = "agrosnap-v12";
+const CACHE_NAME = "agrosnap-v15";
 
 const FILES_TO_CACHE = [
 
@@ -52,6 +52,7 @@ const FILES_TO_CACHE = [
     "/static/js/help.js",
     "/static/js/all_reports.js",
     "/static/js/fill-Profile-Info.js",
+    "/static/js/tokenDecoding.js",
 
     
     // Images
@@ -78,6 +79,7 @@ const FILES_TO_CACHE = [
 ];
 
 self.addEventListener("install", event => {
+    self.skipWaiting();
     console.log("SW installed");
     event.waitUntil(
         caches.open(CACHE_NAME)
@@ -90,12 +92,32 @@ self.addEventListener("install", event => {
 });
 
 self.addEventListener("activate", event => {
-    console.log("SW activated");
+    clients.claim();
+
+    event.waitUntil(
+        caches.keys().then(cacheNames => {
+
+            return Promise.all(
+                cacheNames.map(cache => {
+
+                    if(cache !== CACHE_NAME){
+                        console.log("Deleting old cache:", cache); 
+                        return caches.delete(cache);//delete any old cache
+                    }
+
+                })
+            );
+
+        })
+    );
 
 });
 
 self.addEventListener("fetch", event => {
-    console.log("fetching..");
+
+    if(event.request.method !== "GET"){
+        return;
+    }
 
 
     event.respondWith(

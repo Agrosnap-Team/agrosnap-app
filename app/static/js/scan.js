@@ -12,6 +12,7 @@ let checkButton;
 let canClick = true;
 let selected_image;
 export function initElements(){
+
     console.log("this function called");
 
     //=============================================
@@ -34,6 +35,8 @@ export function initElements(){
     //initiate the needed html elements 
     //=============================================
 
+
+    clearBox();
 
     
     //==================================================================
@@ -87,6 +90,8 @@ export function initElements(){
     clearButton.onclick= clearBox;
     checkButton.onclick= checkThePlantLeaf;
 
+     
+
 
 
 }
@@ -118,6 +123,7 @@ function closePopup(){
 
 function showImage(event){
 
+    void uploadBox.offsetWidth;    
     //files always return a group of images so we always need the first photo has been selected
     selected_image = event.target.files[0];
 
@@ -125,7 +131,8 @@ function showImage(event){
     if(!selected_image){
         console.log("no image selected");
         return;}
-
+    
+    uploadBox.classList.remove("error");
     closePopup();
     canClick=false;
     previewImage.src = URL.createObjectURL(selected_image);

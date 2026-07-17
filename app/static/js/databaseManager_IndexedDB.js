@@ -1,4 +1,4 @@
-
+import { openDB } from "/node_modules/idb/build/index.js";
 //to keep the connection open once
 let dbConnection;
 
@@ -9,7 +9,7 @@ const disease_table = "diseases_info";
 const saved_reports_table = "saved_reports";
 const report_details = "report_details";
 
-
+console.log("IndexedDB file loaded");
 
 
 //==========================================================
@@ -18,22 +18,33 @@ const report_details = "report_details";
 
 async function openConnection() {
 
-    try{
 
-        dbConnection = await idb.openDB("Agrosnap_database", 2 ,{
+    try{
+        console.log("Opening database...");
+
+        if(!dbConnection){
+
+            dbConnection = await openDB("Agrosnap_database", 3 ,{
 
             upgrade(db){
+            console.log("Creating tables...");
 
-                console.log("DB and connection has been created successfully");
-                // here where we create our tables
-                create_users_table(db);
-                create_disease_table(db);
-                create_saved_reports(db);
-                create_reports_details(db);
+            console.log("DB , tables and connection has been created successfully");
+            // here where we create our tables
+            create_users_table(db);
+            create_disease_table(db);
+            create_saved_reports(db);
+            create_reports_details(db);
                 
             }
 
         });  
+
+        }//end if 
+
+        return dbConnection;
+
+
     }
 
     catch(error){
@@ -47,7 +58,9 @@ async function openConnection() {
 // Create the needed tables which are already in sqlite3
 //==========================================================
 
-function create_users_table(db){
+async function create_users_table(db){
+
+    //user_id , username , email , first name , last name
 
     //check first that the table isn't exist
     if(!db.objectStoreNames.contains(user_table)){
@@ -68,7 +81,7 @@ function create_users_table(db){
 
 
 
-function create_disease_table(db){
+async function create_disease_table(db){
     if(!db.objectStoreNames.contains(disease_table)){
         const diseaseTable = db.createObjectStore(disease_table, {keyPath:"disease_id"});
     }
@@ -77,7 +90,7 @@ function create_disease_table(db){
 
 
 
-function create_saved_reports(db){
+async function create_saved_reports(db){
     if(!db.objectStoreNames.contains(saved_reports_table)){
 
         const saved_report = db.createObjectStore(saved_reports_table,{keyPath:"report_id"});
@@ -89,15 +102,16 @@ function create_saved_reports(db){
 
 
 
-function create_reports_details(db){
+async function create_reports_details(db){
 
-        if(!db.objectStoreNames.contains(report_details)){
 
-        const saved_report = db.createObjectStore(report_details,{keyPath:"unique_report"});
+    if(!db.objectStoreNames.contains(report_details)){
 
-        saved_report.createIndex("reports_id_group","reports_id",{unique:false});
+    const saved_report = db.createObjectStore(report_details,{keyPath:"unique_report"});
 
-    }
+    saved_report.createIndex("reports_id_group","reports_id",{unique:false});
+
+}
 
 }
 
@@ -110,12 +124,14 @@ function create_reports_details(db){
 //==========================================================
 
 
-async function add_new_user(db,newData){
+async function add_new_user(newData){
 
     try{
+        
 
         if (newData){
 
+            const db = await openConnection();
             //Permission 
             const trans = db.transaction(user_table,'readwrite');
             const current_table = trans.objectStore(user_table);
@@ -139,9 +155,10 @@ async function add_new_user(db,newData){
 }
 
 
-async function add_disease_info(db,all_reports) {
+async function add_disease_info(all_reports) {
     //After got the disease from fastAPI we add it to indexedDB
     if(all_reports){
+    const db = await openConnection();    
     const trans = db.transaction(disease_table,"readwrite");
     const current_table = trans.objectStore(disease_table);
 
@@ -173,25 +190,54 @@ async function add_saved_disease(db,all_saved_disease) {
 //==========================================================
 
 
-async function get_new_user_info(db){
+async function prepareDataAndStoreIt(user_info){
+
+    const db = await openConnection();
     let new_user ={
-        "user_id":1,
-        "email" : "aseel@gmail.com",
+        "user_id":user_info.user_id,
+        "username":user_info.username,
+        "email" : user_info.Email,
         "first_name" : "ASEEL",
-        "last_name":"KHANFER",
-        "password":"123456"
+        "last_name":"KHANFER"
 
     } //this data for test only and will be replaced by data from sqlite3 using fetch() method
+    console.log("this is the user info which prepared : \n",new_user);
 
-    await add_new_user(db,new_user);
+    await add_new_user(new_user);
+    console.log("the user has been added to indexedDB");
 }
 
 
 
+async function getUserByID(userID) {
+    try{
+        if(!userID)return;
+        const db = await openConnection();
+
+        const trans = db.transaction(user_table,"readonly");
+        const current_table = objectStore(user_table);
+
+        const userData = await current_table.get(userID);
+
+        trans.done;
+
+        if(!userData)return;
+
+        console.log(userData);
+        return userData;
+
+    }
+    catch(error){
+        console.log("something went wrong while fetching user data , ",error);
+    }
+
+    
+}
 
 
+async function get_diseases_info() {
 
-async function get_diseases_info(db) {
+    const db = await openConnection();
 
     //we get the diseases from FastAPI
     const all_disease = [
@@ -200,37 +246,73 @@ async function get_diseases_info(db) {
         {"disease_id":2,"disease_name":"late_blight","report":"this is the report of late blight disease and dummy data","treatment":"this is the late blight treatment section"}
     ];//this is fake data
 
-    add_disease_info(db,all_disease);
+    add_disease_info(all_disease);
 
 
     
 }
 
 
-async function get_saved_reports(db) {
+async function get_saved_reports() {
 
 
     
 }
 
+//==========================================================
+// Delete from tables
+//==========================================================
+async function delete_user(user_id){
+
+    try{
+        const db = await openConnection();
+        if(!user_id){
+            console.log("this user ID is not exist");
+            return
+        }
+        const trans = db.transaction(user_table,"readwrite");
+        const current_table = db.objectStore(user_table);
+
+        await current_table.delete(user_id);
+
+        await trans.done;
+        console.log("deleted successfully");
+    }
+    catch(error){
+        console.log("deletion failed , ",error);
+    }
+
+
+}
 
 
 
 
+//==========================================================
+// Delete from tables
+//==========================================================
 
 //==========================================================
 // Start the info and this will export to dynamic.js 
 //==========================================================
 
-async function start() {
+async function startDB() {
 
     await openConnection();
-    await get_new_user_info(dbConnection);
-    await get_diseases_info(dbConnection);
     
 }
 
-start();
+startDB();
 
 
 
+
+
+export default {
+    add_new_user,
+    add_saved_disease,
+    add_disease_info,
+    get_diseases_info,
+    prepareDataAndStoreIt,
+    get_saved_reports
+}

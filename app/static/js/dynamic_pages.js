@@ -11,6 +11,7 @@ import {slideAnimation} from './help.js';
 import { init } from './fill-Profile-Info.js';
 import { initElements } from "./scan.js";
 import { showReports } from './saved-reports.js';
+import DB from "./databaseManager_IndexedDB.js";
 
 
 sessionStorage.setItem("current_page", 0);
@@ -143,6 +144,7 @@ function change_page_name(index){
 
 function logout_process(){
     localStorage.removeItem("user_token");
+    localStorage.removeItem("user_data");
     window.location.href="/sign";
 }
 
