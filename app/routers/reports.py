@@ -11,7 +11,7 @@ router = APIRouter()
 
 def Save_reports(data_to_save :Data_to_save):
 
-    try:
+    pass
 
 
 
