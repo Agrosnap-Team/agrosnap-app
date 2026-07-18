@@ -50,6 +50,9 @@ class Data_of_Token(BaseModel):
     user_id: str
     username: str
     Email : EmailStr
+    first_name:str
+    last_name : str
+
 
 
 #class schema of login
