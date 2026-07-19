@@ -68,6 +68,7 @@ def create_access_token(token_payload: Data_of_Token):
     # this variable save data token that convert from pydantic class to dictionary because jwt library does not understand pydantic object (token_payload) it is just deal with dict
     # .model_dum this is the methode use for convert to dictionary
     data_to_but_in_token = token_payload.model_dump()
+    print(data_to_but_in_token)
 
     # compute expire time of JWT depending on UTC
     expire = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
