@@ -1,3 +1,5 @@
+import { initModel } from "./model.js";
+
 let fileInput;
 let uploadBox;
 let previewImage;
@@ -11,7 +13,11 @@ let clearButton;
 let checkButton;
 let canClick = true;
 let selected_image;
+
+
 export function initElements(){
+
+    initModel();
 
     console.log("this function called");
 
