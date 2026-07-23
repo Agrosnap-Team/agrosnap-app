@@ -60,7 +60,8 @@ async function check_user_data(element) {
         }//end of try
 
         catch(error){
-            console.log("something went error ");
+                    document.getElementById("msg").style.visibility="visible";
+                    document.getElementById("msg").innerHTML ="No internet connection , please connect to internet first"; 
         }
 
 

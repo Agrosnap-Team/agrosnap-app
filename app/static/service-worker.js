@@ -10,14 +10,14 @@
 // └── ...
 
 
-const CACHE_NAME = "agrosnap-v15";
-
+const CACHE_NAME = "agrosnapApp-v3";
+console.log("this is service worker, " + CACHE_NAME);
 const FILES_TO_CACHE = [
 
     // Pages
     "/",
     "/sign",
-    "loginForm",
+    "/loginForm",
     "/signupForm",
     "/sidebar",
     "/profile",
@@ -53,6 +53,9 @@ const FILES_TO_CACHE = [
     "/static/js/all_reports.js",
     "/static/js/fill-Profile-Info.js",
     "/static/js/tokenDecoding.js",
+    "/static/js/model.js",
+    "/static/js/scan.js", 
+     "/static/js/saved-reports.js",
 
     
     // Images
@@ -67,6 +70,7 @@ const FILES_TO_CACHE = [
     "/static/images/next.png",
     "/static/images/profile-pic.png",
     "/static/images/trash.png",
+   
 
 
     // PWA
@@ -74,18 +78,54 @@ const FILES_TO_CACHE = [
     "/static/js/service-worker-register.js",
 
     //indexedDB
-    "/node_modules/idb/build/umd.js",
-    "/static/js/databaseManager_IndexedDB.js"
+    "/static/js/databaseManager_IndexedDB.js",
+
+
+    //tf files
+    "/node_modules/@tensorflow/tfjs/dist/tf.js",
+    "/node_modules/jwt-decode/build/esm/index.js",
+    "/static/models/web_model/model.json",
+    "/static/models/web_model/group1-shard1of8.bin",
+    "/static/models/web_model/group1-shard2of8.bin",
+    "/static/models/web_model/group1-shard3of8.bin",
+    "/static/models/web_model/group1-shard4of8.bin",
+    "/static/models/web_model/group1-shard5of8.bin",
+    "/static/models/web_model/group1-shard6of8.bin",
+    "/static/models/web_model/group1-shard7of8.bin",
+    "/static/models/web_model/group1-shard8of8.bin"
+
+ 
+
+];
+
+const MODEL_FILES=[
+
 ];
 
 self.addEventListener("install", event => {
+    console.log("Installation started , service-worker.js");
     self.skipWaiting();
     console.log("SW installed");
     event.waitUntil(
-        caches.open(CACHE_NAME)
-        .then(cache => {
-            return cache.addAll(FILES_TO_CACHE);
-        })
+    caches.open(CACHE_NAME).then(async cache => {
+
+        for (const file of FILES_TO_CACHE) {
+
+            try {
+                await cache.add(file);
+                console.log("Cached:", file);
+            }
+            catch (e) {
+                console.error("Failed:", file, e);
+                console.log("This is service-worker.js , and something went error when cache the files" + e);
+            }
+
+        }
+
+        console.log("All files installed , service-worker.js ");
+    })
+
+    
 
     );
 
@@ -115,27 +155,34 @@ self.addEventListener("activate", event => {
 
 self.addEventListener("fetch", event => {
 
-    if(event.request.method !== "GET"){
-        return;
-    }
+    try{
+
+        if(event.request.method !== "GET"){
+            return;
+        }
 
 
-    event.respondWith(
+        event.respondWith(
 
-        caches.match(event.request)
+            caches.match(event.request)
 
-        .then(response => {
+            .then(response => {
 
-            // If the file in cache then return it without connecting to FastAPI and network
-            if (response) {
-                return response;
-            }
+                // If the file in cache then return it without connecting to FastAPI and network
+                if (response) {
+                    return response;
+                }
 
-            // If not then go and take it from network
-            return fetch(event.request);
+                // If not then go and take it from network
+                return fetch(event.request);
 
-        })
+            })
 
-    );
+        );
+}
+catch(e){
+    console.log("something went error when fetching the pages in service worker , service_worker.js , fetch method ,"+ e)
+
+}
 
 });

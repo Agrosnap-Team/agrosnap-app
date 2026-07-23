@@ -5,17 +5,25 @@
 // we create an array of [pageName.html] to get them fast
 // we navigate the idex of li with array of pages to get the page name 
 // pass it to fetch()
-//change the background of clicked li 
+// change the background of clicked li 
 // if user logged out , the localStorage will reset the page to 0 which is the default page
+console.log("dynamic start");
 import {slideAnimation} from './help.js';
+console.log("help");
 import { init } from './fill-Profile-Info.js';
+console.log("fill profile");
 import { initElements } from "./scan.js";
+console.log("scan");
 import { showReports } from './saved-reports.js';
+console.log("save");
 import handleToken from "./tokenDecoding.js";
+console.log("decode");
 import DB from "./databaseManager_IndexedDB.js";
+console.log("indexedDB");
 
 
 sessionStorage.setItem("current_page", 0);
+console.log("dynamic pages loaded");
 
 
 const listItems = document.querySelectorAll('#pages li');
@@ -41,6 +49,7 @@ listItems.forEach((item, index) => {
     document.getElementById("overlay").classList.remove("show");
   });
 });
+
 
 profile_Btn.addEventListener("click", () => { //this is only for profile because it is not belong to <ul></ul>
     sessionStorage.setItem("previous_page",sessionStorage.getItem("current_page"));

@@ -7,6 +7,7 @@ if("serviceWorker" in navigator){
     })
     .catch(error => {
         console.log(error);
+        alert("This is service worker and there was something wrong in it please check the error: "+error);
     });
 
 }

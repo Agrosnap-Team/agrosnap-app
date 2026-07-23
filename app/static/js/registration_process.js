@@ -60,7 +60,7 @@ async function complete_registration_process(event) {
     }
     catch(error){
             document.getElementById("msg").style.visibility = "visible";
-            document.getElementById("msg").innerHTML = "Unable to connect to the server.";
+            document.getElementById("msg").innerHTML ="No internet connection , please connect to internet first"; 
     }
 
     
