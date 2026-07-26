@@ -22,7 +22,10 @@ import DB from "./databaseManager_IndexedDB.js";
 console.log("indexedDB");
 
 
+if(sessionStorage.getItem("current_page")==null || sessionStorage.getItem("current_page")==undefined ){
 sessionStorage.setItem("current_page", 0);
+}
+
 console.log("dynamic pages loaded");
 
 
@@ -85,11 +88,11 @@ window.onload = function(){
     let saved_page = sessionStorage.getItem("current_page");
 
     // Convert the string to a number. If it's the first visit (null), default to 0.
-    var current_page = saved_page !== null ? parseInt(saved_page, 10) : 0;
+    // var current_page = saved_page !== null ? parseInt(saved_page, 10) : 0;
 
-    fit_the_page(current_page);
-    highlightActiveTab(current_page);
-    change_page_name(current_page);
+    fit_the_page(saved_page);
+    highlightActiveTab(saved_page);
+    change_page_name(saved_page);
 
     
 }
@@ -115,6 +118,8 @@ async function fit_the_page(curr_page) {
     .then(HTML_data =>{
         document.getElementById("main").scrollTop=0; //this to let the page go to top again , if user scrolled down
         document.getElementById("content").innerHTML=HTML_data; // put the new page here
+        sessionStorage.setItem("current_page",curr_page);
+
 
         if(clicked_page.initJSFunction){ //if we have an exported functions that should work once the page called
 
@@ -133,7 +138,7 @@ function highlightActiveTab(activeIndex){
 
     //li's
     listItems.forEach((li, index) => {
-        if (index === activeIndex) {
+        if (index == activeIndex) {
             li.classList.add("active");// Highlight active tab
         } else {
             li.classList.remove("active");// Reset others

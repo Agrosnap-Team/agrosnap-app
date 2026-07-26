@@ -1,3 +1,10 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
 /* 1. Component Container (Protects the host HTML) */
 .about-container {
     max-width: 800px; /* Limits the width on large monitors */

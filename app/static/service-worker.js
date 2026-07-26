@@ -10,7 +10,7 @@
 // └── ...
 
 
-const CACHE_NAME = "agrosnapApp-v3";
+const CACHE_NAME = "agrosnapApp-v6";
 console.log("this is service worker, " + CACHE_NAME);
 const FILES_TO_CACHE = [
 
@@ -60,7 +60,7 @@ const FILES_TO_CACHE = [
     
     // Images
     "/static/images/agronsnap_for_index.png",
-    "/static/images/agrosnap logo.png",
+    "/static/images/agrosnap logo.PNG",
     "/static/images/agrosnap logo192x192.png",
     "/static/images/agrosnap logo512x512.png",
     "/static/images/delete.png",
@@ -70,6 +70,7 @@ const FILES_TO_CACHE = [
     "/static/images/next.png",
     "/static/images/profile-pic.png",
     "/static/images/trash.png",
+    "/static/images/closePopup.png",
    
 
 
@@ -79,6 +80,7 @@ const FILES_TO_CACHE = [
 
     //indexedDB
     "/static/js/databaseManager_IndexedDB.js",
+    "/node_modules/idb/build/index.js",
 
 
     //tf files
@@ -98,9 +100,9 @@ const FILES_TO_CACHE = [
 
 ];
 
-const MODEL_FILES=[
+// const MODEL_FILES=[
 
-];
+// ];
 
 self.addEventListener("install", event => {
     console.log("Installation started , service-worker.js");
@@ -161,20 +163,34 @@ self.addEventListener("fetch", event => {
             return;
         }
 
+        console.log("FETCH REQUEST:", event.request.url);
+
 
         event.respondWith(
 
-            caches.match(event.request)
+            caches.match(event.request , { ignoreVary: true })
 
             .then(response => {
 
                 // If the file in cache then return it without connecting to FastAPI and network
                 if (response) {
+                    console.log("FROM CACHE:", event.request.url);
                     return response;
                 }
 
                 // If not then go and take it from network
-                return fetch(event.request);
+                
+                console.log("Trying network:", event.request.url);
+
+                return fetch(event.request)
+                .then(response => {
+                    console.log("Network SUCCESS:", event.request.url);
+                    return response;
+                })
+                .catch(error => {
+                    console.error("Network FAILED:", event.request.url, error);
+                    throw error;
+                });
 
             })
 
