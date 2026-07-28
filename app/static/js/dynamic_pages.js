@@ -20,6 +20,7 @@ import handleToken from "./tokenDecoding.js";
 console.log("decode");
 import DB from "./databaseManager_IndexedDB.js";
 console.log("indexedDB");
+import { initReport } from './single-report.js';
 
 
 if(sessionStorage.getItem("current_page")==null || sessionStorage.getItem("current_page")==undefined ){
@@ -105,7 +106,8 @@ async function fit_the_page(curr_page) {
         {path:"/all_saved_reports",initJSFunction:showReports},
         {path:"/help",initJSFunction:slideAnimation},
         {path:"/about",initJSFunction:null},
-        {path:"/profile",initJSFunction:init}
+        {path:"/profile",initJSFunction:init},
+        {path:"/single_report",initJSFunction:initReport}
 
     ];
 
@@ -157,6 +159,15 @@ function change_page_name(index){
 
 
 
+function show_report(){
+  //this function will send a report index page and call the fit_the_page()
+  // will fetch the page and call its js file/ js functions
+  const thePage=5; // index of the page
+  fit_the_page(thePage);
+}
+
+
+
 async function logout_process(){
     const userID = handleToken.getUserIdFromToken(localStorage.getItem("user_token"));
     alert(userID);
@@ -166,4 +177,7 @@ async function logout_process(){
     localStorage.removeItem("user_data");
     window.location.href="/sign";
 }
+
+
+
 

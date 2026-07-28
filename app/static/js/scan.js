@@ -37,7 +37,7 @@ export function initElements(){
     console.log("this function called");
 
     //=============================================
-    //initiate the needed html elements 
+    //  initiate the needed html elements 
     //=============================================
 
      fileInput = document.getElementById("fileInput");

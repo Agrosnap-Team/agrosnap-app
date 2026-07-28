@@ -2,6 +2,11 @@
    SINGLE REPORT WIDGET STYLES
    Scoped strictly to prevent host conflicts
 ========================================= */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
 .signle-report-container {
     /* Isolate layout from host CSS */
