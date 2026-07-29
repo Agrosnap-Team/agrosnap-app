@@ -7,19 +7,12 @@
 // pass it to fetch()
 // change the background of clicked li 
 // if user logged out , the localStorage will reset the page to 0 which is the default page
-console.log("dynamic start");
 import {slideAnimation} from './help.js';
-console.log("help");
 import { init } from './fill-Profile-Info.js';
-console.log("fill profile");
 import { initElements } from "./scan.js";
-console.log("scan");
 import { showReports } from './saved-reports.js';
-console.log("save");
 import handleToken from "./tokenDecoding.js";
-console.log("decode");
 import DB from "./databaseManager_IndexedDB.js";
-console.log("indexedDB");
 import { initReport } from './single-report.js';
 
 
@@ -99,7 +92,9 @@ window.onload = function(){
 }
 
 
-async function fit_the_page(curr_page) {
+async function fit_the_page(curr_page,additionalData) {
+
+    console.log("the parameters:" , additionalData);
 
     const allPages = [
         {path:"/scan",initJSFunction:initElements},
@@ -125,10 +120,9 @@ async function fit_the_page(curr_page) {
 
         if(clicked_page.initJSFunction){ //if we have an exported functions that should work once the page called
 
-            clicked_page.initJSFunction();//call the function that belong to specific page
+            clicked_page.initJSFunction(additionalData);//call the function that belong to specific page
         }
     })
-
 
     .catch(error =>{
         console.error("something went wrong , " + error);
@@ -159,13 +153,19 @@ function change_page_name(index){
 
 
 
-function show_report(){
+export function show_report(diseaseIndex){
   //this function will send a report index page and call the fit_the_page()
   // will fetch the page and call its js file/ js functions
   const thePage=5; // index of the page
-  fit_the_page(thePage);
+  fit_the_page(thePage,diseaseIndex);
 }
 
+export function backToHome() {
+    const homePageIndex = 0;
+    fit_the_page(homePageIndex);
+
+
+  }
 
 
 async function logout_process(){
@@ -173,6 +173,7 @@ async function logout_process(){
     alert(userID);
     await DB.delete_user(userID);
     alert("deleted data");
+    sessionStorage.removeItem("current_page");
     localStorage.removeItem("user_token");
     localStorage.removeItem("user_data");
     window.location.href="/sign";

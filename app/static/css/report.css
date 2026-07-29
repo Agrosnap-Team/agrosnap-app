@@ -9,6 +9,7 @@
 }
 
 .signle-report-container {
+
     /* Isolate layout from host CSS */
     box-sizing: border-box;
     font-family: inherit; /* Adopts host font seamlessly */
@@ -21,7 +22,7 @@
     grid-template-rows: 1fr auto; 
     gap: 15px;
     padding: 20px;
-    background-color: #ffffff; 
+    background-color: rgba(255, 255, 255); 
 }
 
 /* Force all child elements to respect box-sizing */
@@ -135,18 +136,18 @@
 /* -----------------------------
    Progress Bars
 ----------------------------- */
-.signle-report-container .progresses-container {
+.progresses-container {
     display: flex;
     flex-direction: column;
     gap: 15px;
     margin-bottom: 30px;
-    min-height: 300px;
+    min-height: 90px;
     max-width: 400px;
     margin: auto;
-    align-content: center;
+    justify-content: center;
 }
 
-.signle-report-container .prograssive-with-label {
+.prograssive-with-label {
     display: flex;
     align-items: center;
     margin-bottom: 30px;
@@ -154,12 +155,12 @@
     flex-wrap: wrap; /* Allows stacking on tiny screens */
 }
 
-.signle-report-container .disease-title {
+.disease-title {
     color: #7D7D7D;
     flex: 3 1 0; 
 }
 
-.signle-report-container .precentage {
+.precentage {
     color: #7D7D7D;
     width: 45px;
     text-align: right;
@@ -167,7 +168,7 @@
 }
 
 /* The Bar Designs */
-.signle-report-container .static-line {
+.static-line {
     flex: 3 1 150px; 
     height: 14px;
     background-color: #e0e0e0;
@@ -175,7 +176,7 @@
     overflow: hidden; 
 }
 
-.signle-report-container .dynamic-line {
+.dynamic-line {
     height: 100%;
     background-color: #2D8531; /* Bright green */
     border-radius: 10px;
@@ -224,15 +225,15 @@
 /* -----------------------------
    Visibility State Classes
 ----------------------------- */
-.signle-report-container .hidden {
+.signle-report-container .hidden { /*for report */
     display: none !important;
 }
 
-.signle-report-container .active {
+.signle-report-container .active { /*for report */
     display: block; 
 }
 
-.signle-report-container .hide-btn {
+.signle-report-container .hide-btn { /*for buttons */
     /* Uses visibility to keep layout stable instead of display: none */
     visibility: hidden; 
     pointer-events: none;

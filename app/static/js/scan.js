@@ -1,4 +1,5 @@
 import { initModel , loadModel } from "./model.js";
+import { show_report } from "./dynamic_pages.js";
 
 let fileInput;
 let uploadBox;
@@ -206,7 +207,10 @@ async function checkThePlantLeaf(){
          return;
         }
 
-    alert(diseases[predictedDiseaseIndex]);
+    // alert(diseases[predictedDiseaseIndex]);
+    // window.location.href="/single_report";
+    localStorage.setItem("predictedDiseaseIndex",predictedDiseaseIndex);
+    show_report(predictedDiseaseIndex);
     clearBox();
 
     }

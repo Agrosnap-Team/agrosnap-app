@@ -201,6 +201,15 @@ async function prepareDataAndStoreIt(user_info){
         "last_name":"KHANFER"
 
     } //this data for test only and will be replaced by data from sqlite3 using fetch() method
+    
+    //we get the diseases from FastAPI
+    const all_disease = [
+        {"disease_id":0,"disease_name":"Bacterial Bpot","report":"this is the report of disease and dummy data","treatment":"this is the treatment section"},
+        {"disease_id":1,"disease_name":"Early Blight","report":"this is the report of  early blight disease and dummy data","treatment":"this is the rearly blight treatment section"},
+        {"disease_id":2,"disease_name":"Healthy","report":"this is the report of healthy disease and dummy data","treatment":"this is the late blight treatment section"}
+    ];//this is fake data
+
+    await add_disease_info(all_disease);
     console.log("this is the user info which prepared : \n",new_user);
 
     await add_new_user(new_user);
@@ -235,19 +244,30 @@ async function getUserByID(userID) {
 }
 
 
-async function get_diseases_info() {
+async function get_diseases_info(diseaseIndex) {
 
-    const db = await openConnection();
+    try{
+        if(diseaseIndex == null || diseaseIndex==undefined)return;
+        const db = await openConnection();
+        const trans = db.transaction(disease_table,"readonly");
+        const current_table = trans.objectStore(disease_table);
 
-    //we get the diseases from FastAPI
-    const all_disease = [
-        {"disease_id":0,"disease_name":"leaf_mold","report":"this is the report of disease and dummy data","treatment":"this is the treatment section"},
-        {"disease_id":1,"disease_name":"early_blight","report":"this is the report of  early blight disease and dummy data","treatment":"this is the rearly blight treatment section"},
-        {"disease_id":2,"disease_name":"late_blight","report":"this is the report of late blight disease and dummy data","treatment":"this is the late blight treatment section"}
-    ];//this is fake data
+        const diseaseData = await current_table.get(diseaseIndex);
+        trans.done;
 
-    add_disease_info(all_disease);
+        if(!diseaseData)return;
 
+        return diseaseData;
+
+
+
+
+    }
+    catch(e){
+
+        console.log("something went error when fetching disease data , " ,e);
+
+    }
 
     
 }
