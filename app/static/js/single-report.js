@@ -1,5 +1,5 @@
 import db from "./databaseManager_IndexedDB.js";
-import { backToHome } from "./dynamic_pages.js";
+import { backToHome , backToCallerPage } from "./dynamic_pages.js";
 
 //these variables for prograss bar
 let progressesContainer,progTitle , progPercent , progLine;
@@ -16,6 +16,7 @@ export function initReport(diseaseIndex){
     let isElementsInitiated=initiateElements();
     if(isElementsInitiated){
         fillReportStructure(diseaseIndex);
+        closeButton.addEventListener('click',closeReport);
     }
     else{
         console.log("Something went wrong while initiating html elements");
@@ -54,7 +55,6 @@ async function fillReportStructure(index,diseaseName){
          return backToHome();
 
     }
-
 
 }
 
@@ -107,5 +107,6 @@ function initiateElements(){
 }
 
 function closeReport(){
-
-  }
+    sessionStorage.setItem("current_page",sessionStorage.getItem("CallerPage"));
+    backToCallerPage(sessionStorage.getItem("current_page"));
+}

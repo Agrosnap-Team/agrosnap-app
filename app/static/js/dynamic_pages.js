@@ -167,6 +167,12 @@ export function backToHome() {
 
   }
 
+export function backToCallerPage(callerPageIndex){
+    callerPageIndex = parseInt(callerPageIndex);
+    fit_the_page(callerPageIndex);
+
+}
+
 
 async function logout_process(){
     const userID = handleToken.getUserIdFromToken(localStorage.getItem("user_token"));

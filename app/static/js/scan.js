@@ -143,6 +143,7 @@ function closePopup(){
 
 }
 
+
 function showImage(event){
 
     void uploadBox.offsetWidth;    
@@ -210,6 +211,7 @@ async function checkThePlantLeaf(){
     // alert(diseases[predictedDiseaseIndex]);
     // window.location.href="/single_report";
     localStorage.setItem("predictedDiseaseIndex",predictedDiseaseIndex);
+    sessionStorage.setItem("CallerPage",sessionStorage.getItem("current_page"));
     show_report(predictedDiseaseIndex);
     clearBox();
 
