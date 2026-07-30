@@ -332,6 +332,40 @@
     pointer-events: none;
 }
 
+
+/*-------------------------------
+   Empty animation
+--------------------------------*/
+
+.alertDialog #report-name.emptyInput{
+    outline: none;
+    border: 2px solid rgb(220, 4, 4) !important;
+    animation: shakeBox 0.15s ease;
+
+}
+
+@keyframes shakeBox {
+        0% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-10px);
+    }
+
+    50% {
+        transform: translateX(10px);
+    }
+
+    75% {
+        transform: translateX(-10px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+    
+}
 /* -----------------------------
    Mobile Responsiveness
 ----------------------------- */

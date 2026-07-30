@@ -171,7 +171,6 @@ export function backToHome() {
     fit_the_page(homePageIndex);
     highlightActiveTab(homePageIndex);
 
-
   }
 
 export function backToCallerPage(callerPageIndex){
@@ -185,9 +184,7 @@ export function backToCallerPage(callerPageIndex){
 
 async function logout_process(){
     const userID = handleToken.getUserIdFromToken(localStorage.getItem("user_token"));
-    alert(userID);
     await DB.delete_user(userID);
-    alert("deleted data");
     sessionStorage.removeItem("current_page");
     localStorage.removeItem("user_token");
     localStorage.removeItem("user_data");

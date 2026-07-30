@@ -128,6 +128,7 @@ function initiateElements(){
 }
 
 function closeReport(){
+
     showCloseReportDialog();
 
     // click yes 
@@ -139,36 +140,41 @@ function closeReport(){
     //click cancel
     cancelCloseReport.addEventListener('click',hideCloseReportDialog);
 
-    //click on X icon
+    //click on X icon [close icon]
     exitCloseMark.addEventListener('click',hideCloseReportDialog);
 
 
-
-    
 }
 
 function showAlert(){
     console.log("this is show alert");
     console.log(alertPopUp);
     document.getElementById("popup").classList.add("showPopup");
-  }
+}
+
+
 
 function hideAlert(){
     console.log("this is hide alert");
     document.getElementById("popup").classList.remove("showPopup");
     reportRenameInput.value = "";
-  }
+}
 
 function showRenameDialog(){
     showAlert();
     renameDialog.classList.add("showRenameConfirmation");
+    confirmRenameButton.addEventListener('click',saveReportProcess);
     
 
 }
 
 function hideRenameDialog(){
+    console.log("this is hide report dialog function");
+    reportRenameInput.classList.remove("emptyInput");
     hideAlert();
     renameDialog.classList.remove("showRenameConfirmation");
+
+    
 
 }
 
@@ -182,6 +188,19 @@ function hideCloseReportDialog(){
     hideAlert();
     closeDialog.classList.remove("showCloseReportConfirmation");
     
-
 }
+
+function saveReportProcess(){
+    reportRenameInput.classList.remove("emptyInput");
+
+    if(!reportRenameInput.value){
+        void reportRenameInput.offsetWidth;
+        reportRenameInput.classList.add("emptyInput");
+        return;
+    }
+
+    console.log("saved");
+    hideRenameDialog();
+}
+
 
