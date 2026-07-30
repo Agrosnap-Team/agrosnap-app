@@ -53,6 +53,7 @@ profile_Btn.addEventListener("click", () => { //this is only for profile because
     sessionStorage.setItem("current_page",4);
     var current_page = sessionStorage.getItem("current_page");
     fit_the_page(current_page);
+    change_page_name(current_page);
 });
 
 
@@ -66,6 +67,7 @@ document.addEventListener("click", (event) => { //when user opens profile and th
         if (prev_page !== 4){
             sessionStorage.setItem("current_page", prev_page);
             fit_the_page(prev_page);
+            
         } else {
             sessionStorage.setItem("current_page", 0);
             fit_the_page(0);
@@ -145,7 +147,7 @@ function highlightActiveTab(activeIndex){
 
 
 function change_page_name(index){
-    const pages_names = ["Agrosnap | Scan","Agrosnap | My reports","Agrosnap | Help center","Agrosnap | About Agrosnap"];
+    const pages_names = ["Agrosnap | Scan","Agrosnap | My reports","Agrosnap | Help center","Agrosnap | About Agrosnap" ,"Agrosnap | Profile", "Agrosnap | Disease report"];
     let index_page = parseInt(index,10);
     document.title=pages_names[index_page];
 }
@@ -157,11 +159,14 @@ export function show_report(diseaseIndex){
   //this function will send a report index page and call the fit_the_page()
   // will fetch the page and call its js file/ js functions
   const thePage=5; // index of the page
+  change_page_name(thePage);
   fit_the_page(thePage,diseaseIndex);
+
 }
 
 export function backToHome() {
     const homePageIndex = 0;
+    change_page_name(homePageIndex);
     fit_the_page(homePageIndex);
 
 
@@ -169,6 +174,7 @@ export function backToHome() {
 
 export function backToCallerPage(callerPageIndex){
     callerPageIndex = parseInt(callerPageIndex);
+    change_page_name(callerPageIndex);
     fit_the_page(callerPageIndex);
 
 }

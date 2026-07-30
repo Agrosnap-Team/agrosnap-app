@@ -15,12 +15,20 @@
 <body>
     <div class="signle-report-container">
         <div id="popup">
-            <div id="choices">
-                <div id="closePopup"></div>
-                <label id="reportHeader"> Name your report </label>
+            <div id="rename" class="alertDialog">
+                <div id="closePopup" class="closePopup"></div>
+                <label id="nameReportlabel" class="reportHeader" > Name your report </label>
                 <input id="report-name" class="popup-items" placeholder="Apple bacterial spot ,e.g..">
                 <button id="saveReportName" class="choose">Save</button>
-                
+            </div>
+            <div id="closeReport" class="alertDialog">
+                <div id="closePopupIcon" class="closePopup"></div>
+                <label id="closeReportLabel" class="reportHeader">Are you sure you want to close the report ?</label>
+                <div id="btnsContainer">
+                    
+                    <button id="cancel" class="choose">Cancel</button>
+                    <button id="yes" class="choose">Yes</button>
+                </div>
             </div>
         </div>
 

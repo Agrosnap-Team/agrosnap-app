@@ -28,9 +28,10 @@
     transition: all 0.2s ease-in-out;
 }
 
-#popup #choices{
+#popup .alertDialog{
     position: relative;
-    display: flex;
+    opacity: 0;
+    display: none; /*should always be flex in js */
     flex-direction: column;
     align-items: center;
     gap: 2rem;
@@ -41,9 +42,10 @@
     padding: 2.5rem 1rem;
     border-radius: 12px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease-in-out;
 }
 
-#popup #choices #closePopup{
+#popup .alertDialog .closePopup{
     position: absolute;
     right: 13px;
     top: 13px;
@@ -58,11 +60,11 @@
     background-size: contain;
 }
 
-#popup #choices #closePopup:hover{
+#popup .alertDialog .closePopup:hover{
     filter: brightness(0.7);
 }
 
-#popup #choices .choose{
+#popup .alertDialog .choose{
     width:150px;
     max-width: 200px;
     min-width: 120px;
@@ -78,13 +80,16 @@
 }
 
 
-#popup #choices #reportHeader{
+
+
+#popup .alertDialog .reportHeader{
     font-size: 20px;
     color: #285429;
     font-weight: bolder;
+    text-align: center;
 }
 
-#popup #choices #report-name{
+#popup .alertDialog #report-name{
     height: 35px;
     width: 80%;
     border: 1px solid #389100 ;
@@ -92,27 +97,56 @@
     font-size: 15px;
     color:#285429;
     font-weight: bolder;
-    outline: none;
+    outline: 2px solid transparent;
     padding: 5px;
-    transition: outline 0.3s ease-in-out;
+    transition: outline-color 0.2s ease-in-out;
   
 }
 
-#popup #choices #report-name:focus{
-    outline: 2px solid rgb(7, 90, 7);
+#popup #closeReport{
+    padding: 3.5rem 1rem;
 }
 
 
- #popup.showPopup{
+#popup .alertDialog #btnsContainer {
+    flex-wrap: wrap;
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+
+#popup .alertDialog #cancel{
+    background-color: white;
+    color:#389100 ;
+    border: 1px solid #389100;
+}
+
+#popup .alertDialog #report-name:focus{
+    outline-color: rgb(7, 90, 7);
+}
+
+
+#popup.showPopup{
     opacity: 1;
     visibility: visible;
 }
 
-#popup #choices .choose:hover{
-    filter: brightness(0.7);
+#rename.showRenameConfirmation , #closeReport.showCloseReportConfirmation{
+    display: flex;
+    opacity: 1;
 
 }
 
+
+
+#popup .alertDialog .choose:hover{
+    filter: brightness(0.7);
+
+}
 
 
 .signle-report-container {
@@ -137,54 +171,6 @@
     box-sizing: inherit;
 }
 
-/* -----------------------------
-   Movement Buttons (Arrows)
------------------------------ */
-.signle-report-container .prev-box,
-.signle-report-container .next-box {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.signle-report-container .movement-btns{
-    padding: 0px 5px;
-}
-
-.signle-report-container .movement-btns  .move{
-
-    background-color: #285429;
-    background-image: url("../images/next.png");
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: 60%;
-    width: 60px;
-    border-radius: 12px;
-    height: 130px;
-
-}
-
-
-.signle-report-container button.prev,
-.signle-report-container button.next {
-    background: transparent;
-    border: none;
-    color: #285429; /* Dark green */
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: filter 0.2s ease;
-}
-
-.signle-report-container button.prev{
-    transform: rotate(-180deg);
-}
-
-.signle-report-container button.prev:hover,
-.signle-report-container button.next:hover {
-    filter: brightness(1.4);
-
-}
 
 /* -----------------------------
    Report Details Area
@@ -378,5 +364,8 @@
     .signle-report-container .precentage {
         text-align: left;
         width: auto;
+    }
+    #popup .alertDialog #btnsContainer{
+        flex-direction: column-reverse;
     }
 }

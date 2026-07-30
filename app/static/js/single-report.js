@@ -8,11 +8,13 @@ let progressesContainer,progTitle , progPercent , progLine;
 let reportContainer,reportTitle , diseaseImg , diseaseContent ,  treatmentContent;
 
 // these variables for buttons
-let  saveButton , downloadButton , closeButton , confirmRenameButton , closeMark;
+let  saveButton , downloadButton , closeButton , confirmRenameButton , renameCloseMark , exitCloseMark , renameDialog , closeDialog  , exitConfirmationButton , cancelCloseReport;
 
 // the popup
 let alertPopUp , reportRenameInput;
 
+// other variables
+const pageIndex = 5;
 
 export function initReport(diseaseIndex){
     console.log("this is single report");
@@ -20,8 +22,8 @@ export function initReport(diseaseIndex){
     if(isElementsInitiated){
         fillReportStructure(diseaseIndex);
         closeButton.addEventListener('click',closeReport);
-        saveButton.addEventListener('click',showAlert);
-        closeMark.addEventListener('click',hideAlert);
+        saveButton.addEventListener('click',showRenameDialog);
+        renameCloseMark.addEventListener('click',hideRenameDialog);
     }
     else{
         console.log("Something went wrong while initiating html elements");
@@ -94,7 +96,12 @@ function initiateElements(){
     downloadButton=document.getElementById("save-download-btn");
     closeButton=document.getElementById("close-btn");
     confirmRenameButton = document.getElementById("saveReportName");
-    closeMark = document.getElementById("closePopup");
+    renameCloseMark = document.getElementById("closePopup");
+    exitCloseMark = document.getElementById("closePopupIcon");
+    renameDialog = document.getElementById("rename");
+    closeDialog = document.getElementById("closeReport");
+    exitConfirmationButton = document.getElementById("yes");
+    cancelCloseReport = document.getElementById("cancel");
 
     //=============================================
     // Pop up 
@@ -104,7 +111,7 @@ function initiateElements(){
 
 
 
-    let elements = {reportRenameInput , confirmRenameButton , closeMark , progressesContainer , progTitle , progPercent , progLine , reportContainer,reportTitle , diseaseImg ,  diseaseContent , treatmentContent, saveButton , downloadButton , closeButton , alertPopUp};
+    let elements = {progressesContainer , progTitle , progPercent , progLine , reportContainer, reportTitle , diseaseImg , diseaseContent ,  treatmentContent , saveButton , downloadButton , closeButton , confirmRenameButton , renameCloseMark , exitCloseMark , renameDialog , closeDialog  , exitConfirmationButton , cancelCloseReport , alertPopUp , reportRenameInput};
     for(let key in elements){
         if(elements[key] === undefined || elements[key] === null){
             console.log(`this ${key} is null`);
@@ -121,8 +128,23 @@ function initiateElements(){
 }
 
 function closeReport(){
+    showCloseReportDialog();
+
+    // click yes 
+    exitConfirmationButton.addEventListener('click',()=>{
     sessionStorage.setItem("current_page",sessionStorage.getItem("CallerPage"));
     backToCallerPage(sessionStorage.getItem("current_page"));
+    });
+
+    //click cancel
+    cancelCloseReport.addEventListener('click',hideCloseReportDialog);
+
+    //click on X icon
+    exitCloseMark.addEventListener('click',hideCloseReportDialog);
+
+
+
+    
 }
 
 function showAlert(){
@@ -132,6 +154,34 @@ function showAlert(){
   }
 
 function hideAlert(){
+    console.log("this is hide alert");
     document.getElementById("popup").classList.remove("showPopup");
-
+    reportRenameInput.value = "";
   }
+
+function showRenameDialog(){
+    showAlert();
+    renameDialog.classList.add("showRenameConfirmation");
+    
+
+}
+
+function hideRenameDialog(){
+    hideAlert();
+    renameDialog.classList.remove("showRenameConfirmation");
+
+}
+
+function showCloseReportDialog(){
+    showAlert();
+    closeDialog.classList.add("showCloseReportConfirmation");
+
+}
+
+function hideCloseReportDialog(){
+    hideAlert();
+    closeDialog.classList.remove("showCloseReportConfirmation");
+    
+
+}
+
