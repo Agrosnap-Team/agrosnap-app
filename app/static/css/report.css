@@ -90,15 +90,15 @@
 }
 
 #popup .alertDialog #report-name{
-    height: 35px;
-    width: 80%;
+    height: 50px;
+    width: 90%;
     border: 1px solid #389100 ;
     border-radius: 5px;
     font-size: 15px;
     color:#285429;
     font-weight: bolder;
     outline: 2px solid transparent;
-    padding: 5px;
+    padding: 15px;
     transition: outline-color 0.2s ease-in-out;
   
 }

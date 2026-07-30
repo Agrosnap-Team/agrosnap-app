@@ -160,6 +160,7 @@ export function show_report(diseaseIndex){
   // will fetch the page and call its js file/ js functions
   const thePage=5; // index of the page
   change_page_name(thePage);
+  highlightActiveTab(sessionStorage.getItem("current_page"));
   fit_the_page(thePage,diseaseIndex);
 
 }
@@ -168,6 +169,7 @@ export function backToHome() {
     const homePageIndex = 0;
     change_page_name(homePageIndex);
     fit_the_page(homePageIndex);
+    highlightActiveTab(homePageIndex);
 
 
   }
@@ -176,6 +178,7 @@ export function backToCallerPage(callerPageIndex){
     callerPageIndex = parseInt(callerPageIndex);
     change_page_name(callerPageIndex);
     fit_the_page(callerPageIndex);
+    highlightActiveTab(callerPageIndex);
 
 }
 
