@@ -8,7 +8,10 @@ let progressesContainer,progTitle , progPercent , progLine;
 let reportContainer,reportTitle , diseaseImg , diseaseContent ,  treatmentContent;
 
 // these variables for buttons
-let  saveButton , downloadButton , closeButton;
+let  saveButton , downloadButton , closeButton , confirmRenameButton , closeMark;
+
+// the popup
+let alertPopUp , reportRenameInput;
 
 
 export function initReport(diseaseIndex){
@@ -17,6 +20,8 @@ export function initReport(diseaseIndex){
     if(isElementsInitiated){
         fillReportStructure(diseaseIndex);
         closeButton.addEventListener('click',closeReport);
+        saveButton.addEventListener('click',showAlert);
+        closeMark.addEventListener('click',hideAlert);
     }
     else{
         console.log("Something went wrong while initiating html elements");
@@ -88,9 +93,18 @@ function initiateElements(){
     saveButton=document.getElementById("save-btn");
     downloadButton=document.getElementById("save-download-btn");
     closeButton=document.getElementById("close-btn");
+    confirmRenameButton = document.getElementById("saveReportName");
+    closeMark = document.getElementById("closePopup");
+
+    //=============================================
+    // Pop up 
+    //=============================================
+    alertPopUp=document.getElementById("popup");
+    reportRenameInput = document.getElementById("report-name");
 
 
-    let elements = {progressesContainer , progTitle , progPercent , progLine , reportContainer,reportTitle , diseaseImg ,  diseaseContent , treatmentContent, saveButton , downloadButton , closeButton};
+
+    let elements = {reportRenameInput , confirmRenameButton , closeMark , progressesContainer , progTitle , progPercent , progLine , reportContainer,reportTitle , diseaseImg ,  diseaseContent , treatmentContent, saveButton , downloadButton , closeButton , alertPopUp};
     for(let key in elements){
         if(elements[key] === undefined || elements[key] === null){
             console.log(`this ${key} is null`);
@@ -110,3 +124,14 @@ function closeReport(){
     sessionStorage.setItem("current_page",sessionStorage.getItem("CallerPage"));
     backToCallerPage(sessionStorage.getItem("current_page"));
 }
+
+function showAlert(){
+    console.log("this is show alert");
+    console.log(alertPopUp);
+    document.getElementById("popup").classList.add("showPopup");
+  }
+
+function hideAlert(){
+    document.getElementById("popup").classList.remove("showPopup");
+
+  }

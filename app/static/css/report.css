@@ -8,6 +8,113 @@
     padding: 0;
 }
 
+
+#popup{
+    opacity: 0;
+    visibility: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    /* Light green with 0.5 opacity */
+    background-color: rgba(237, 237, 237, 0.9);
+    /* High z-index to dominate the host page */
+    z-index: 2147483647;
+    /* Center the child container */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s ease-in-out;
+}
+
+#popup #choices{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    background-color: #ffffff;
+    border: 1px solid #389100;
+    width: 90%;
+    max-width: 400px;
+    padding: 2.5rem 1rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+#popup #choices #closePopup{
+    position: absolute;
+    right: 13px;
+    top: 13px;
+    width: 20px;
+    height: 20px;
+    /* background-color: red; */
+    cursor: pointer;
+    transition: filter 0.3s ease-in-out;
+    background-image: url(../images/closePopup.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+#popup #choices #closePopup:hover{
+    filter: brightness(0.7);
+}
+
+#popup #choices .choose{
+    width:150px;
+    max-width: 200px;
+    min-width: 120px;
+    height: 60px;
+    border-radius: 12px;
+    outline: none;
+    border: none;
+    background-color: #2a6b01;
+    font-size: 16px;
+    transition: filter 0.4s ease;
+    font-weight: bolder;
+    color: white;
+}
+
+
+#popup #choices #reportHeader{
+    font-size: 20px;
+    color: #285429;
+    font-weight: bolder;
+}
+
+#popup #choices #report-name{
+    height: 35px;
+    width: 80%;
+    border: 1px solid #389100 ;
+    border-radius: 5px;
+    font-size: 15px;
+    color:#285429;
+    font-weight: bolder;
+    outline: none;
+    padding: 5px;
+    transition: outline 0.3s ease-in-out;
+  
+}
+
+#popup #choices #report-name:focus{
+    outline: 2px solid rgb(7, 90, 7);
+}
+
+
+ #popup.showPopup{
+    opacity: 1;
+    visibility: visible;
+}
+
+#popup #choices .choose:hover{
+    filter: brightness(0.7);
+
+}
+
+
+
 .signle-report-container {
 
     /* Isolate layout from host CSS */

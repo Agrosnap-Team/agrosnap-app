@@ -204,9 +204,12 @@ async function prepareDataAndStoreIt(user_info){
     
     //we get the diseases from FastAPI
     const all_disease = [
-        {"disease_id":0,"disease_name":"Bacterial Bpot","report":"this is the report of disease and dummy data","treatment":"this is the treatment section"},
-        {"disease_id":1,"disease_name":"Early Blight","report":"this is the report of  early blight disease and dummy data","treatment":"this is the rearly blight treatment section"},
-        {"disease_id":2,"disease_name":"Healthy","report":"this is the report of healthy disease and dummy data","treatment":"this is the late blight treatment section"}
+        {"disease_id":0,"disease_name":"Bacterial Spot","report":"this is the report of Bacterial Spot disease and dummy data","treatment":"this is the Bacterial Spot treatment section"},
+        {"disease_id":1,"disease_name":"Early Blight","report":"this is the report of  early blight disease and dummy data","treatment":"this is the early blight treatment section"},
+        {"disease_id":2,"disease_name":"Healthy","report":"this is the report of healthy disease and dummy data","treatment":"this is the Healthy treatment section"},
+        {"disease_id":3,"disease_name":"Late Blight","report":"this is the report of Late Blight disease and dummy data","treatment":"this is the Late Blight treatment section"},
+        {"disease_id":4,"disease_name":"Leaf Mold","report":"this is the report of  Leaf Mold disease and dummy data","treatment":"this is the Leaf Mold treatment section"},
+        {"disease_id":5,"disease_name":"Yellow Leaf Curl Virus","report":"this is the report of Yellow Leaf Curl Virus disease and dummy data","treatment":"this is the Yellow Leaf Curl Virus treatment section"}
     ];//this is fake data
 
     await add_disease_info(all_disease);
