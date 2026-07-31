@@ -26,7 +26,7 @@ console.log("dynamic pages loaded");
 const listItems = document.querySelectorAll('#pages li');
 const profile_Btn = document.getElementById("user-profile");
 const close_btn = document.getElementById("close-label");
-document.getElementById("logout-btn").addEventListener('click',logout_process);
+document.getElementById("logout-btn").addEventListener('click',logoutConfirmationDialog);
 
 // 2. Loop through each item
 listItems.forEach((item, index) => {
@@ -178,6 +178,22 @@ export function backToCallerPage(callerPageIndex){
     change_page_name(callerPageIndex);
     fit_the_page(callerPageIndex);
     highlightActiveTab(callerPageIndex);
+
+}
+
+function logoutConfirmationDialog(){
+    let confirmDialog = document.getElementById("dialogContainer");
+    let confirmButton = document.getElementById("yes");
+    let cancelButton = document.getElementById("cancel");
+    let closeDialog = document.getElementById("closeDialog");
+    confirmDialog.classList.add("showLogutDialog");
+    closeDialog.addEventListener('click',()=>{
+        confirmDialog.classList.remove("showLogutDialog");
+    });
+    cancelButton.addEventListener('click',()=>{
+        confirmDialog.classList.remove("showLogutDialog");
+    });
+    confirmButton.addEventListener('click',logout_process);
 
 }
 
