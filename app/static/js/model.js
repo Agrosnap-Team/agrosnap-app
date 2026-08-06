@@ -68,15 +68,25 @@ export async function initModel(convertedImage){
 
     const processedImg = preprocessTheImage(convertedImage);
     const result = model.predict(processedImg);
+    console.log("the Result of model is : ", result);
     // const prob = await result.data();
     const maxPercentage = result.argMax(1);
     const classIndex = maxPercentage.dataSync()[0];
+
+
+    //for confidence percentage
+    const probabilities = await result.data();
+
+    let confidence = probabilities[classIndex];
+    confidence = (confidence * 100).toFixed(2);
+
+    console.log("the confidence is : ", confidence);
 
     //dispose is for clear the memory from tensor 
     maxPercentage.dispose();
     result.dispose();
     processedImg.dispose();
-    return classIndex;
+    return {classIndex, confidence};
 
 }
 

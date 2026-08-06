@@ -83,10 +83,16 @@ window.onload = function(){
      
     let saved_page = sessionStorage.getItem("current_page");
 
+    let diseaseInfo = {
+        classIndex: parseInt(localStorage.getItem("predictedDiseaseIndex")),
+        confidence: localStorage.getItem("confidence")
+    };
+
     // Convert the string to a number. If it's the first visit (null), default to 0.
     // var current_page = saved_page !== null ? parseInt(saved_page, 10) : 0;
 
-    fit_the_page(saved_page);
+    console.log("this is window.onload() , and the diseaseInfo is : ", diseaseInfo);
+    fit_the_page(saved_page,diseaseInfo);
     highlightActiveTab(saved_page);
     change_page_name(saved_page);
 
@@ -155,13 +161,14 @@ function change_page_name(index){
 
 
 
-export function show_report(diseaseIndex){
+export function show_report(diseaseInfo){
   //this function will send a report index page and call the fit_the_page()
   // will fetch the page and call its js file/ js functions
+  console.log("this is show_report() , and the diseaseInfo is : ", diseaseInfo);
   const thePage=5; // index of the page
   change_page_name(thePage);
   highlightActiveTab(sessionStorage.getItem("current_page"));
-  fit_the_page(thePage,diseaseIndex);
+  fit_the_page(thePage,diseaseInfo);
 
 }
 
@@ -183,8 +190,8 @@ export function backToCallerPage(callerPageIndex){
 
 function logoutConfirmationDialog(){
     let confirmDialog = document.getElementById("dialogContainer");
-    let confirmButton = document.getElementById("yes");
-    let cancelButton = document.getElementById("cancel");
+    let confirmButton = document.getElementById("confirmLogout");
+    let cancelButton = document.getElementById("cancelLogout");
     let closeDialog = document.getElementById("closeDialog");
     confirmDialog.classList.add("showLogutDialog");
     closeDialog.addEventListener('click',()=>{

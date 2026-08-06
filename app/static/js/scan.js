@@ -200,9 +200,9 @@ async function checkThePlantLeaf(){
     void uploadBox.offsetWidth;
     
     
-    const predictedDiseaseIndex = await convertImageToHTMLElement(convertedImg);
+    const predictedDisease = await convertImageToHTMLElement(convertedImg);
 
-    if(predictedDiseaseIndex === undefined || predictedDiseaseIndex === null)
+    if(predictedDisease === undefined || predictedDisease === null)
         {
          console.log("no result");
          return;
@@ -210,9 +210,11 @@ async function checkThePlantLeaf(){
 
     // alert(diseases[predictedDiseaseIndex]);
     // window.location.href="/single_report";
-    localStorage.setItem("predictedDiseaseIndex",predictedDiseaseIndex);
+    localStorage.setItem("predictedDiseaseIndex",predictedDisease.classIndex);
+    localStorage.setItem("confidence", predictedDisease.confidence);
     sessionStorage.setItem("CallerPage",sessionStorage.getItem("current_page"));
-    show_report(predictedDiseaseIndex);
+    console.log("this is checkThePlantLeaf() , and the predicted disease is : ",predictedDisease);
+    show_report(predictedDisease);
     clearBox();
 
     }
@@ -237,6 +239,7 @@ async function convertImageToHTMLElement(selectedImg){
         // console.log("the HTML element is : ", previewImage );
 
         const modelResult = await initModel(previewImage);
+        console.log("this is convertImageToHTMLElement , and the model result is : ", modelResult);
 
         //clear the temp url from browser memory to prevent memory leak 
         URL.revokeObjectURL(selectedImg); 

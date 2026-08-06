@@ -16,11 +16,11 @@ let alertPopUp , reportRenameInput;
 // other variables
 const pageIndex = 5;
 
-export function initReport(diseaseIndex){
+export function initReport(diseaseInfo){
     console.log("this is single report");
     let isElementsInitiated=initiateElements();
     if(isElementsInitiated){
-        fillReportStructure(diseaseIndex);
+        fillReportStructure(diseaseInfo.classIndex,diseaseInfo.confidence);
         closeButton.addEventListener('click',closeReport);
         saveButton.addEventListener('click',showRenameDialog);
         renameCloseMark.addEventListener('click',hideRenameDialog);
@@ -31,7 +31,7 @@ export function initReport(diseaseIndex){
 
 }
 
-async function fillReportStructure(index,diseaseName){
+async function fillReportStructure(index,confidence){
     try{
 
         //this condition is used to get the last predicted disease that stored in localStorage , and this will use it to get the index back after refresh the page , so the data won't be lost
@@ -48,13 +48,16 @@ async function fillReportStructure(index,diseaseName){
         //get the disease info from indexedDB
         let the_disease = await db.get_diseases_info(index);
         console.log(the_disease);
-        
+        await setDiseaseImage(index);
 
         //fill the elements with data of disease to represent it in user interface
         reportTitle.innerHTML = the_disease.disease_name;
-        progTitle.innerHTML = the_disease.disease_name;
         diseaseContent.innerHTML = the_disease.report;
         treatmentContent.innerHTML = the_disease.treatment;
+        progPercent.innerHTML = `${confidence}%`;
+        progLine.style.width = `${confidence}%`;
+
+        
 
     }
     catch(e){
@@ -75,7 +78,7 @@ function initiateElements(){
     // Prograss elements
     //===========================================
     progressesContainer = document.getElementsByClassName("progresses-container")[0];
-    progTitle = document.getElementsByClassName("disease-title")[0];
+    // progTitle = document.getElementsByClassName("disease-title")[0];
     progPercent = document.getElementsByClassName("precentage")[0];
     progLine = document.getElementsByClassName("dynamic-line")[0];
 
@@ -111,7 +114,7 @@ function initiateElements(){
 
 
 
-    let elements = {progressesContainer , progTitle , progPercent , progLine , reportContainer, reportTitle , diseaseImg , diseaseContent ,  treatmentContent , saveButton , downloadButton , closeButton , confirmRenameButton , renameCloseMark , exitCloseMark , renameDialog , closeDialog  , exitConfirmationButton , cancelCloseReport , alertPopUp , reportRenameInput};
+    let elements = {progressesContainer , progPercent , progLine , reportContainer, reportTitle , diseaseImg , diseaseContent ,  treatmentContent , saveButton , downloadButton , closeButton , confirmRenameButton , renameCloseMark , exitCloseMark , renameDialog , closeDialog  , exitConfirmationButton , cancelCloseReport , alertPopUp , reportRenameInput};
     for(let key in elements){
         if(elements[key] === undefined || elements[key] === null){
             console.log(`this ${key} is null`);
@@ -202,5 +205,20 @@ function saveReportProcess(){
     console.log("saved");
     hideRenameDialog();
 }
+
+async function setDiseaseImage(diseaseIndex){
+    const imagesPaths=[
+        "/static/images/bacterial_spot.jpeg",
+        "/static/images/early_blight.jpg",
+        "/static/images/healthy_leaves.jpg",
+        "/static/images/late_blight.jpeg",
+        "/static/images/leaf_disease.webp",
+        "/static/images/YLCV_disease.jpg"
+
+    ];
+    console.log("this is setDiseaseImage() , and the disease index is ",diseaseIndex , " and the image path is ",imagesPaths[diseaseIndex]);
+    diseaseImg.src = imagesPaths[diseaseIndex];
+}
+
 
 
