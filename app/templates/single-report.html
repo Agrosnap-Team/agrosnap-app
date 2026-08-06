@@ -15,12 +15,18 @@
 <body>
     <div class="signle-report-container">
         <div id="popup">
+
+             <!-- this is for save report popup -->
             <div id="rename" class="alertDialog">
                 <div id="closePopup" class="closePopup"></div>
                 <label id="nameReportlabel" class="reportHeader" > Name your report </label>
                 <input id="report-name" class="popup-items" placeholder="Apple bacterial spot ,e.g..">
                 <button id="saveReportName" class="choose">Save</button>
             </div>
+            <!-- this is for save report popup -->
+
+
+            <!-- this is for close report popup -->
             <div id="closeReport" class="alertDialog">
                 <div id="closePopupIcon" class="closePopup"></div>
                 <label id="closeReportLabel" class="reportHeader">Are you sure you want to close the report ?</label>
@@ -30,19 +36,19 @@
                     <button id="yes" class="choose">Yes</button>
                 </div>
             </div>
+             <!-- this is for close report popup -->
+
+
         </div>
 
         <!-- this is reports details area-->
         <div class="report-details">
 
-
-
-            
-
             <!-- ------------------------------------------------ -->
 
             <div class=" all-report active" id="first">
                 <h1 class="the-header">Disease 1</h1>
+
 
                 <div class="disease-image-container">
                     <img id="disease-image">
@@ -61,6 +67,12 @@
 
                 </div>
                 <!-- this is for percentage of confidence-->
+
+                <div id="report-warning-msg">
+                    ⚠️ Warning: Our AI is designed to provide quick assistance and narrow down potential plant diseases. However, it heavily relies on image quality. Unclear or poorly lit photos can confuse the model, leading it to suspect multiple issues. While AI is a great starting point, it is not 100% accurate. Please always verify the final diagnosis with a qualified plant expert.
+                </div>
+
+
                                 
                 <h3 class ="disease-info">About disease and the symptoms</h3>
                 <p class="about-disease">
