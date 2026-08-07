@@ -23,6 +23,8 @@ sessionStorage.setItem("current_page", 0);
 console.log("dynamic pages loaded");
 
 
+
+let diseaseInfo;
 const listItems = document.querySelectorAll('#pages li');
 const profile_Btn = document.getElementById("user-profile");
 let current_user_name = document.getElementById("user-name");
@@ -69,7 +71,7 @@ document.addEventListener("click", (event) => { //when user opens profile and th
         
         if (prev_page !== 4){
             sessionStorage.setItem("current_page", prev_page);
-            fit_the_page(prev_page);
+            fit_the_page(prev_page, diseaseInfo);
             
         } else {
             sessionStorage.setItem("current_page", 0);
@@ -95,7 +97,7 @@ window.onload = function(){
 
 
 
-    let diseaseInfo = {
+    diseaseInfo = {
         classIndex: parseInt(localStorage.getItem("predictedDiseaseIndex")),
         confidence: localStorage.getItem("confidence")
     };
