@@ -230,7 +230,7 @@
     border: 1px solid rgb(206, 175, 72);
     background-color: rgb(227, 217, 183);
     color: rgb(106, 90, 0);
-    font-size: 2vw;
+    font-size: clamp(15px, 3vw, 22px);
     text-align: center;
     font-weight: bold;
     width: 100%;

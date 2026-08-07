@@ -59,10 +59,6 @@ async function fillReportStructure(index,confidence){
         progPercent.innerHTML = `${confidence}%`;
         progLine.style.width = `${confidence}%`;
 
-
-
-        
-
     }
     catch(e){
         //if any error occured then go back to homePage
@@ -231,7 +227,7 @@ async function setDiseaseImage(diseaseIndex){
         "/static/images/early_blight.jpg",
         "/static/images/healthy_leaves.jpg",
         "/static/images/late_blight.jpeg",
-        "/static/images/leaf_disease.webp",
+        "/static/images/leaf_mold.webp",
         "/static/images/YLCV_disease.jpg"
 
     ];
