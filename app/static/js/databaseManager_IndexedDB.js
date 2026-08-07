@@ -155,14 +155,14 @@ async function add_new_user(newData){
 }
 
 
-async function add_disease_info(all_reports) {
+async function add_disease_info(all_diseases) {
     //After got the disease from fastAPI we add it to indexedDB
-    if(all_reports){
+    if(all_diseases){
     const db = await openConnection();    
     const trans = db.transaction(disease_table,"readwrite");
     const current_table = trans.objectStore(disease_table);
 
-    await Promise.all(  all_reports.map(  row => current_table.put(row)  ) );
+    await Promise.all( all_diseases.map(  row => current_table.put(row)  ) );
 
     trans.done;
     console.log("add all successfully");

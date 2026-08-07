@@ -1,4 +1,5 @@
 import db from "./databaseManager_IndexedDB.js";
+import handleData from "./tokenDecoding.js";
 import { backToHome , backToCallerPage } from "./dynamic_pages.js";
 
 //these variables for prograss bar
@@ -17,13 +18,14 @@ let alertPopUp , reportRenameInput;
 const pageIndex = 5;
 
 export function initReport(diseaseInfo){
-    console.log("this is single report");
+
     let isElementsInitiated=initiateElements();
     if(isElementsInitiated){
         fillReportStructure(diseaseInfo.classIndex,diseaseInfo.confidence);
         closeButton.addEventListener('click',closeReport);
         saveButton.addEventListener('click',showRenameDialog);
         renameCloseMark.addEventListener('click',hideRenameDialog);
+        confirmRenameButton.addEventListener('click',()=>saveReportProcess(diseaseInfo));
     }
     else{
         console.log("Something went wrong while initiating html elements");
@@ -56,6 +58,8 @@ async function fillReportStructure(index,confidence){
         treatmentContent.innerHTML = the_disease.treatment;
         progPercent.innerHTML = `${confidence}%`;
         progLine.style.width = `${confidence}%`;
+
+
 
         
 
@@ -166,7 +170,7 @@ function hideAlert(){
 function showRenameDialog(){
     showAlert();
     renameDialog.classList.add("showRenameConfirmation");
-    confirmRenameButton.addEventListener('click',saveReportProcess);
+    
     
 
 }
@@ -193,14 +197,29 @@ function hideCloseReportDialog(){
     
 }
 
-function saveReportProcess(){
+async function saveReportProcess(diseaseData){
     reportRenameInput.classList.remove("emptyInput");
+    console.log("this is saveReportProcess() , and the passed diseaseData  : ",diseaseData);
 
     if(!reportRenameInput.value){
         void reportRenameInput.offsetWidth;
         reportRenameInput.classList.add("emptyInput");
         return;
     }
+    let newUUID = crypto.randomUUID();
+    let userID = handleData.getUserIdFromToken(localStorage.getItem("user_token"));
+    let diseaseOtherInfo = await db.get_diseases_info(diseaseData.classIndex);
+
+    let reportData = {
+        "report_id": newUUID,
+        "user_id": userID,
+        "disease_id": diseaseData.classIndex,
+        "report_name": reportRenameInput.value,
+        "confidence": diseaseData.confidence,
+        "isSynced": false
+    };
+    console.log("this is saveReportProcess() , and the diseaseOtherInfo is : ",diseaseOtherInfo);
+    console.log("this is saveReportProcess() , and the reportData is : ",reportData);
 
     console.log("saved");
     hideRenameDialog();
