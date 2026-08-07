@@ -1,7 +1,7 @@
 # this file contain @router.post ("/signup") @router.post("/login")
 
 
-from fastapi import  HTTPException, APIRouter
+from fastapi import  HTTPException, APIRouter,Body
 from app import database as db
 import bcrypt
 import jwt
@@ -68,6 +68,7 @@ def create_access_token(token_payload: Data_of_Token):
     # this variable save data token that convert from pydantic class to dictionary because jwt library does not understand pydantic object (token_payload) it is just deal with dict
     # .model_dum this is the methode use for convert to dictionary
     data_to_but_in_token = token_payload.model_dump()
+    print(data_to_but_in_token)
 
     # compute expire time of JWT depending on UTC
     expire = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
@@ -80,8 +81,8 @@ def create_access_token(token_payload: Data_of_Token):
 
     return create_encod_token
 
-
-def Token_decoding(data_token):
+@router.post("/decoding")
+def Token_decoding(data_token : str = Body(..., embed=True)):
 
    try :
 
@@ -89,9 +90,11 @@ def Token_decoding(data_token):
 
        user_id = get_payload.get("user_id")
        username = get_payload.get("username")
-       email = get_payload.get("email")
+       Email = get_payload.get("Email")
+       first_name = get_payload.get("first_name")
+       last_name = get_payload.get("last_name")
 
-       return {"user_id": user_id, "username": username, "email": email}
+       return {"user_id": user_id, "username": username, "email": Email , "first_name": first_name, "last_name": last_name}
 
 
    except jwt.ExpiredSignatureError:
@@ -128,7 +131,12 @@ def login(login_data: userSign_in):
         # call function that create token send to it payload
         create_token = create_access_token(payload_token)
 
-        return {"create_token": create_token}
+        return {"create_token": create_token,
+                "token_type": "bearer",
+                "user_info":{"first_name": user["first_name"],
+                             "last_name": user["last_name"],}
+
+                }
 
 
     except HTTPException as http_ex:

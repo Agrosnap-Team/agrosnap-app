@@ -49,11 +49,24 @@ class UserSign_Up(BaseModel):
 class Data_of_Token(BaseModel):
     user_id: str
     username: str
-    Email : EmailStr
+    Email : str
+
+
+
 
 
 #class schema of login
 class userSign_in(BaseModel):
     identifier : str # get email / username
     password :str
+
+
+# this schema for what data should send to save report
+class SaveReportRequest(BaseModel):
+    disease_index: int #this is the index of disease that store already in database
+    plant_name :str
+    confidence : float
+
+
+
 
