@@ -92,7 +92,11 @@
     display: flex; 
 }
 
-#scanPopup #choices .choose:hover , #scanPopup #healthy-dialog #healthy-btnsContainer .choose:hover {
+#scanPopup #choices .choose:hover{
+    filter: brightness(0.7);
+
+}
+#scanPopup #healthy-dialog #healthy-btnsContainer .choose:hover {
     filter: brightness(0.7);
 
 }
@@ -118,10 +122,11 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
+    filter: brightness(0.8);
 }
 
 #scanPopup #healthy-dialog #closeHealthyPopup:hover{
-    filter: brightness(0.7);
+    filter: brightness(0.6);
 }
 
 
@@ -132,9 +137,32 @@
 }
 
 #scanPopup #healthy-dialog #healthyLabel{
-    color:white;
+    color:#0b4d01;
+    flex:2.5;
     font-weight: bolder;
+    font-size:20px;
+    text-align: right;
 
+    
+
+}
+
+#msg-mark{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    gap: 10px;
+}
+
+#done-mark{
+    width: 30px;
+    height: 30px;
+    background-image: url(../images/check.png);
+    background-position: left;
+    background-repeat: no-repeat;
+    background-size: contain;
+    flex: 1;
 }
 
 
