@@ -48,8 +48,9 @@ class AgrosnapDatabase:
 
         # this table let user bookmark  there  report to see it later
         #junction table connect user_info with disease_table
+
         query_save ="""CREATE TABLE IF NOT EXISTS Save_report (
-            save_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+            save_id TEXT PRIMARY KEY,-- we let the save_id be text to save in the UUID [universal unique id] , to avoid the conflict in sqlite3 and the indexedDB
             user_id INTEGER ,
             disease_id INTEGER ,
             plant_name TEXT NOT NULL,
