@@ -15,7 +15,7 @@ let checkButton;
 let canClick = true;
 let selected_image;
 let convertedImg;
-let scanUploadbtns , healthyDialog;
+let scanUploadbtns , healthyDialog , okButton , closeHealthyPopupIcon;
 
 
 export function initElements(){
@@ -55,7 +55,8 @@ export function initElements(){
      checkButton=document.getElementById("send");
      scanUploadbtns =document.getElementById("choices");
      healthyDialog = document.getElementById("healthy-dialog");
-
+     okButton = document.getElementById("healthy-ok");
+     closeHealthyPopupIcon= document.getElementById("closeHealthyPopup");
 
     //=============================================
     // Initiate the needed html elements 
@@ -85,10 +86,14 @@ export function initElements(){
     popupElement.addEventListener('click', (event) => {
          
         if (event.target === popupElement) {
-            closePopup();
+            closeHealthyPopup();
+            closePhotoUploadPopup();
         }
     });
-    closeMark.addEventListener("click",closePopup);
+    closeMark.addEventListener("click",closePhotoUploadPopup);
+
+    closeHealthyPopupIcon.addEventListener("click",closeHealthyPopup);
+    okButton.addEventListener("click",closeHealthyPopup);
 
     //==============================================================
     // let user click anywhere or click on X mark to close the popup
@@ -103,10 +108,7 @@ export function initElements(){
     fileInput.addEventListener("change",showImage);
     camera.addEventListener("change",showImage);
 
-    //===============================================================
-    //when user choose or capture a photo , so should appear
-    // in previewImage
-    //=================================================================
+
 
 
     //================================================================
@@ -136,7 +138,11 @@ function openCamera(event){
 
 function openPopup(){
     
-    if(!canClick)return;
+    if(!canClick)
+        { console.log("you can't click until you clear the box" , canClick);
+            return
+        };
+    console.log("open popup");
     popupElement.classList.add("showPopup");
     
 
@@ -153,18 +159,20 @@ function showPhotoUploadPopup(){
 }
 
 function closePhotoUploadPopup(){
-    scanUploadbtns.classList.remove("showChoices");
     closePopup();
+    scanUploadbtns.classList.remove("showChoices");
 }
 
 function showHealthyPopup(){
-     openPopup();
-     healthyDialog.classList.add("showHealthyPopup");
+    console.log("show healthy popup");
+    popupElement.classList.add("showPopup");
+    healthyDialog.classList.add("showHealthyPopup");
 }
 
 function closeHealthyPopup(){
-    healthyDialog.classList.remove("showHealthyPopup");
-    closePopup();
+    console.log("close healthy popup");
+     healthyDialog.classList.remove("showHealthyPopup");
+     popupElement.classList.remove("showPopup");
 }
 
 
@@ -208,6 +216,7 @@ function clearBox(){
 
 async function checkThePlantLeaf(){
     try{
+    closePhotoUploadPopup();
     const diseases =['bacterial_spot', 'early_blight', 'healthy', 'late_blight', 'leaf_mold', 'yellow_leaf_curl_virus'];
     uploadBox.classList.remove("error"); //remove red border 
     
@@ -234,14 +243,17 @@ async function checkThePlantLeaf(){
          return;
         }
 
-    // alert(diseases[predictedDiseaseIndex]);
-    // window.location.href="/single_report";
     localStorage.setItem("predictedDiseaseIndex",predictedDisease.classIndex);
     localStorage.setItem("confidence", predictedDisease.confidence);
     sessionStorage.setItem("CallerPage",sessionStorage.getItem("current_page"));
     console.log("this is checkThePlantLeaf() , and the predicted disease is : ",predictedDisease);
-    show_report(predictedDisease);
     clearBox();
+    if(predictedDisease.classIndex === 2){ // if the result is healthy , then show the healthy popup
+        showHealthyPopup();
+        return;
+    }
+    show_report(predictedDisease);
+    
 
     }
     catch(error){

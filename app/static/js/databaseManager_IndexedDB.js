@@ -196,9 +196,9 @@ async function prepareDataAndStoreIt(user_info){
     let new_user ={
         "user_id":user_info.user_id,
         "username":user_info.username,
-        "email" : user_info.Email,
-        "first_name" : "ASEEL",
-        "last_name":"KHANFER"
+        "email" : user_info.email,
+        "first_name" : user_info.first_name,
+        "last_name":user_info.last_name
 
     } //this data for test only and will be replaced by data from sqlite3 using fetch() method
     
@@ -235,7 +235,6 @@ async function getUserByID(userID) {
 
         if(!userData)return;
 
-        console.log(userData);
         return userData;
 
     }

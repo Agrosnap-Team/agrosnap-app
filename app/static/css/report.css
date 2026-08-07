@@ -54,7 +54,7 @@
     /* background-color: red; */
     cursor: pointer;
     transition: filter 0.3s ease-in-out;
-    background-image: url(/images/closePopup.png);
+    background-image: url(../images/closePopup.png);
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;

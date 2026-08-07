@@ -38,15 +38,33 @@ async function check_user_data(element) {
                     return;
                 }
 
-                console.log(result);
+                console.log("THIS IS THE RESULT OF TOKENS AFTER LOGIN: ", result);
                 if(result.create_token){
                     console.log("token is exist " , result.create_token);
+                    console.log("user info is exist " , result.user_info);
 
                     localStorage.setItem("user_token",result.create_token);
+                    localStorage.setItem("other_info",JSON.stringify(result.user_info));
+                    
 
                     const decodedData = handleData.decodeToken(result.create_token);
+                    console.log("this is the decoded data from create_token : ",decodedData);
 
-                    DB.prepareDataAndStoreIt(decodedData);
+                    //collect data in one object to store it in indexedDB
+                    let allUserData = {
+                        user_id: decodedData.user_id,
+                        username: decodedData.username,
+                        email: decodedData.Email,
+                        first_name: result.user_info.first_name,
+                        last_name: result.user_info.last_name,
+                        exp: decodedData.exp
+                    };
+
+                    console.log("this is the collected user data : ",allUserData);
+
+                    alert("login successful , you will be redirected to the main page"+ result.user_info);
+
+                    DB.prepareDataAndStoreIt(allUserData); //store all user data in indexedDB
                     //store all user data in indexedDB
                     window.location.href="/sidebar";
                 }

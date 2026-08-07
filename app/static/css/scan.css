@@ -7,8 +7,8 @@
 
 
 #scanPopup{
-    opacity: 1;
-    visibility: visible;
+    opacity: 0;
+    visibility: hidden;
     position: fixed;
     top: 0;
     left: 0;
@@ -100,15 +100,24 @@
     filter: brightness(0.7);
 
 }
-
-#scanPopup #healthy-dialog{
-    background-color: #7caa5f
+#scanPopup #healthy-dialog #healthy-btnsContainer #healthy-ok{
+    width: 100px;
+    max-width: 200px;
+    min-width: 70px;
 
 }
+
+
+
 #scanPopup #healthy-dialog{
+    background-color: #7caa5f;
+    transition: all 0.8s ease-in-out;
+
+}
+/* #scanPopup #healthy-dialog{
     opacity: 1;
     display:flex;
-}
+} */
 
 #scanPopup #healthy-dialog #closeHealthyPopup{
     position: absolute;

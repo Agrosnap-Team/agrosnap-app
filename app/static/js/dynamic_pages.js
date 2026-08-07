@@ -25,8 +25,11 @@ console.log("dynamic pages loaded");
 
 const listItems = document.querySelectorAll('#pages li');
 const profile_Btn = document.getElementById("user-profile");
+let current_user_name = document.getElementById("user-name");
 const close_btn = document.getElementById("close-label");
 document.getElementById("logout-btn").addEventListener('click',logoutConfirmationDialog);
+
+
 
 // 2. Loop through each item
 listItems.forEach((item, index) => {
@@ -82,6 +85,15 @@ document.addEventListener("click", (event) => { //when user opens profile and th
 window.onload = function(){
      
     let saved_page = sessionStorage.getItem("current_page");
+
+    let userToken = handleToken.getUserIdFromToken(localStorage.getItem("user_token"));
+    let userFullName = DB.getUserByID(userToken).then(userData => {
+        if (userData) {
+            current_user_name.textContent = userData.first_name + " " + userData.last_name;}
+        });
+
+
+
 
     let diseaseInfo = {
         classIndex: parseInt(localStorage.getItem("predictedDiseaseIndex")),
