@@ -4,9 +4,11 @@
     margin: 0;
     padding: 0;
 }
-#popup{
-    opacity: 0;
-    visibility: hidden;
+
+
+#scanPopup{
+    opacity: 1;
+    visibility: visible;
     position: fixed;
     top: 0;
     left: 0;
@@ -23,9 +25,10 @@
     transition: all 0.2s ease-in-out;
 }
 
-#popup #choices{
+#scanPopup .result-dialog{
     position: relative;
-    display: flex;
+    opacity: 0;
+    display: none; /*should always be flex in js */
     flex-direction: column;
     align-items: center;
     gap: 2rem;
@@ -36,9 +39,10 @@
     padding: 2.5rem 1rem;
     border-radius: 12px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease-in-out;
 }
 
-#popup #choices #closePopup{
+#scanPopup #choices #closePopup{
     position: absolute;
     right: 13px;
     top: 13px;
@@ -53,11 +57,11 @@
     background-size: contain;
 }
 
-#popup #choices #closePopup:hover{
+#scanPopup #choices #closePopup:hover{
     filter: brightness(0.7);
 }
 
-#popup #choices .choose{
+#scanPopup #choices .choose , #scanPopup #healthy-dialog #healthy-btnsContainer .choose{
     width:150px;
     max-width: 200px;
     min-width: 120px;
@@ -72,15 +76,67 @@
     color: white;
 }
 
- #popup.showPopup{
+
+#scanPopup.showPopup{
     opacity: 1;
     visibility: visible;
 }
 
-#popup #choices .choose:hover{
+#scanPopup #healthy-dialog.showHealthyPopup{
+    opacity: 1;
+    display: flex; 
+}
+
+#scanPopup #choices.showChoices{
+    opacity: 1;
+    display: flex; 
+}
+
+#scanPopup #choices .choose:hover , #scanPopup #healthy-dialog #healthy-btnsContainer .choose:hover {
     filter: brightness(0.7);
 
 }
+
+#scanPopup #healthy-dialog{
+    background-color: #7caa5f
+
+}
+#scanPopup #healthy-dialog{
+    opacity: 1;
+    display:flex;
+}
+
+#scanPopup #healthy-dialog #closeHealthyPopup{
+    position: absolute;
+    right: 13px;
+    top: 13px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    transition: filter 0.3s ease-in-out;
+    background-image: url(../images/closePopup.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+#scanPopup #healthy-dialog #closeHealthyPopup:hover{
+    filter: brightness(0.7);
+}
+
+
+
+#scanPopup #healthy-dialog #healthy-btnsContainer{
+    width: 100%;
+    text-align: center;
+}
+
+#scanPopup #healthy-dialog #healthyLabel{
+    color:white;
+    font-weight: bolder;
+
+}
+
 
 
 

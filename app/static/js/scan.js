@@ -15,6 +15,7 @@ let checkButton;
 let canClick = true;
 let selected_image;
 let convertedImg;
+let scanUploadbtns , healthyDialog;
 
 
 export function initElements(){
@@ -48,10 +49,13 @@ export function initElements(){
      cameraButton=document.getElementById("cameraChoice");
      fileManagerButton=document.getElementById("fileManager");
      camera=document.getElementById("cameraInput");
-     popupElement = document.getElementById("popup");
+     popupElement = document.getElementById("scanPopup");
      closeMark=document.getElementById("closePopup");
      clearButton=document.getElementById("clear-btn");
      checkButton=document.getElementById("send");
+     scanUploadbtns =document.getElementById("choices");
+     healthyDialog = document.getElementById("healthy-dialog");
+
 
     //=============================================
     // Initiate the needed html elements 
@@ -65,7 +69,7 @@ export function initElements(){
     // when user click and open popup , choose to open camera or gallery
     //==================================================================
 
-    uploadBox.onclick = openPopup;
+    uploadBox.onclick = showPhotoUploadPopup;
     cameraButton.onclick=openCamera;
     fileManagerButton.onclick=openFileManager;
 
@@ -133,15 +137,37 @@ function openCamera(event){
 function openPopup(){
     
     if(!canClick)return;
-    document.getElementById("popup").classList.add("showPopup");
+    popupElement.classList.add("showPopup");
     
 
 
 }
 function closePopup(){
-    document.getElementById("popup").classList.remove("showPopup");
+    popupElement.classList.remove("showPopup");
 
 }
+
+function showPhotoUploadPopup(){
+    openPopup();
+    scanUploadbtns.classList.add("showChoices");
+}
+
+function closePhotoUploadPopup(){
+    scanUploadbtns.classList.remove("showChoices");
+    closePopup();
+}
+
+function showHealthyPopup(){
+     openPopup();
+     healthyDialog.classList.add("showHealthyPopup");
+}
+
+function closeHealthyPopup(){
+    healthyDialog.classList.remove("showHealthyPopup");
+    closePopup();
+}
+
+
 
 
 function showImage(event){
