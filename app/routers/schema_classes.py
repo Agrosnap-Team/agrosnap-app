@@ -50,8 +50,8 @@ class Data_of_Token(BaseModel):
     user_id: str
     username: str
     Email : str
-    first_name: str
-    last_name : str
+
+
 
 
 
@@ -60,10 +60,10 @@ class userSign_in(BaseModel):
     identifier : str # get email / username
     password :str
 
+
 # this schema for what data should send to save report
-class Data_to_save(BaseModel):
-    user_id : str
-    disease_id : str
+class SaveReportRequest(BaseModel):
+    disease_index: int #this is the index of disease that store already in database
     plant_name :str
     confidence : float
 

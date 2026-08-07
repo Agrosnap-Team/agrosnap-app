@@ -1,16 +1,18 @@
 import sqlite3
 import os
 
-from dns.e164 import query
 
 
 class AgrosnapDatabase:
 
     def __init__(self, file_name='database.db'):
 
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+
         # db_path : instance object
         # file_name : local variable it is destroyed when you exit the function
-        self.db_path = file_name # this to make file_name instance object can reach from any place within class
+
+        self.db_path = os.path.join(current_dir, file_name) # this to make file_name instance object can reach from any place within class
         self.init_database()
 
     def _get_connection(self):
@@ -89,18 +91,24 @@ class AgrosnapDatabase:
 
 
     # this def to insert data into disease_Table
-    def insert_into_disease_Table(self,plant_name,disease_name,organic_treatment,report, confidence):
+    def insert_into_disease_Table(self,disease_name,organic_treatment,report):
 
         """Inserts data into the disease_Table securely."""
-        query = """INSERT OR IGNORE INTO disease_Table(plant_name, disease_name, organic_treatment, report)
-                           VALUES (?, ?, ?, ?, ?)"""
+        try:
+            query = """INSERT  INTO disease_Table( disease_name, organic_treatment, report)
+                                      VALUES (  ?, ?, ?)"""
 
-        # this is context manger "with " connect with database.db just_in_time
+            # this is context manger "with " connect with database.db just_in_time
 
-        with self._get_connection() as conn:
-            cursor = conn.cursor()
-            cursor.execute(query, (plant_name, disease_name, organic_treatment, report, confidence))
-            conn.commit()
+            with self._get_connection() as conn:
+                cursor = conn.cursor()
+                cursor.execute(query, ( disease_name, organic_treatment, report ))
+                conn.commit()
+                return {"staus":"seccess" ,"message":"insert into disease_table successfully"}
+
+        except sqlite3.Error as e:
+            print(f"General database error during insertion : {e}")
+            return {"status": "error", "message": "An unexpected database error occurred."}
 
     def insert_into_Save_report(self,user_id,disease_id):
 
@@ -132,11 +140,11 @@ class AgrosnapDatabase:
 
                 # Call the object method via 'self' to insert data cleanly
                 self.insert_into_disease_Table(
-                    plant_name=plant_name,
+
                     disease_name=disease_name,
                     organic_treatment=organic_treatment,
                     report=file_content,
-                    confidence=confidence
+
                 )
         except FileNotFoundError:
             print(f"Error: file not found at {file_path}")
@@ -401,6 +409,10 @@ class AgrosnapDatabase:
 if __name__ == '__main__':
     db = AgrosnapDatabase()
     db.init_database()
+
+    # db.insert_into_disease_Table("tomato","jdhjfdsjfsdfjsdf","jdjsdajdbhsa")
+    # db.insert_into_disease_Table("leaf_mold","dnfdsfdfnsmn","jsdssdjkdnzkjkxzjcnz")
+    # db.insert_into_disease_Table("late_blight","djshjdhs","snjabsbnasnb")
 
     # db.insert_into_users_info("tala","tala","sharayre","talasharayre@gmail.com","123456")
     # print(  db.get_user_by_id(4))
