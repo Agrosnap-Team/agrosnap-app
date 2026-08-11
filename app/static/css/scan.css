@@ -85,6 +85,7 @@
 #scanPopup #healthy-dialog.showHealthyPopup{
     opacity: 1;
     display: flex; 
+    animation: changeBackground 0.5s ease-in-out forwards;
 }
 
 #scanPopup #choices.showChoices{
@@ -109,15 +110,28 @@
 
 
 
+
+
 #scanPopup #healthy-dialog{
-    background-color: #7caa5f;
-    transition: all 0.8s ease-in-out;
+    background-color: #ffffff;
+    transform: scale(1);
 
 }
-/* #scanPopup #healthy-dialog{
-    opacity: 1;
-    display:flex;
-} */
+
+@keyframes changeBackground {
+    0% {
+        background-color: #ffffff;
+        transform: scale(0.7);
+    }
+    50% {
+        /* background-color: #7c9365; */
+        transform: scale(1.1);
+    }
+    100% {
+        background-color: #68964b;
+        transform: scale(1);
+    }
+}
 
 #scanPopup #healthy-dialog #closeHealthyPopup{
     position: absolute;
@@ -147,35 +161,17 @@
 
 #scanPopup #healthy-dialog #healthyLabel{
     color:#0b4d01;
-    flex:2.5;
     font-weight: bolder;
     font-size:20px;
-    text-align: right;
-
-    
-
+    text-align: center;
 }
+
 
 #msg-mark{
-    display: flex;
-    flex-direction: row;
     width: 100%;
-    align-items: center;
+    text-align: center;
     gap: 10px;
 }
-
-#done-mark{
-    width: 30px;
-    height: 30px;
-    background-image: url(../images/check.png);
-    background-position: left;
-    background-repeat: no-repeat;
-    background-size: contain;
-    flex: 1;
-}
-
-
-
 
 
 

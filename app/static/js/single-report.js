@@ -1,6 +1,6 @@
 import db from "./databaseManager_IndexedDB.js";
 import handleData from "./tokenDecoding.js";
-import { backToHome , backToCallerPage } from "./dynamic_pages.js";
+import { backToHome , backToCallerPage , goToMyReports } from "./dynamic_pages.js";
 
 //these variables for prograss bar
 let progressesContainer,progTitle , progPercent , progLine;
@@ -214,10 +214,13 @@ async function saveReportProcess(diseaseData){
         "confidence": diseaseData.confidence,
         "isSynced": false
     };
-    console.log("this is saveReportProcess() , and the diseaseOtherInfo is : ",diseaseOtherInfo);
-    console.log("this is saveReportProcess() , and the reportData is : ",reportData);
+    let isSaved = await db.store_report(reportData);
+    if(isSaved){
+        goToMyReports(reportData);
+        console.log("saved");
+    }
 
-    console.log("saved");
+
     hideRenameDialog();
 }
 

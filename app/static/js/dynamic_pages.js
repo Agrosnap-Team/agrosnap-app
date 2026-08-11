@@ -10,7 +10,7 @@
 import {slideAnimation} from './help.js';
 import { init } from './fill-Profile-Info.js';
 import { initElements } from "./scan.js";
-import { showReports } from './saved-reports.js';
+import { startSavedReportsPage } from './saved-reports.js';
 import handleToken from "./tokenDecoding.js";
 import DB from "./databaseManager_IndexedDB.js";
 import { initReport } from './single-report.js';
@@ -120,7 +120,7 @@ async function fit_the_page(curr_page,additionalData) {
 
     const allPages = [
         {path:"/scan",initJSFunction:initElements},
-        {path:"/all_saved_reports",initJSFunction:showReports},
+        {path:"/all_saved_reports",initJSFunction:startSavedReportsPage},
         {path:"/help",initJSFunction:slideAnimation},
         {path:"/about",initJSFunction:null},
         {path:"/profile",initJSFunction:init},
@@ -200,6 +200,14 @@ export function backToCallerPage(callerPageIndex){
     fit_the_page(callerPageIndex);
     highlightActiveTab(callerPageIndex);
 
+}
+
+export function goToMyReports(reportData){
+    const myReportsPageIndex = 1;
+    console.log("this is goToMyReports() , and the reportData is : ", reportData);
+    change_page_name(myReportsPageIndex);
+    fit_the_page(myReportsPageIndex,reportData);
+    highlightActiveTab(myReportsPageIndex);
 }
 
 function logoutConfirmationDialog(){

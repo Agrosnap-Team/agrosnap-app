@@ -79,15 +79,11 @@ async function create_users_table(db){
 
 
 
-
-
 async function create_disease_table(db){
     if(!db.objectStoreNames.contains(disease_table)){
         const diseaseTable = db.createObjectStore(disease_table, {keyPath:"disease_id"});
     }
 }
-
-
 
 
 async function create_saved_reports(db){
@@ -98,7 +94,6 @@ async function create_saved_reports(db){
     }
 
 }
-
 
 
 
@@ -169,21 +164,64 @@ async function add_disease_info(all_diseases) {
 
     }
 
-
-
-
-
-    
     
 }
 
 
-async function add_saved_disease(db,all_saved_disease) {
+//==========================================================
+// ADD reports to indexedDB
+//==========================================================
 
-    //will all saved disease
-    
+
+async function store_report(report_data){
+    try{
+        if(report_data == null || report_data==undefined)return;
+        const db = await openConnection();
+        const trans = db.transaction(saved_reports_table,"readwrite");
+        const current_table = trans.objectStore(saved_reports_table);
+
+        await current_table.put(report_data);
+        trans.done;
+        console.log("the report has been sent to indexedDB successfully ✅");
+        return true;
+
+    }
+    catch(error){
+
+        console.log("something went wrong while sending report to indexedDB , " ,error);
+        return false;
+    }
+      
+
 }
 
+
+
+async function get_all_reports_from_DB() {
+    // to get all saved reports from sqlite3 and will be stored in indexedDB 
+    
+
+}
+
+async function get_all_reports_from_indexedDB(){
+    //will return all saved reports from indexedDB and will be used in the saved reports page
+    const db = await openConnection();
+    const trans = db.transaction(saved_reports_table, "readonly");
+    const current_table = trans.objectStore(saved_reports_table);
+    const allReports = await current_table.getAll();
+    trans.done;
+    console.log("all reports from indexedDB : ", allReports);
+    return allReports;
+}
+
+async function get_report_by_id(report_id){
+    const db = await openConnection();
+    const trans = db.transaction(saved_reports_table, "readonly");
+    const current_table = trans.objectStore(saved_reports_table);
+    const report = await current_table.get(report_id);
+    trans.done;
+    return report;
+}
 
 //==========================================================
 // This for get information from Sqlite3
@@ -241,7 +279,6 @@ async function getUserByID(userID) {
     catch(error){
         console.log("something went wrong while fetching user data , ",error);
     }
-
     
 }
 
@@ -276,10 +313,11 @@ async function get_diseases_info(diseaseIndex) {
 
 
 async function get_saved_reports() {
-
-
+    //this method to get all saved reports from indexedDB and will be used in the saved reports page
     
 }
+
+
 
 //==========================================================
 // Delete from tables
@@ -332,11 +370,12 @@ startDB();
 
 export default {
     add_new_user,
-    add_saved_disease,
     add_disease_info,
     get_diseases_info,
     prepareDataAndStoreIt,
     get_saved_reports,
     getUserByID,
-    delete_user
+    delete_user,
+    store_report,
+    get_all_reports_from_indexedDB
 }
