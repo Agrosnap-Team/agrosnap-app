@@ -9,6 +9,7 @@ export function startSavedReportsPage(reportData){
     if(!isInitiated)return;
     showReports(reportData);
     
+    
 
 }
 
@@ -18,6 +19,7 @@ export function showReports(reportData){
         return;
     }
     console.log("this is showReports() , and the passed reportData is : ",reportData);
+    createReportElement(reportData);
     
 }
 
@@ -46,7 +48,14 @@ async function checkAllReports(){
     console.log("All reports from indexedDB: ", allReports);
 }
 
-function createReportElement(){
+function createReportElement(reportData){
+    //copy the element with its css styles , children and contents
+    let newReportCard = reportContainer.cloneNode(true); 
+
+    console.log("this is the copied element  \n" , newReportCard );
+    newReportCard.id=reportData.report_id;
+    // newReportCard.removeAttribute('id');
+    allReportsContainer.appendChild(newReportCard);
 
 }
 
