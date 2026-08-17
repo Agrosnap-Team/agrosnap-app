@@ -212,7 +212,8 @@ async function saveReportProcess(diseaseData){
         "disease_id": diseaseData.classIndex,
         "report_name": reportRenameInput.value,
         "confidence": diseaseData.confidence,
-        "isSynced": false
+        "isSynced": false,
+        "created_at": new Date().toISOString()
     };
     let isSaved = await db.store_report(reportData);
     if(isSaved){

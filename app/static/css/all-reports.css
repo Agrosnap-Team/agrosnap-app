@@ -52,6 +52,23 @@
     height: 140px; /* Fixed height for uniformity */
 }
 
+#reports-container .saved-reports.hideReportCard{
+    display: none;
+}
+
+#reports-container .saved-reports.highlightNewReport{
+    animation: highlightNewReport 2s linear;
+
+}
+
+@keyframes highlightNewReport {
+    0%{filter:brightness(1.5);}
+    50%{filter: brightness(1.2);}
+    100%{filter: brightness(1);}
+    
+}
+
+
 #reports-container .saved-reports:hover{
     filter: brightness(0.9);
     cursor: pointer;

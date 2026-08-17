@@ -13,13 +13,21 @@ export function startSavedReportsPage(reportData){
 
 }
 
-export function showReports(reportData){
-    if(reportData == undefined || reportData.length <= 0){
-        checkAllReports();
-        return;
-    }
-    console.log("this is showReports() , and the passed reportData is : ",reportData);
-    createReportElement(reportData);
+export async function showReports(reportData){
+        let allReports = await checkAllReports();
+        sortReports(allReports);
+        for(let reportNum=0; reportNum<allReports.length;reportNum++){
+            createReportElement(allReports[reportNum]);
+            if(reportData != undefined || reportData.length > 0){
+                if (allReports[reportNum].report_id== reportData.report_id){
+                    console.log('the new report is : ' , allReports[reportNum]);
+                    highlightNewSavedReport(allReports[reportNum].report_id);
+                }
+            
+             }
+        }
+
+        
     
 }
 
@@ -45,15 +53,25 @@ function initiateElements(){
 
 async function checkAllReports(){
     const allReports = await db.get_all_reports_from_indexedDB();
-    console.log("All reports from indexedDB: ", allReports);
+    //console.log("All reports from indexedDB: ", allReports);
+    return allReports;
 }
 
 function createReportElement(reportData){
     //copy the element with its css styles , children and contents
     let newReportCard = reportContainer.cloneNode(true); 
-
+    let reportName = newReportCard.querySelector("#reportName");
+    let createDate = newReportCard.querySelector("#saveDate");
+    newReportCard.classList.remove("hideReportCard");
     console.log("this is the copied element  \n" , newReportCard );
+    let savedReportDateTime= new Date(reportData.created_at);
+    let savedDate = savedReportDateTime.toDateString();
+    let savedTime = savedReportDateTime.toTimeString();
+    savedReportDateTime = savedReportDateTime.toLocaleString("en-US");
+
     newReportCard.id=reportData.report_id;
+    reportName.innerHTML=reportData.report_name;
+    createDate.innerHTML=savedReportDateTime;
     // newReportCard.removeAttribute('id');
     allReportsContainer.appendChild(newReportCard);
 
@@ -67,6 +85,13 @@ function showReportDetails(reportId){
 
 }
 
-function highlightNewSavedReport(reportId){
+function highlightNewSavedReport(newReportID){
+    document.getElementById(newReportID).classList.add("highlightNewReport");
 
+}
+
+function sortReports(reportsData){
+    reportsData.sort((firstReport,secondReport) => {
+        return new Date(secondReport.created_at) - new Date(firstReport.created_at);
+    });
 }
