@@ -197,7 +197,7 @@ async function saveReportProcess(diseaseData){
     reportRenameInput.classList.remove("emptyInput");
     console.log("this is saveReportProcess() , and the passed diseaseData  : ",diseaseData);
 
-    if(!reportRenameInput.value){
+    if(!reportRenameInput.value.trim()){
         void reportRenameInput.offsetWidth;
         reportRenameInput.classList.add("emptyInput");
         return;

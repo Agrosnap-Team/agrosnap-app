@@ -8,6 +8,16 @@ export function startSavedReportsPage(reportData){
     let isInitiated =  initiateElements();
     if(!isInitiated)return;
     showReports(reportData);
+    allReportsContainer.addEventListener('click',function (clickedItem) {
+        if(clickedItem.target.classList.contains("more-btn")){
+            const parentItem = clickedItem.target.closest(".saved-reports");
+            const parentElementID = parentItem.id;
+            const deletionStatus = deleteReport(parentElementID);
+            if(!deletionStatus)return;
+            parentItem.remove();
+            console.log(`the report ${parentElementID} has been deleted`);
+        }
+      });
     
     
 
@@ -59,9 +69,19 @@ async function checkAllReports(){
 
 function createReportElement(reportData){
     //copy the element with its css styles , children and contents
+    let diseasesImages=[
+        "/static/images/bacterial_spot.jpeg",
+        "/static/images/early_blight.jpg",
+        "/static/images/healthy_leaves.jpg",
+        "/static/images/late_blight.jpeg",
+        "/static/images/leaf_mold.webp",
+        "/static/images/YLCV_disease.jpg"
+    ];
+
     let newReportCard = reportContainer.cloneNode(true); 
     let reportName = newReportCard.querySelector("#reportName");
     let createDate = newReportCard.querySelector("#saveDate");
+    let reportImage = newReportCard.querySelector("#diseaseImg");
     newReportCard.classList.remove("hideReportCard");
     console.log("this is the copied element  \n" , newReportCard );
     let savedReportDateTime= new Date(reportData.created_at);
@@ -71,17 +91,22 @@ function createReportElement(reportData){
 
     newReportCard.id=reportData.report_id;
     reportName.innerHTML=reportData.report_name;
+    reportImage.src=diseasesImages[reportData.disease_id];
     createDate.innerHTML=savedReportDateTime;
     // newReportCard.removeAttribute('id');
     allReportsContainer.appendChild(newReportCard);
 
 }
 
-function deleteReport(reportId){
+async function deleteReport(reportId){
+
+    let isDeleted = await db.delete_report(reportId);
+    if(!isDeleted) return isDeleted;
+    return isDeleted;
 
 }
 
-function showReportDetails(reportId){
+function openReport(reportId){
 
 }
 
@@ -94,4 +119,12 @@ function sortReports(reportsData){
     reportsData.sort((firstReport,secondReport) => {
         return new Date(secondReport.created_at) - new Date(firstReport.created_at);
     });
+}
+
+function showRemoveDialog(){
+
+}
+
+function hideRemoveDialog(){
+
 }

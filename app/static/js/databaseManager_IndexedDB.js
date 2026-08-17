@@ -345,6 +345,37 @@ async function delete_user(user_id){
 
 }
 
+async function delete_report(report_id){
+
+    try{
+        const db = await openConnection();
+        if(get_report_by_id(report_id)){
+            const trans = db.transaction(saved_reports_table,"readwrite");
+            const current_table = trans.objectStore(saved_reports_table);
+
+            await current_table.delete(report_id);
+            await trans.done;
+
+            console.log("report deleted successfully");
+            return true;
+
+        }
+        else{
+            console.log("this report is not found !");
+            return false;
+        }
+
+
+    }
+    catch(error){
+        console.log(" Report deletion failed , " ,error);
+        return false;
+
+    }
+
+
+}
+
 
 
 
@@ -377,5 +408,6 @@ export default {
     getUserByID,
     delete_user,
     store_report,
-    get_all_reports_from_indexedDB
+    get_all_reports_from_indexedDB,
+    delete_report
 }
