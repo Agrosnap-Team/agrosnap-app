@@ -18,7 +18,7 @@ export async function showReports(reportData){
         sortReports(allReports);
         for(let reportNum=0; reportNum<allReports.length;reportNum++){
             createReportElement(allReports[reportNum]);
-            if(reportData != undefined || reportData.length > 0){
+            if(reportData != undefined || reportData != null){
                 if (allReports[reportNum].report_id== reportData.report_id){
                     console.log('the new report is : ' , allReports[reportNum]);
                     highlightNewSavedReport(allReports[reportNum].report_id);
