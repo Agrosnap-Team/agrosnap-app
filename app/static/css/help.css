@@ -1,0 +1,103 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+/* --- Safely scoped to .hints-container --- */
+.hints-container {
+    width: 100%;
+    max-width: 800px; /* Prevents it from getting too wide on large screens */
+    margin: 0px auto;
+    font-family: inherit; /* Blends in with the host website's font */
+    padding: 30px;
+}
+
+/* Ensure padding/borders don't break widths inside this container */
+.hints-container * {
+    box-sizing: border-box; 
+}
+
+/* Each QA block on its own line */
+.hints-container .qa-container {
+    display: block; 
+    width: 100%;
+    margin-bottom: 15px;
+    background-color: white;
+    border: 1px solid #389100; /* Light grey border */
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 1px 2px 4px gray; /* Subtle depth */
+}
+
+/* The clickable question area */
+.hints-container .question-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.hints-container .question-container:hover {
+    background-color: #f9f9f9; /* Very light grey on hover */
+}
+
+.hints-container .question {
+    font-weight: 600;
+    color: #389100; /* Your specific green */
+    font-size: 16px;
+    margin: 0;
+}
+
+.hints-container .down-btn {
+    border: none;
+    font-size: 16px;
+    color: #389100; /* Your specific green */
+    cursor: pointer;
+    transition: transform 0.3s ease; /* Smooth arrow rotation */
+    padding: 0;
+    background-image: url(../images/down.png);
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 20px;
+    height: 20px;
+    background-color: transparent;
+    
+
+}
+
+.hints-container .down-btn:hover{
+    filter: brightness(1.3);
+}
+
+
+/* --- The Slide Animation Logic --- */
+.hints-container .answer-container {
+    max-height: 0; /* Hidden by default */
+    overflow: hidden;
+    background-color: rgb(144, 169, 140);
+    transition: max-height 0.4s ease-out; /* The slide effect */
+}
+
+.hints-container .answer-content {
+    padding: 0 20px 20px 20px;
+    margin: 0;
+    color: #ffffff; /* Neutral text color */
+    line-height: 1.6;
+    text-align: left;
+    text-shadow: 0px 2px 9px #454545;
+}
+
+/* When the 'active' class is added via JS */
+.hints-container .qa-container.active .answer-container {
+    max-height: 500px; /* Expands to show content (adjust if answers are very long) */
+}
+
+.hints-container .qa-container.active .down-btn {
+    transform: rotate(180deg); /* Flips the arrow upwards */
+}

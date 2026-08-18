@@ -1,0 +1,62 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+/* 1. Component Container (Protects the host HTML) */
+.about-container {
+    max-width: 800px; /* Limits the width on large monitors */
+    margin: 0 auto; /* Centers the whole component */
+    padding: 30px;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; /* Clean, modern base font */
+}
+
+/* 2. Responsive Image Handling */
+.about-container .agro-image {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.about-container .agro-image img {
+    max-width: 100%; /* Image will never overflow its container */
+    height: auto; /* Maintains natural aspect ratio */
+    display: block;
+    margin: 0 auto;
+}
+
+/* 3. Title Styling */
+.about-container .about-titles {
+    color: #389100; /* Your requested green */
+    font-family: 'Agbalumo', cursive; /* Using your imported font */
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-size: 2.2rem;
+    line-height: 1.2;
+}
+
+/* 4. Paragraph Readability */
+.about-container .about-content p {
+    color: #4A4A4A; /* Eye-friendly dark gray */
+    line-height: 1.8; /* Adds breathing room between lines */
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+    text-align: left;
+}
+
+/* 5. Mobile Responsiveness */
+@media (max-width: 600px) {
+    .about-container {
+        padding: 15px; /* Less padding on small screens */
+    }
+    
+    .about-container .about-titles {
+        font-size: 1.7rem; /* Scales titles down slightly */
+    }
+    
+    .about-container .about-content p {
+        font-size: 1rem;
+    }
+}

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+     <link rel="icon" href="../static/images/agrosnap%20logo.PNG">
+    <link rel="stylesheet" href="../static/css/general_style.css">
+    <link rel="stylesheet" href="../static/css/scan.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="manifest" href="/static/manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Agbalumo&display=swap" rel="stylesheet">
+    <script src="/static/js/interactive-sidebar.js" defer></script>
+
+    <title>AgroSnap | Scan</title>
+</head>
+<body id="scan_page_body">
+    <div id="scanPopup">
+        <div id="choices" class="result-dialog">
+            <div id="closePopup"></div>
+            <button id="cameraChoice" class="choose">Take a photo</button>
+            <button id="fileManager" class="choose">Upload a photo</button>
+        </div>
+
+        
+        <!-- this is for healthy result popup-->
+        <div id="healthy-dialog" class="result-dialog">
+            <div id="closeHealthyPopup"></div>
+            <div id="msg-mark">
+                <label id="healthyLabel">Your plant is healthy </label>
+            </div>
+            <div id="healthy-btnsContainer">
+                <button id="healthy-ok" class="choose">OK</button>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+    <h2 id="title">Upload your photo below</h2>
+    <input type="file" id="fileInput" accept="image/*" hidden />
+    <input type="file" id="cameraInput" accept="image/*" capture hidden />
+
+    <div class="upload-box items" id="uploadBox">
+        <span id="boxText">Click here to upload a photo</span>
+        <img id="previewImage" alt="Preview" />
+    </div>
+
+    <div class="buttons-box items" id="btns-container">
+        <button type="button" id="send" class="button-group">Check now</button>
+        <button type="button" id="clear-btn" class="button-group">Remove the photo</button>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agrosnap</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Agbalumo&display=swap" rel="stylesheet">
+    <link rel="icon" href="/static/images/agrosnap%20logo.PNG">
+    <link rel="stylesheet" href="/static/css/general_style.css">
+    <link rel="stylesheet" href="/static/css/scan.css">
+    <link rel="stylesheet" href="/static/css/profile.css">
+    <link rel="stylesheet" href="/static/css/help.css">
+    <link rel="stylesheet" href="/static/css/about.css">
+    <link rel="stylesheet" href="/static/css/all-reports.css">
+    <link rel="stylesheet" href="/static/css/report.css">
+    <link rel="stylesheet" href="/static/css/sidebar.css">
+    <link rel="manifest" href="/static/manifest.json">
+    <script src="/static/js/service-worker-register.js" defer></script>
+    <script src="/static/js/interactive-sidebar.js" defer></script>
+    <script type="module" src="/static/js/dynamic_pages.js" defer></script>
+    <script  src="/node_modules/@tensorflow/tfjs/dist/tf.js"></script>
+</head>
+<body id="sidebar_page">
+    
+    <div id="container">
+        <div id="dialogContainer">
+            <div id="confirmationDialog">
+                <div id="closeDialog"></div>
+                <label id="logoutLabel" class="reportHeader">Are you sure you want to logout from your account ?</label>
+                <label id="warn">NOTE : This means if you want to login again then you have to connect with internet.</label>
+                <div id="btnsContainer">
+                    <button id="cancelLogout" class="choose">Cancel</button>
+                    <button id="confirmLogout" class="choose">Yes</button>
+                </div>
+            </div>
+        </div>
+
+        <aside id ="sidebar">
+            <div id="user-profile">
+                <div id="img">
+                    <img id="profile-pic" src="/static/images/profile-pic.png" />
+                </div>
+                <div id="user-name">
+                    John smith
+                </div>
+                
+            </div>
+            <ul id="pages">
+                <li>
+                    <a>Scan now</a>
+                </li>
+                <li>
+                    <a>My reports</a>
+                </li>
+                <li>
+                    <a>Help center</a>
+                </li>
+                <li>
+                    <a>About Agrosnap</a>
+                </li>
+            </ul>
+            <div id="logout-container">
+                <button id="logout-btn">Log out</button>
+            </div>
+        </aside>
+        <div id="overlay"></div>
+
+        <div id="main">
+
+            <div id="header">
+                <div id="menu">
+                    <button id="menu-btn">  </button>
+                </div>
+                <div id="website-name">
+                    <p>Agrosnap</p>
+                </div>
+
+            </div>
+
+            <div id="content">
+   
+                
+            </div>
+
+        </div>
+    </div>
+    
+</body>
+</html>

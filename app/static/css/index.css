@@ -1,0 +1,48 @@
+
+/* Make the logo container responsive */
+#logo_container{
+    opacity:1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 500px; /* Limits the maximum size on large screens */
+    padding: 20px;    /* Prevents the image from hitting screen edges on mobile */
+    box-sizing: border-box;
+    visibility: hidden;
+   }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(1.2); }
+    to { opacity: 1; transform: scale(1.2); }
+}
+
+#loading_text{
+    background-image: linear-gradient(to right, #389100, #21a9a0);
+    
+    /* 2. Clip the background so it only fills the text area */
+    -webkit-background-clip: text;
+    background-clip: text;
+    
+    /* 3. Make the actual text color transparent so the background shines through! ✨ */
+    color: transparent;
+    font-family: 'Agbalumo', system-ui;
+    font-weight: bold;
+}
+
+
+
+.fade-in{
+    animation: fadeIn 3s ease-in-out forwards;
+
+}
+
+
+/* Make the image inside scale smoothly */
+#image_agro {
+    width: 100%;      /* Takes up the width of the #logo container */
+    height: auto;     /* Maintains the original aspect ratio so it doesn't stretch */
+    display: block;
+}
+

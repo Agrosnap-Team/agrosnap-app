@@ -1,0 +1,32 @@
+# dtabase files
+database.db
+*.sqlite3
+*.db
+
+# visual environment
+.venv/
+venv/
+ENV?
+env/
+
+# python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# IDE setting
+.idea/
+.vscode/
+
+#Environment varible
+.env
+.env.local
+saved_images/
+
+app/test.py
+
+node_modules/
+*.ipynb
+app/static/models/
+model.py

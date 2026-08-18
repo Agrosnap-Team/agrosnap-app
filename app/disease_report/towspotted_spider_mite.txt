@@ -1,0 +1,48 @@
+Two-Spotted Mite
+Common Name: Two-spotted mite / Two-spotted spider mite
+
+Scientific Name: Tetranychus urticae
+
+Status: Cosmopolitan priority pest (found worldwide, including all of Australia)
+
+1. Identification & Physical Description
+Eggs: Minute (~0.14 mm), round, transparent when laid, turning pale yellow-white later.
+
+Larvae/Nymphs: 6-legged pale larvae hatch first. After feeding, they turn yellow/green and develop two distinct dark body spots. They mature through 8-legged protonymph and deuteronymph stages.
+
+Adult Females: ~0.5 mm long, oval, rounded rear. Summer coloration is typically yellowish-green with two prominent dark spots on either side of the body. Can change to orange, reddish-brown, or black depending on the host crop.
+
+Adult Males: Smaller (~0.3 mm), narrower, and pointed at the rear. Light yellow to dark brown; body spots are less conspicuous.
+
+Key Feature: Both sexes possess two distinct reddish eyespots. Mostly found on the underside of leaves.
+
+2. Lifecycle & Behavior
+Speed: Lifecycle can be as short as 2 weeks in hot, dry weather.
+
+Reproduction: Females can lay up to 6 eggs per day (70+ lifetime). Unfertilized eggs yield only males; fertilized eggs yield both sexes.
+
+Overwintering: Triggered by short days and low temperatures. Adult females turn orange-red, stop feeding/laying, and hibernate under lower tree bark or ground debris. They emerge and lose red color in spring. Glasshouse populations do not hibernate.
+
+Webbing: Active stages spin profuse silk webbing to protect themselves from predators and chemical sprays.
+
+3. Crop Damage & Hosts
+Host Range: Extremely wide generalist feeder (targets many crops and ornamentals).
+
+Symptoms: Nymphs and adults pierce cells to suck contents, creating chlorotic (yellowish) spots that give leaves a "stippled" look. Heavy infestations cause leaves to turn yellow or bronzed, shrivel, and drop prematurely.
+
+High-Risk Triggers: Highly destructive in hot, dry weather. Plants near dust sources (like dirt roads) are highly susceptible.
+
+Specific Risk (Pears): Pear trees are highly sensitive. Premature summer leaf drop can trigger out-of-season flowering, ruining the next year's crop buds.
+
+4. Management & Control
+Chemical Issues: High risk of miticide resistance. Broad-spectrum insecticides kill native beneficial insects and worsen outbreaks.
+
+Biological Control (Predatory Mites):
+
+Phytoseiulus persimilis (Chilean predatory mite) – widely used in horticultural crops.
+
+Neoseiulus californicus – highly tolerant of hot Australian fruit-growing climates.
+
+Galendromus occidentalis – successfully used in Integrated Pest Management (IPM) for Victorian apple, pear, and peach orchards.
+
+Stethorus (Small black ladybird beetles) – natural predators, but usually arrive only after mite numbers are already high.

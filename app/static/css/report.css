@@ -1,0 +1,419 @@
+/* =========================================
+   SINGLE REPORT WIDGET STYLES
+   Scoped strictly to prevent host conflicts
+========================================= */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+#popup{
+    opacity: 0;
+    visibility: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    /* Light green with 0.5 opacity */
+    background-color: rgba(237, 237, 237, 0.9);
+    /* High z-index to dominate the host page */
+    z-index: 2147483647;
+    /* Center the child container */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s ease-in-out;
+}
+
+#popup .alertDialog{
+    position: relative;
+    opacity: 0;
+    display: none; /*should always be flex in js */
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    background-color: #ffffff;
+    border: 1px solid #389100;
+    width: 90%;
+    max-width: 400px;
+    padding: 2.5rem 1rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease-in-out;
+}
+
+#popup .alertDialog .closePopup{
+    position: absolute;
+    right: 13px;
+    top: 13px;
+    width: 20px;
+    height: 20px;
+    /* background-color: red; */
+    cursor: pointer;
+    transition: filter 0.3s ease-in-out;
+    background-image: url(../images/closePopup.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+#popup .alertDialog .closePopup:hover{
+    filter: brightness(0.7);
+}
+
+#popup .alertDialog .choose{
+    width:150px;
+    max-width: 200px;
+    min-width: 120px;
+    height: 60px;
+    border-radius: 12px;
+    outline: none;
+    border: none;
+    background-color: #2a6b01;
+    font-size: 16px;
+    transition: filter 0.4s ease;
+    font-weight: bolder;
+    color: white;
+}
+
+
+
+
+#popup .alertDialog .reportHeader{
+    font-size: 20px;
+    color: #285429;
+    font-weight: bolder;
+    text-align: center;
+}
+
+#popup .alertDialog #report-name{
+    height: 50px;
+    width: 90%;
+    border: 1px solid #389100 ;
+    border-radius: 5px;
+    font-size: 15px;
+    color:#285429;
+    font-weight: bolder;
+    outline: 2px solid transparent;
+    padding: 15px;
+    transition: outline-color 0.2s ease-in-out;
+  
+}
+
+#popup #closeReport{
+    padding: 3.5rem 1rem;
+}
+
+
+#popup .alertDialog #btnsContainer {
+    flex-wrap: wrap;
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+
+#popup .alertDialog #cancel{
+    background-color: white;
+    color:#389100 ;
+    border: 1px solid #389100;
+}
+
+#popup .alertDialog #report-name:focus{
+    outline-color: rgb(7, 90, 7);
+}
+
+
+#popup.showPopup{
+    opacity: 1;
+    visibility: visible;
+}
+
+#rename.showRenameConfirmation , #closeReport.showCloseReportConfirmation{
+    display: flex;
+    opacity: 1;
+
+}
+
+
+
+#popup .alertDialog .choose:hover{
+    filter: brightness(0.7);
+
+}
+
+
+.signle-report-container {
+
+    /* Isolate layout from host CSS */
+    box-sizing: border-box;
+    font-family: inherit; /* Adopts host font seamlessly */
+    width: 100%;
+    height: 100%;
+    
+    /* Grid layout for arrows and bottom buttons */
+    display: grid;
+    grid-template-columns: 50px 1fr 50px;
+    grid-template-rows: 1fr auto; 
+    gap: 15px;
+    padding: 20px;
+    background-color: rgba(255, 255, 255); 
+}
+
+/* Force all child elements to respect box-sizing */
+.signle-report-container * {
+    box-sizing: inherit;
+}
+
+
+/* -----------------------------
+   Report Details Area
+----------------------------- */
+.signle-report-container .report-details {
+    grid-column: 2; /* Sits in the middle column */
+    overflow-y: auto; 
+    padding: 0 10px;
+}
+
+.disease-image-container{
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.disease-image-container #disease-image{
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Typography matching the screenshot */
+.signle-report-container .the-header {
+    color: #285429;
+    font-size: 7vw;
+    border-bottom: 2px solid #2D8531;
+    padding-bottom: 8px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+
+.all-report>h3{
+    color: #285429;
+    margin-bottom: 25px;
+    font-size: 4.2vw;
+    height: fit-content;
+}
+
+.signle-report-container .treatment {
+    color: #285429;
+    margin-top: 20px;
+}
+
+.signle-report-container p {
+    line-height: 1.6;
+    color: #333333;
+    text-align: left;
+    font-size: 2.5vw;
+    
+
+}
+
+#report-warning-msg{
+    border: 1px solid rgb(206, 175, 72);
+    background-color: rgb(227, 217, 183);
+    color: rgb(106, 90, 0);
+    font-size: clamp(15px, 3vw, 22px);
+    text-align: center;
+    font-weight: bold;
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+/* -----------------------------
+   Progress Bars
+----------------------------- */
+.progresses-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+    min-height: 90px;
+    max-width: 400px;
+    margin: auto;
+    justify-content: center;
+}
+
+.prograssive-with-label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+    gap:5px;
+    overflow: hidden; /* Prevents overflow on small screens */
+    /* flex-wrap: wrap; Allows stacking on tiny screens */
+}
+
+
+.precentage {
+    color: #7D7D7D;
+    width: 45px;
+    text-align: right;
+    font-weight: bold;
+    flex:1;
+}
+
+/* The Bar Designs */
+.static-line {
+    /* flex: 3 1 150px;  */
+    flex: 3; /* Takes up remaining space */
+    height: 14px;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden; 
+}
+
+.dynamic-line {
+    height: 100%;
+    background-color: #2D8531; /* Bright green */
+    border-radius: 10px;
+    width:0%; /* Default width; update via JS */
+    transition: width 0.6s ease-in-out;
+}
+
+/* -----------------------------
+   Bottom Action Buttons
+----------------------------- */
+.signle-report-container .btns-group {
+    grid-column: 1 / -1; /* Spans across all 3 grid columns */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.signle-report-container .single-btn {
+    width: 100%;
+    max-width: 280px; 
+    padding: 12px 20px;
+    border-radius: 6px;
+    border: none;
+    color: #ffffff;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #285429; /* Dark Green */
+    transition: opacity 0.2s ease, transform 0.1s ease;
+}
+
+.signle-report-container .single-btn:hover {
+    opacity: 0.9;
+}
+
+.signle-report-container .single-btn:active {
+    transform: scale(0.98);
+}
+
+/* Grey styling specifically for the Save & Download button */
+.signle-report-container #save-download-btn {
+    background-color: #7D7D7D;
+}
+
+/* -----------------------------
+   Visibility State Classes
+----------------------------- */
+.signle-report-container .hidden { /*for report */
+    display: none !important;
+}
+
+.signle-report-container .active { /*for report */
+    display: block; 
+}
+
+.signle-report-container .hide-btn { /*for buttons */
+    /* Uses visibility to keep layout stable instead of display: none */
+    visibility: hidden; 
+    pointer-events: none;
+}
+
+
+/*-------------------------------
+   Empty animation
+--------------------------------*/
+
+.alertDialog #report-name.emptyInput{
+    outline: none;
+    border: 2px solid rgb(220, 4, 4) !important;
+    animation: shakeBox 0.15s ease;
+
+}
+
+@keyframes shakeBox {
+        0% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-10px);
+    }
+
+    50% {
+        transform: translateX(10px);
+    }
+
+    75% {
+        transform: translateX(-10px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+    
+}
+/* -----------------------------
+   Mobile Responsiveness
+----------------------------- */
+@media (max-width: 500px) {
+
+    .signle-report-container {
+        grid-template-columns: 25px 1fr 25px; /* Smaller side columns */
+        padding: 10px; /* Less outer padding */
+        gap: 5px; /* Less gap between arrows and text */
+    }
+
+    .signle-report-container button.prev,
+    .signle-report-container button.next {
+        font-size: 20px; 
+    }
+
+
+
+    .signle-report-container .prograssive-with-label {
+        /* flex-direction: column; */
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    
+    .signle-report-container .precentage {
+        text-align: left;
+        width: auto;
+    }
+
+}
+
+@media (max-width: 381px){
+    #popup .alertDialog #btnsContainer{
+        flex-direction: column-reverse;
+    }
+
+}
