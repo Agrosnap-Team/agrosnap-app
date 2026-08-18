@@ -1,5 +1,6 @@
 
-from fastapi import FastAPI, HTTPException
+
+from fastapi import FastAPI, HTTPException,Header
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -92,6 +93,9 @@ async def initiatSW():
 #================================================
 #================================================
 
+# @app.post("/get-user-data")
+# async def get_data(authorization:str = Header()):
+#     token = authorization.replace("Bearer ", "").strip()
 
 
 
