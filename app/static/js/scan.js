@@ -1,5 +1,5 @@
 import { initModel , loadModel } from "./model.js";
-import { show_report } from "./dynamic_pages.js";
+import { show_report ,hideScanButton } from "./dynamic_pages.js";
 
 let fileInput;
 let uploadBox;
@@ -19,6 +19,9 @@ let scanUploadbtns , healthyDialog , okButton , closeHealthyPopupIcon;
 
 
 export function initElements(){
+
+    hideScanButton();
+    
 
     if(localStorage.getItem("user_token")===null || localStorage.getItem("user_token")===undefined){
         window.location.href="/sign";

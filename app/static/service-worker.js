@@ -10,7 +10,7 @@
 // └── ...
 
 
-const CACHE_NAME = "agrosnapApp-v10";
+const CACHE_NAME = "agrosnapApp-v12";
 console.log("this is service worker, " + CACHE_NAME);
 const FILES_TO_CACHE = [
 
@@ -56,6 +56,7 @@ const FILES_TO_CACHE = [
     "/static/js/model.js",
     "/static/js/scan.js", 
     "/static/js/saved-reports.js",
+    "/static/js/about.js",
 
     
     // Images
@@ -77,6 +78,7 @@ const FILES_TO_CACHE = [
     "/static/images/late_blight.jpeg",
     "/static/images/YLCV_disease.jpg",
     "/static/images/check.png",
+    "/static/images/scanner-white.png",
 
 
     // PWA

@@ -14,6 +14,7 @@ import { startSavedReportsPage } from './saved-reports.js';
 import handleToken from "./tokenDecoding.js";
 import DB from "./databaseManager_IndexedDB.js";
 import { initReport } from './single-report.js';
+import { startAboutPage } from './about.js';
 
 
 if(sessionStorage.getItem("current_page")==null || sessionStorage.getItem("current_page")==undefined ){
@@ -29,8 +30,29 @@ const listItems = document.querySelectorAll('#pages li');
 const profile_Btn = document.getElementById("user-profile");
 let current_user_name = document.getElementById("user-name");
 const close_btn = document.getElementById("close-label");
+let scanButton = document.getElementById("scanPAge");
 document.getElementById("logout-btn").addEventListener('click',logoutConfirmationDialog);
 
+scanButton.addEventListener("click",backToHome);
+
+setInterval(()=>{
+    scanButton.classList.add("addAnimation");
+},20000);
+
+scanButton.addEventListener("animationend",()=>{
+    void scanButton.offsetWidth;
+    scanButton.classList.remove("addAnimation");
+});
+
+
+
+export function hideScanButton(){
+    scanButton.classList.add("hideScanButton");
+  }
+
+export function showScanButton(){
+    scanButton.classList.remove("hideScanButton");
+}
 
 
 // 2. Loop through each item
@@ -122,7 +144,7 @@ async function fit_the_page(curr_page,additionalData) {
         {path:"/scan",initJSFunction:initElements},
         {path:"/all_saved_reports",initJSFunction:startSavedReportsPage},
         {path:"/help",initJSFunction:slideAnimation},
-        {path:"/about",initJSFunction:null},
+        {path:"/about",initJSFunction:startAboutPage},
         {path:"/profile",initJSFunction:init},
         {path:"/single_report",initJSFunction:initReport}
 
@@ -135,6 +157,12 @@ async function fit_the_page(curr_page,additionalData) {
         return response.text();
     })
     .then(HTML_data =>{
+        void document.getElementById("content").offsetWidth;
+        document.getElementById("content").classList.add("changePagesAnimation");
+        document.getElementById("content").addEventListener("animationend",()=>{
+            document.getElementById("content").classList.remove("changePagesAnimation");
+           
+        })
         document.getElementById("main").scrollTop=0; //this to let the page go to top again , if user scrolled down
         document.getElementById("content").innerHTML=HTML_data; // put the new page here
         sessionStorage.setItem("current_page",curr_page);

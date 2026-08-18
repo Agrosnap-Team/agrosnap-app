@@ -1,41 +1,47 @@
 import db from "./databaseManager_IndexedDB.js";
+import {showScanButton} from "./dynamic_pages.js";
 
 
 
-let reportContainer , allReportsContainer , noContentMsg , dialogContainer , deletionDialog , closeDialogIcon , confirmDeletionButton , cancelDeletionButton;
+let reportContainer , allReportsContainer , noContentMsg , dialogContainer , deletionDialog , closeDialogIcon , confirmDeletionButton , cancelDeletionButton , reportToDelete;
 
 export async function startSavedReportsPage(reportData){
+    showScanButton();
     let isInitiated =  initiateElements();
     if(!isInitiated)return;
     showReports(reportData);
     allReportsContainer.addEventListener('click',async function (clickedItem) {
         if(clickedItem.target.classList.contains("more-btn")){
+            console.log("clicked item is : " , clickedItem.target.closest(".saved-reports").id);
+            const parentItem = clickedItem.target.closest(".saved-reports");
+            reportToDelete = parentItem;             
 
             showDeleteDialog();
-            confirmDeletionButton.addEventListener('click',async function(){
-                console.log(" confirm clicked !!");
-                const parentItem = clickedItem.target.closest(".saved-reports");
-                const parentElementID = parentItem.id;
-                const deletionStatus = await deleteReport(parentElementID);
-                if(!deletionStatus)return `deleted status ${deletionStatus}`;
-                hideDeleteDialog();
-                parentItem.classList.add("removeReportCardWithAnimation");
-                parentItem.addEventListener('animationend',async function(){
-                    console.log("done");
-                    parentItem.remove();
-                    let remainReports = await checkAllReports();
-                    console.log(`the report ${parentElementID} has been deleted`);
-                    console.log("the remain reports : ", remainReports);
-                });
-
-            });
-
-            cancelDeletionButton.addEventListener('click',hideDeleteDialog);
-            closeDialogIcon.addEventListener('click',hideDeleteDialog);
 
 
         }
       });
+    confirmDeletionButton.addEventListener('click',async function(){
+            console.log(" confirm clicked !!");
+            console.log("the delete report ", reportToDelete);
+        
+            const deletionStatus = await deleteReport(reportToDelete.id);
+            if(!deletionStatus)return `deleted status ${deletionStatus}`;
+            hideDeleteDialog();
+            reportToDelete.classList.add("removeReportCardWithAnimation");
+            reportToDelete.addEventListener('animationend',async function(){
+                console.log("done");
+                reportToDelete.remove();
+                let remainReports = await checkAllReports();
+                console.log(`the report ${reportToDelete.id} has been deleted`);
+                console.log("the remain reports : ", remainReports);
+                reportToDelete = null;
+            });
+
+        });
+
+        cancelDeletionButton.addEventListener('click',hideDeleteDialog);
+        closeDialogIcon.addEventListener('click',hideDeleteDialog);
     
     
 
@@ -75,7 +81,7 @@ function initiateElements(){
     confirmDeletionButton=document.getElementById("confirmDeletion");
     cancelDeletionButton=document.getElementById("cancelDeletion");
 
-    let elements = {reportContainer , allReportsContainer};
+    let elements = {reportContainer , allReportsContainer , noContentMsg , dialogContainer , deletionDialog , closeDialogIcon , confirmDeletionButton,cancelDeletionButton};
     for(let key in elements){
         if(elements[key] === undefined || elements[key] === null){
             console.log(`this ${key} is null`);
