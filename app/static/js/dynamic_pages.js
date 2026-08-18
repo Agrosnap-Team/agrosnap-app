@@ -158,11 +158,13 @@ async function fit_the_page(curr_page,additionalData) {
     })
     .then(HTML_data =>{
         void document.getElementById("content").offsetWidth;
-        document.getElementById("content").classList.add("changePagesAnimation");
-        document.getElementById("content").addEventListener("animationend",()=>{
-            document.getElementById("content").classList.remove("changePagesAnimation");
-           
-        })
+        if(curr_page != 4){
+            document.getElementById("content").classList.add("changePagesAnimation");
+            document.getElementById("content").addEventListener("animationend",()=>{
+                document.getElementById("content").classList.remove("changePagesAnimation");
+            
+            });
+        }
         document.getElementById("main").scrollTop=0; //this to let the page go to top again , if user scrolled down
         document.getElementById("content").innerHTML=HTML_data; // put the new page here
         sessionStorage.setItem("current_page",curr_page);

@@ -27,6 +27,10 @@ export function initReport(diseaseInfo){
         saveButton.addEventListener('click',showRenameDialog);
         renameCloseMark.addEventListener('click',hideRenameDialog);
         confirmRenameButton.addEventListener('click',()=>saveReportProcess(diseaseInfo));
+        downloadButton.addEventListener('click',()=>{
+            downloadReport(0);
+        });
+        
     }
     else{
         console.log("Something went wrong while initiating html elements");
@@ -241,4 +245,15 @@ async function setDiseaseImage(diseaseIndex){
 }
 
 
+function downloadReport(reportIndex){
+
+    console.log("we are in downloadReport()");
+    const reportLink = document.createElement("a");
+
+    reportLink.href="../static/ReportsPdf/testReport.pdf";
+    reportLink.download = "Report Disease.pdf";
+
+    reportLink.click();
+
+}
 
