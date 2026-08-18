@@ -1,9 +1,9 @@
 import db from "./databaseManager_IndexedDB.js";
-import {showScanButton} from "./dynamic_pages.js";
+import {showScanButton , show_report} from "./dynamic_pages.js";
 
 
 
-let reportContainer , allReportsContainer , noContentMsg , dialogContainer , deletionDialog , closeDialogIcon , confirmDeletionButton , cancelDeletionButton , reportToDelete;
+let reportContainer , allReportsContainer , noContentMsg , dialogContainer , deletionDialog , closeDialogIcon , confirmDeletionButton , cancelDeletionButton , reportToDelete , clickedReportCard;
 
 export async function startSavedReportsPage(reportData){
     showScanButton();
@@ -20,7 +20,17 @@ export async function startSavedReportsPage(reportData){
 
 
         }
+
+        else if(clickedItem.target.closest(".saved-reports")){
+            clickedReportCard = clickedItem.target.closest(".saved-reports");
+            console.log("in the method");
+            console.log(`the clicked Card is ${clickedReportCard.id}`);
+            openReport(clickedReportCard.id);
+
+
+        }
       });
+
     confirmDeletionButton.addEventListener('click',async function(){
             console.log(" confirm clicked !!");
             console.log("the delete report ", reportToDelete);
@@ -145,8 +155,17 @@ async function deleteReport(reportId){
 
 }
 
-function openReport(reportId){
-
+async function openReport(reportId){
+        let reportInfo = await db.get_report_by_id(reportId);
+        console.log("The report Info " , reportInfo);
+        let diseaseInfo = await db.get_diseases_info(reportInfo.disease_id);
+        diseaseInfo ={
+            classIndex:diseaseInfo.disease_id,
+            confidence:reportInfo.confidence
+        };
+        console.log("And the disease ID is : " , diseaseInfo);
+        sessionStorage.setItem("CallerPage",1);
+        show_report(diseaseInfo);
 }
 
 function highlightNewSavedReport(newReportID){

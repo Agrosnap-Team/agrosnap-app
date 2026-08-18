@@ -409,5 +409,6 @@ export default {
     delete_user,
     store_report,
     get_all_reports_from_indexedDB,
-    delete_report
+    delete_report,
+    get_report_by_id
 }
