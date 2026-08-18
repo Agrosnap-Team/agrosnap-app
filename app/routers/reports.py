@@ -5,7 +5,7 @@ from app import database as db
 from app.routers.authentication import Token_decoding
 from app.routers.schema_classes import SaveReportRequest
 import sqlite3
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+# from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 
 database_instance = db.AgrosnapDatabase()
