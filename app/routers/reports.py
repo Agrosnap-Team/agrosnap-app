@@ -28,14 +28,15 @@ def Save_scan_report(request_data : SaveReportRequest , user_info : dict = Depen
     cursor = conn.cursor()
 
     try:
-        query ="INSERT INTO Save_report(save_id,user_id ,disease_id ,plant_name ,confidence  ) VALUES (?,?,?,?,?)"
+        query ="INSERT INTO Save_report(save_id,user_id ,disease_id ,plant_name ,confidence , created_at ) VALUES (?,?,?,?,?,?)"
 
         cursor.execute(query
                      ,(request_data.save_id,
                        user_id,
                        request_data.disease_index ,
                        request_data.plant_name if request_data.plant_name else "Disease Report", # in case user dose not entre name when save report , by default save as "Disease Report "
-                       f"{request_data.confidence:.2f}%"))
+                       f"{request_data.confidence:.2f}%",
+                       request_data.created_at))
         conn.commit()
         return {"status": "success" ,"message": "Successfully Save Report"}
 
