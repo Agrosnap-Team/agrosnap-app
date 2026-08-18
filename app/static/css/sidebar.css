@@ -268,7 +268,8 @@ flex-direction: row;
     /* border: 5px solid blue; */
     height: 100vh;        /* give #main a real height so children can size against it */
     overflow-y: auto;     /*#main scrolls, not the whole page */ 
-    
+    background-color: white;
+    overflow-x: hidden;
 
 }
 

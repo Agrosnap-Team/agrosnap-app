@@ -2,20 +2,38 @@ import db from "./databaseManager_IndexedDB.js";
 
 
 
-let reportContainer , allReportsContainer;
+let reportContainer , allReportsContainer , noContentMsg , dialogContainer , deletionDialog , closeDialogIcon , confirmDeletionButton , cancelDeletionButton;
 
-export function startSavedReportsPage(reportData){
+export async function startSavedReportsPage(reportData){
     let isInitiated =  initiateElements();
     if(!isInitiated)return;
     showReports(reportData);
-    allReportsContainer.addEventListener('click',function (clickedItem) {
+    allReportsContainer.addEventListener('click',async function (clickedItem) {
         if(clickedItem.target.classList.contains("more-btn")){
-            const parentItem = clickedItem.target.closest(".saved-reports");
-            const parentElementID = parentItem.id;
-            const deletionStatus = deleteReport(parentElementID);
-            if(!deletionStatus)return;
-            parentItem.remove();
-            console.log(`the report ${parentElementID} has been deleted`);
+
+            showDeleteDialog();
+            confirmDeletionButton.addEventListener('click',async function(){
+                console.log(" confirm clicked !!");
+                const parentItem = clickedItem.target.closest(".saved-reports");
+                const parentElementID = parentItem.id;
+                const deletionStatus = await deleteReport(parentElementID);
+                if(!deletionStatus)return `deleted status ${deletionStatus}`;
+                hideDeleteDialog();
+                parentItem.classList.add("removeReportCardWithAnimation");
+                parentItem.addEventListener('animationend',async function(){
+                    console.log("done");
+                    parentItem.remove();
+                    let remainReports = await checkAllReports();
+                    console.log(`the report ${parentElementID} has been deleted`);
+                    console.log("the remain reports : ", remainReports);
+                });
+
+            });
+
+            cancelDeletionButton.addEventListener('click',hideDeleteDialog);
+            closeDialogIcon.addEventListener('click',hideDeleteDialog);
+
+
         }
       });
     
@@ -25,26 +43,37 @@ export function startSavedReportsPage(reportData){
 
 export async function showReports(reportData){
         let allReports = await checkAllReports();
-        sortReports(allReports);
-        for(let reportNum=0; reportNum<allReports.length;reportNum++){
-            createReportElement(allReports[reportNum]);
-            if(reportData != undefined || reportData != null){
-                if (allReports[reportNum].report_id== reportData.report_id){
-                    console.log('the new report is : ' , allReports[reportNum]);
-                    highlightNewSavedReport(allReports[reportNum].report_id);
+        console.log("all reports:" , allReports);
+        if (allReports && allReports.length > 0){
+            hideNoContentMsg();
+            sortReports(allReports);
+            for(let reportNum=0; reportNum<allReports.length;reportNum++){
+                createReportElement(allReports[reportNum]);
+                if(reportData != undefined || reportData != null){
+                    if (allReports[reportNum].report_id== reportData.report_id){
+                        console.log('the new report is : ' , allReports[reportNum]);
+                        highlightNewSavedReport(allReports[reportNum].report_id);
+                    }
+                
                 }
-            
-             }
-        }
+            }
+    }
+    else{
+        showNoContentMsg();
+    }
 
-        
-    
 }
 
 function initiateElements(){
     let definedElements =0;
     reportContainer = document.getElementById("report-card");
     allReportsContainer = document.getElementById("reports-container");
+    noContentMsg = document.getElementById("no-content");
+    dialogContainer = document.getElementById("deleteReportContainer");
+    deletionDialog = document.getElementById("confirmDeletionDialog");
+    closeDialogIcon = document.getElementById("deleteReportCloseIcon");
+    confirmDeletionButton=document.getElementById("confirmDeletion");
+    cancelDeletionButton=document.getElementById("cancelDeletion");
 
     let elements = {reportContainer , allReportsContainer};
     for(let key in elements){
@@ -63,7 +92,11 @@ function initiateElements(){
 
 async function checkAllReports(){
     const allReports = await db.get_all_reports_from_indexedDB();
-    //console.log("All reports from indexedDB: ", allReports);
+    console.log("this is check , and the reports is : " , allReports);
+    if(allReports.length<=0){
+        console.log("no reports remained");
+        showNoContentMsg();}
+    else hideNoContentMsg();
     return allReports;
 }
 
@@ -112,6 +145,10 @@ function openReport(reportId){
 
 function highlightNewSavedReport(newReportID){
     document.getElementById(newReportID).classList.add("highlightNewReport");
+    document.getElementById(newReportID).addEventListener('animationend',()=>{
+        document.getElementById(newReportID).classList.remove("highlightNewReport");
+    });
+
 
 }
 
@@ -121,10 +158,23 @@ function sortReports(reportsData){
     });
 }
 
-function showRemoveDialog(){
+function showDeleteDialog(){
+    dialogContainer.classList.add("showDeletionContainer");
 
 }
 
-function hideRemoveDialog(){
+function hideDeleteDialog(){
+    dialogContainer.classList.remove("showDeletionContainer");
+
+}
+
+function showNoContentMsg(){
+    noContentMsg.style.display="block";
+
+}
+
+function hideNoContentMsg(){
+    noContentMsg.style.display="none";
+    
 
 }

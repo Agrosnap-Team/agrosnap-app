@@ -9,7 +9,19 @@
      <link rel="manifest" href="/static/manifest.json">
 </head>
 <body>
-    <div class="no-content">There is no saved reports</div>
+    <div id="no-content">There is no saved reports</div>
+    <div id="deleteReportContainer">
+        <div id="confirmDeletionDialog">
+            <div id="deleteReportCloseIcon"></div>
+            <label id="deleteReportlabel"> Are you sure about delete this report permenantly ? </label>
+            <div id="deletionBtnsContainer">
+                <button id="cancelDeletion" class="deletionButtons">Cancel</button>
+                <button id="confirmDeletion" class="deletionButtons">Yes</button>
+            </div>
+
+        </div>
+
+    </div>
         <div id="reports-container">
             <div class="saved-reports hideReportCard" id="report-card">
                 <div class="images-container">
