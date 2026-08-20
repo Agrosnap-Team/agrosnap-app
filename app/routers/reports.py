@@ -5,6 +5,7 @@ from app import database as db
 from app.routers.authentication import Token_decoding
 from app.routers.schema_classes import SaveReportRequest
 import sqlite3
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 
 database_instance = db.AgrosnapDatabase()
@@ -27,13 +28,15 @@ def Save_scan_report(request_data : SaveReportRequest , user_info : dict = Depen
     cursor = conn.cursor()
 
     try:
-        query ="INSERT INTO Save_report(user_id ,disease_id ,plant_name ,confidence  ) VALUES (?,?,?,?)"
+        query ="INSERT INTO Save_report(save_id,user_id ,disease_id ,plant_name ,confidence , created_at ) VALUES (?,?,?,?,?,?)"
 
         cursor.execute(query
-                     ,(user_id,
+                     ,(request_data.save_id,
+                       user_id,
                        request_data.disease_index ,
                        request_data.plant_name if request_data.plant_name else "Disease Report", # in case user dose not entre name when save report , by default save as "Disease Report "
-                       f"{request_data.confidence:.2f}%"))
+                       f"{request_data.confidence:.2f}%",
+                       request_data.created_at))
         conn.commit()
         return {"status": "success" ,"message": "Successfully Save Report"}
 
@@ -48,7 +51,7 @@ def Save_scan_report(request_data : SaveReportRequest , user_info : dict = Depen
 
 # function to let user get there won save_report
 @router.get("/report")
-def my_Report(user_info : dict = Depends(get_info_current_user)) -> dict:
+def my_Report(user_info : dict = Depends(get_info_current_user)) ->list :
 
     # get the user_id from the token we  had decode
     user_id = user_info.get("user_id")
@@ -81,7 +84,7 @@ def my_Report(user_info : dict = Depends(get_info_current_user)) -> dict:
                     "disease_description": row["disease_description"]
                 }
             )
-            return list_reports
+        return list_reports
 
 
     except sqlite3.Error as db_error:

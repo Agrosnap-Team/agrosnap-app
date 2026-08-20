@@ -25,3 +25,8 @@ __pycache__/
 saved_images/
 
 app/test.py
+
+node_modules/
+*.ipynb
+app/static/models/
+model.py

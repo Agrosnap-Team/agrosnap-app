@@ -1,6 +1,8 @@
 
+
 from pydantic import BaseModel, EmailStr,field_validator,model_validator
 import re
+from datetime import datetime
 
 
 class UserSign_Up(BaseModel):
@@ -63,9 +65,11 @@ class userSign_in(BaseModel):
 
 # this schema for what data should send to save report
 class SaveReportRequest(BaseModel):
+    save_id:str
     disease_index: int #this is the index of disease that store already in database
     plant_name :str
     confidence : float
+    created_at: datetime
 
 
 

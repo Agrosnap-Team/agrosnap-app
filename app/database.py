@@ -55,6 +55,7 @@ class AgrosnapDatabase:
             disease_id INTEGER ,
             plant_name TEXT NOT NULL,
             confidence REAL NOT NULL,
+            created_at DATETIM,
             -- 'on delete cascade' this mean if row in the parent table is deleted ,all corresponding rows in the child (reference) table should automatically be deleted as well
             FOREIGN KEY (user_id) REFERENCES users_info (user_id) ON DELETE CASCADE,
             FOREIGN KEY (disease_id) REFERENCES disease_Table (disease_id ) ON DELETE CASCADE, 
