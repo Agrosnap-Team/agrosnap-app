@@ -1,6 +1,7 @@
 #this file contain on @router.post("/save") ,@router.post("/delete")............
-
+import jwt
 from fastapi import APIRouter,HTTPException,Depends
+from fastapi.security import HTTPBearer,HTTPAuthorizationCredentials
 from app import database as db
 from app.routers.authentication import Token_decoding
 from app.routers.schema_classes import SaveReportRequest
@@ -11,10 +12,23 @@ import sqlite3
 database_instance = db.AgrosnapDatabase()
 
 router = APIRouter()
+# define the security system
+# HTTPBearer is response about detect if the token sent with request in header
+# after check the HTTPBearer will but the token data in  HTTPAuthorizationCredentials
+security = HTTPBearer()
 
 # this depends function by this def we get the data of user via "token_decoding"
-def get_info_current_user(current_user:dict = Depends(Token_decoding) ):
-    return current_user
+def get_info_current_user(crdentials : HTTPAuthorizationCredentials = Depends(security) ):
+
+    # this will return the token
+    token = crdentials.credentials
+
+    try:
+        user_info= Token_decoding(token)
+        return user_info
+    except Exception :
+        raise HTTPException(status_code=401, detail="Invalid or expired token")
+
 
 # this code for save the result after apper for user and depends on the get_inf_current_user
 @router.post("/save")
