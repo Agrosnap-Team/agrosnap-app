@@ -112,3 +112,47 @@ def my_Report(user_info : dict = Depends(get_info_current_user)) ->list :
 
 
 
+
+#Delete Function to let users delete there report
+# Function to let users delete their own saved report
+@router.delete("/delete-report/{save_id}")
+def delete_save_report(
+        save_id: int,
+        user_info: dict = Depends(get_info_current_user)
+) -> dict:
+    # 1. Extract the user_id from the authenticated token
+    user_id = user_info.get("user_id")
+
+    # 2. Connect to the database
+    conn = sqlite3.connect("./app/database.db")
+    cursor = conn.cursor()
+
+    try:
+        # 3. Verify the report exists AND belongs to the authenticated user
+        check_query = "SELECT save_id FROM Save_report WHERE save_id = ? AND user_id = ?"
+        cursor.execute(check_query, (save_id, user_id))
+        report = cursor.fetchone()
+
+        # If the report doesn't exist
+        if not report:
+            raise HTTPException(
+                status_code=404,
+                detail="Report not found to delete it"
+            )
+
+        # 4. Execute the deletion query
+        delete_query = "DELETE FROM Save_report WHERE save_id = ? AND user_id = ?"
+        cursor.execute(delete_query, (save_id, user_id))
+        conn.commit()
+
+        return {
+            "status": "success",
+            "message": f"Successfully deleted report with ID {save_id}"
+        }
+
+    except sqlite3.Error as db_error:
+        conn.rollback()
+        raise HTTPException(status_code=500, detail=f"Database error: {str(db_error)}")
+
+    finally:
+        conn.close()
