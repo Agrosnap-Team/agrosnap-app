@@ -1,6 +1,7 @@
 
 import handleData from "./tokenDecoding.js";
 import DB from "./databaseManager_IndexedDB.js";
+import { getSavedReportsFromMainDB } from "./syncReports.js";
 
 
 document.addEventListener('click',check_user_data);
@@ -62,11 +63,18 @@ async function check_user_data(element) {
 
                     console.log("this is the collected user data : ",allUserData);
 
-                    alert("login successful , you will be redirected to the main page"+ result.user_info);
+                    console.log("Start sync the data");
+
+                    getSavedReportsFromMainDB(localStorage.getItem("user_token"));
+
+                     
 
                     DB.prepareDataAndStoreIt(allUserData); //store all user data in indexedDB
                     //store all user data in indexedDB
-                    window.location.href="/sidebar";
+
+
+
+                    // window.location.href="/sidebar";
                 }
                 
 
