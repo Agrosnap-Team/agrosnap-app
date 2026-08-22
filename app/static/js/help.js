@@ -1,7 +1,8 @@
-
+import {showScanButton} from "./dynamic_pages.js";
 
 export function slideAnimation(){
 
+        showScanButton();
         // Find all question containers inside your hints wrapper
         const questions = document.querySelectorAll('.hints-container .question-container');
 

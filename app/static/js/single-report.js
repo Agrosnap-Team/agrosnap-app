@@ -1,6 +1,6 @@
 import db from "./databaseManager_IndexedDB.js";
 import handleData from "./tokenDecoding.js";
-import { backToHome , backToCallerPage , goToMyReports } from "./dynamic_pages.js";
+import { backToHome , backToCallerPage , goToMyReports ,showScanButton } from "./dynamic_pages.js";
 
 //these variables for prograss bar
 let progressesContainer,progTitle , progPercent , progLine;
@@ -19,6 +19,7 @@ const pageIndex = 5;
 
 export function initReport(diseaseInfo){
 
+    showScanButton();
     let isElementsInitiated=initiateElements();
     if(isElementsInitiated){
         fillReportStructure(diseaseInfo.classIndex,diseaseInfo.confidence);
@@ -26,6 +27,10 @@ export function initReport(diseaseInfo){
         saveButton.addEventListener('click',showRenameDialog);
         renameCloseMark.addEventListener('click',hideRenameDialog);
         confirmRenameButton.addEventListener('click',()=>saveReportProcess(diseaseInfo));
+        downloadButton.addEventListener('click',()=>{
+            downloadReport(0);
+        });
+        
     }
     else{
         console.log("Something went wrong while initiating html elements");
@@ -197,7 +202,7 @@ async function saveReportProcess(diseaseData){
     reportRenameInput.classList.remove("emptyInput");
     console.log("this is saveReportProcess() , and the passed diseaseData  : ",diseaseData);
 
-    if(!reportRenameInput.value){
+    if(!reportRenameInput.value.trim()){
         void reportRenameInput.offsetWidth;
         reportRenameInput.classList.add("emptyInput");
         return;
@@ -240,4 +245,15 @@ async function setDiseaseImage(diseaseIndex){
 }
 
 
+function downloadReport(reportIndex){
+
+    console.log("we are in downloadReport()");
+    const reportLink = document.createElement("a");
+
+    reportLink.href="../static/ReportsPdf/testReport.pdf";
+    reportLink.download = "Report Disease.pdf";
+
+    reportLink.click();
+
+}
 
