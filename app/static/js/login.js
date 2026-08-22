@@ -74,7 +74,7 @@ async function check_user_data(element) {
 
 
 
-                    // window.location.href="/sidebar";
+                    window.location.href="/sidebar";
                 }
                 
 

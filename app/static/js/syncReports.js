@@ -34,8 +34,6 @@ export async function getSavedReportsFromMainDB(token){
     console.log("The data is " , allReports);
     console.log("All reports has been there " , allReports);
 
-
-    
   }
   catch(error){
     alert("error with checking connection");
@@ -43,7 +41,15 @@ export async function getSavedReportsFromMainDB(token){
 
 }
 
-function sendReportToMainDB(){
+function sendReportToMainDB(token , savedReports){
+  // send token in header 
+  //send savedReports in body
+  //check the status if success or not
+  //change the isSynced to true , which means the reports stored in sqlite3
+
+
+
+
 
 }
 

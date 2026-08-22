@@ -149,7 +149,9 @@ function createReportElement(reportData){
 
 async function deleteReport(reportId){
 
-    let isDeleted = await db.delete_report(reportId);
+
+    
+    let isDeleted = await db.add_deleted_reports(reportId);
     if(!isDeleted) return isDeleted;
     return isDeleted;
 

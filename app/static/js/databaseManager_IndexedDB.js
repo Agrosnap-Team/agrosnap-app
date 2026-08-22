@@ -8,6 +8,7 @@ const user_table = "user_info";
 const disease_table = "diseases_info";
 const saved_reports_table = "saved_reports";
 const report_details = "report_details";
+const deleted_report_table = "deleted_reports";
 
 console.log("IndexedDB file loaded");
 
@@ -24,7 +25,7 @@ async function openConnection() {
 
         if(!dbConnection){
 
-            dbConnection = await openDB("Agrosnap_database", 3 ,{
+            dbConnection = await openDB("Agrosnap_database", 4 ,{
 
             upgrade(db){
             console.log("Creating tables...");
@@ -34,7 +35,7 @@ async function openConnection() {
             create_users_table(db);
             create_disease_table(db);
             create_saved_reports(db);
-            create_reports_details(db);
+            create_deleted_reports(db);
                 
             }
 
@@ -111,6 +112,13 @@ async function create_reports_details(db){
 }
 
 
+async function create_deleted_reports(db){
+    if(!db.objectStoreNames.contains(deleted_report_table)){
+        const deletedReports = db.createObjectStore(deleted_report_table,{keyPath:"report_id"});
+    }
+
+}
+
 
 
 
@@ -152,19 +160,62 @@ async function add_new_user(newData){
 
 async function add_disease_info(all_diseases) {
     //After got the disease from fastAPI we add it to indexedDB
-    if(all_diseases){
-    const db = await openConnection();    
-    const trans = db.transaction(disease_table,"readwrite");
-    const current_table = trans.objectStore(disease_table);
+    try{
+        if(all_diseases){
+            const db = await openConnection();    
+            const trans = db.transaction(disease_table,"readwrite");
+            const current_table = trans.objectStore(disease_table);
 
-    await Promise.all( all_diseases.map(  row => current_table.put(row)  ) );
+            await Promise.all( all_diseases.map(  row => current_table.put(row)  ) );
 
-    trans.done;
-    console.log("add all successfully");
+            trans.done;
+            console.log("add all successfully");
 
+        }
+
+    }
+    catch(error){
+        console.log("Adding disease failed , " , error.message);
     }
 
     
+}
+
+async function add_deleted_reports(reportID){
+    try{
+
+
+        if(reportID){
+            console.log("the report id is: " , reportID);
+            const db = await openConnection();
+            const trans = await db.transaction(deleted_report_table,"readwrite");
+            const current_table = await trans.objectStore(deleted_report_table);
+            const deletedReport = { report_id: reportID };  //convert it to object
+            await   current_table.put(deletedReport);
+
+            trans.done;
+            const deletionStatus = await delete_report(reportID);
+            if(deletionStatus){
+                console.log("Report deleted successfully");
+                return true;
+            }
+            return false;
+            
+        }
+        else{
+            console.log(`there is no report with ${reportID} exist `);
+            return false;
+        }
+
+    }
+
+    catch(error){
+
+        console.log("Deleting failed , ",error.message);
+        return false;
+
+    }
+
 }
 
 
@@ -410,5 +461,6 @@ export default {
     store_report,
     get_all_reports_from_indexedDB,
     delete_report,
-    get_report_by_id
+    get_report_by_id,
+    add_deleted_reports
 }
