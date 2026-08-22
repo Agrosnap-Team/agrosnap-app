@@ -1,6 +1,8 @@
 import db from "./databaseManager_IndexedDB.js";
 import handleData from "./tokenDecoding.js";
 import { backToHome , backToCallerPage , goToMyReports ,showScanButton } from "./dynamic_pages.js";
+import sync from "./syncReports.js"
+
 
 //these variables for prograss bar
 let progressesContainer,progTitle , progPercent , progLine;
@@ -222,6 +224,7 @@ async function saveReportProcess(diseaseData){
     };
     let isSaved = await db.store_report(reportData);
     if(isSaved){
+        const saveStatus = await sync.sendReportToMainDB(localStorage.getItem("user_token"), reportData);
         goToMyReports(reportData);
         console.log("saved");
     }

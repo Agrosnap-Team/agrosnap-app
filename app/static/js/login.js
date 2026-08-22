@@ -65,7 +65,18 @@ async function check_user_data(element) {
 
                     console.log("Start sync the data");
 
-                    getSavedReportsFromMainDB(localStorage.getItem("user_token"));
+                    const allSavedReports = await getSavedReportsFromMainDB(localStorage.getItem("user_token"));
+                    console.log("all saved reports " , allSavedReports );
+
+
+
+                    // for(let report= 0; report<allSavedReports.length; report++){
+                    //     console.log(`report - ${report} \n`,allSavedReports[report] , `The type is : ${typeof(allSavedReports[report])}`);
+
+                        
+
+                    // }
+
 
                      
 
@@ -74,7 +85,7 @@ async function check_user_data(element) {
 
 
 
-                    window.location.href="/sidebar";
+                    // window.location.href="/sidebar";
                 }
                 
 

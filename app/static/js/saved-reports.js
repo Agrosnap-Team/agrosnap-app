@@ -140,8 +140,8 @@ function createReportElement(reportData){
 
     newReportCard.id=reportData.report_id;
     reportName.innerHTML=reportData.report_name;
-    reportImage.src=diseasesImages[reportData.disease_id];
-    createDate.innerHTML=savedReportDateTime;
+    reportImage.src = diseasesImages[reportData.disease_id];
+    createDate.innerHTML = savedReportDateTime;
     // newReportCard.removeAttribute('id');
     allReportsContainer.appendChild(newReportCard);
 
@@ -149,8 +149,6 @@ function createReportElement(reportData){
 
 async function deleteReport(reportId){
 
-
-    
     let isDeleted = await db.add_deleted_reports(reportId);
     if(!isDeleted) return isDeleted;
     return isDeleted;

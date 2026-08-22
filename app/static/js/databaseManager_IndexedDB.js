@@ -231,6 +231,12 @@ async function store_report(report_data){
         const trans = db.transaction(saved_reports_table,"readwrite");
         const current_table = trans.objectStore(saved_reports_table);
 
+        if (report_data.save_id) {
+            report_data.report_id = report_data.save_id;
+            delete report_data.save_id;
+        }
+        console.log("After swap : " , report_data);
+
         await current_table.put(report_data);
         trans.done;
         console.log("the report has been sent to indexedDB successfully ✅");
@@ -430,9 +436,7 @@ async function delete_report(report_id){
 
 
 
-//==========================================================
-// Delete from tables
-//==========================================================
+
 
 //==========================================================
 // Start the info and this will export to dynamic.js 
