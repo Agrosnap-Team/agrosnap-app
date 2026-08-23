@@ -18,7 +18,6 @@ export async function startSavedReportsPage(reportData){
 
             showDeleteDialog();
 
-
         }
 
         else if(clickedItem.target.closest(".saved-reports")){
@@ -52,8 +51,6 @@ export async function startSavedReportsPage(reportData){
 
         cancelDeletionButton.addEventListener('click',hideDeleteDialog);
         closeDialogIcon.addEventListener('click',hideDeleteDialog);
-    
-    
 
 }
 
@@ -169,6 +166,7 @@ async function openReport(reportId){
 }
 
 function highlightNewSavedReport(newReportID){
+
     document.getElementById(newReportID).classList.add("highlightNewReport");
     document.getElementById(newReportID).addEventListener('animationend',()=>{
         document.getElementById(newReportID).classList.remove("highlightNewReport");
@@ -179,7 +177,9 @@ function highlightNewSavedReport(newReportID){
 
 function sortReports(reportsData){
     reportsData.sort((firstReport,secondReport) => {
+
         return new Date(secondReport.created_at) - new Date(firstReport.created_at);
+
     });
 }
 
