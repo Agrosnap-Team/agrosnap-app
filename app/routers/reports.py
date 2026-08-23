@@ -49,7 +49,7 @@ def Save_scan_report(request_data : SaveReportRequest , user_info : dict = Depen
                        user_id,
                        request_data.disease_index ,
                        request_data.plant_name if request_data.plant_name else "Disease Report", # in case user dose not entre name when save report , by default save as "Disease Report "
-                       f"{request_data.confidence:.2f}%",
+                       f"{request_data.confidence:.2f}",
                        request_data.created_at))
         conn.commit()
         return {"status": "success" ,"message": "Successfully Save Report"}
@@ -77,8 +77,8 @@ def my_Report(user_info : dict = Depends(get_info_current_user)) ->list :
 
 
     try:
-        query = ("SELECT sr.save_id , sr.plant_name ,sr.confidence ,"
-                 " dt.disease_name , dt.organic_treatment , dt.report AS disease_description  FROM Save_report sr"
+        query = ("SELECT sr.save_id , sr.plant_name ,sr.confidence ,sr.disease_id , sr.created_at , "
+                 " dt.disease_name , dt.organic_treatment , dt.report  AS disease_description  FROM Save_report sr"
                 " INNER JOIN disease_Table dt ON sr.disease_id = dt.disease_id  where sr.user_id = ?")
         cursor.execute(query,(user_id,))
         rows = cursor.fetchall()
@@ -93,6 +93,8 @@ def my_Report(user_info : dict = Depends(get_info_current_user)) ->list :
                     "save_id": row["save_id"],
                     "plant_name": row["plant_name"],
                     "confidence": row["confidence"],
+                    "disease_id": row["disease_id"],
+                    "created_at": row["created_at"],
                     "disease_name": row["disease_name"],
                     "organic_treatment": row["organic_treatment"],
                     "disease_description": row["disease_description"]
@@ -113,7 +115,6 @@ def my_Report(user_info : dict = Depends(get_info_current_user)) ->list :
 
 
 
-#Delete Function to let users delete there report
 # Function to let users delete their own saved report
 @router.delete("/delete-report/{save_id}")
 def delete_save_report(
