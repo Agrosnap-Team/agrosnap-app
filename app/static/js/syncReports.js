@@ -15,7 +15,6 @@ export async function getSavedReportsFromMainDB(token){
         alert("no internet connection");
         return false;
     }
-    alert("connected to internet");
     if(!token)return false;
     const response = await fetch("/report",{
     method:"GET",
@@ -25,7 +24,6 @@ export async function getSavedReportsFromMainDB(token){
     }
     });
 
-    console.log("the response is : " , response.status); 
 
 
 
@@ -33,14 +31,19 @@ export async function getSavedReportsFromMainDB(token){
         throw new Error(`Failed connection ${response.status}`);
 
     const allReports = await response.json();
-    console.log("All reports has been there " , allReports);
     if(allReports.length<=0)return false; // if no reports are in sqlite3
-    const isStored = await storeInIndexedDB(allReports);
+    console.log('The returned reports' , allReports);
+    let syncedReports=[];
+
+    for(let perReport =0 ; perReport<allReports.length;perReport++){
+       let signleSyncedReport = markedReportisSynced(allReports[perReport]);
+       syncedReports.push(signleSyncedReport);
+    }
+    console.log("the syncedReport before send to indexedDB , " , syncedReports);
+    const isStored = await storeInIndexedDB(syncedReports);
+    
+    
     return isStored;
-
-
-    
-    
 
   }
   catch(error){
@@ -57,9 +60,9 @@ async function sendReportToMainDB(token , savedReports){
   // change the isSynced to true , which means the reports stored in sqlite3 successfully
   try{
     const savedReportJson={
-      save_id:savedReports.report_id,
-      disease_index: parseInt(savedReports.disease_id)+1,
-      plant_name :savedReports.report_name,
+      save_id:savedReports.save_id,
+      disease_index: parseInt(savedReports.disease_index)+1,
+      plant_name :savedReports.plant_name,
       confidence : parseFloat(savedReports.confidence),
       created_at: new Date(savedReports.created_at).toISOString()
     }
@@ -68,14 +71,15 @@ async function sendReportToMainDB(token , savedReports){
 
     if(!navigator.onLine)return false;
     console.log("connected to internet");
-    const response = await fetch("/save",{
-      method:'POST',
-      headers:{
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-      },
-      body:JSON.stringify(savedReportJson)
-    });
+
+      const response = await fetch("/save",{
+        method:'POST',
+        headers:{
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
+        body:JSON.stringify(savedReportJson)
+      });
 
     
     
@@ -86,7 +90,6 @@ async function sendReportToMainDB(token , savedReports){
     const isSaved = await response.json();
     console.log(`isSaved ?` , isSaved);
     if(isSaved.status == 'success'){
-      console.log("report saved to sqlite3");
       return true
     }
     return false
@@ -134,6 +137,19 @@ async function storeInIndexedDB(allSavedReportsInDB) {
     return false;
   }
   
+}
+
+function markedReportisSynced(perReport){
+      const theReports={
+      save_id:perReport.save_id,
+      disease_index: parseInt(perReport.disease_id)-1,
+      plant_name :perReport.plant_name,
+      confidence : parseFloat(perReport.confidence),
+      created_at: new Date(perReport.created_at).toISOString(),
+      isSynced : true
+    };
+
+    return theReports;
 }
 
 export default {

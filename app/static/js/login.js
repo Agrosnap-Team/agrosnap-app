@@ -61,12 +61,10 @@ async function check_user_data(element) {
                         exp: decodedData.exp
                     };
 
-                    console.log("this is the collected user data : ",allUserData);
-
                     console.log("Start sync the data");
 
                     const allSavedReports = await getSavedReportsFromMainDB(localStorage.getItem("user_token"));
-                    console.log("all saved reports " , allSavedReports );
+                    console.log("all saved reports that fetched from sqlite3 " , allSavedReports );
 
 
 
@@ -81,11 +79,12 @@ async function check_user_data(element) {
                      
 
                     DB.prepareDataAndStoreIt(allUserData); //store all user data in indexedDB
+                    
                     //store all user data in indexedDB
 
 
 
-                    // window.location.href="/sidebar";
+                    window.location.href="/sidebar";
                 }
                 
 

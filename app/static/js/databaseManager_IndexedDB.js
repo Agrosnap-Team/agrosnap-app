@@ -25,7 +25,7 @@ async function openConnection() {
 
         if(!dbConnection){
 
-            dbConnection = await openDB("Agrosnap_database", 4 ,{
+            dbConnection = await openDB("Agrosnap_database", 7 ,{
 
             upgrade(db){
             console.log("Creating tables...");
@@ -82,7 +82,7 @@ async function create_users_table(db){
 
 async function create_disease_table(db){
     if(!db.objectStoreNames.contains(disease_table)){
-        const diseaseTable = db.createObjectStore(disease_table, {keyPath:"disease_id"});
+        const diseaseTable = db.createObjectStore(disease_table, {keyPath:"disease_index"});
     }
 }
 
@@ -90,7 +90,7 @@ async function create_disease_table(db){
 async function create_saved_reports(db){
     if(!db.objectStoreNames.contains(saved_reports_table)){
 
-        const saved_report = db.createObjectStore(saved_reports_table,{keyPath:"report_id"});
+        const saved_report = db.createObjectStore(saved_reports_table,{keyPath:"save_id"});
 
     }
 
@@ -98,23 +98,10 @@ async function create_saved_reports(db){
 
 
 
-async function create_reports_details(db){
-
-
-    if(!db.objectStoreNames.contains(report_details)){
-
-    const saved_report = db.createObjectStore(report_details,{keyPath:"unique_report"});
-
-    saved_report.createIndex("reports_id_group","reports_id",{unique:false});
-
-}
-
-}
-
 
 async function create_deleted_reports(db){
     if(!db.objectStoreNames.contains(deleted_report_table)){
-        const deletedReports = db.createObjectStore(deleted_report_table,{keyPath:"report_id"});
+        const deletedReports = db.createObjectStore(deleted_report_table,{keyPath:"save_id"});
     }
 
 }
@@ -190,7 +177,7 @@ async function add_deleted_reports(reportID){
             const db = await openConnection();
             const trans = await db.transaction(deleted_report_table,"readwrite");
             const current_table = await trans.objectStore(deleted_report_table);
-            const deletedReport = { report_id: reportID };  //convert it to object
+            const deletedReport = { save_id: reportID };  //convert it to object
             await   current_table.put(deletedReport);
 
             trans.done;
@@ -231,10 +218,6 @@ async function store_report(report_data){
         const trans = db.transaction(saved_reports_table,"readwrite");
         const current_table = trans.objectStore(saved_reports_table);
 
-        if (report_data.save_id) {
-            report_data.report_id = report_data.save_id;
-            delete report_data.save_id;
-        }
         console.log("After swap : " , report_data);
 
         await current_table.put(report_data);
@@ -299,12 +282,12 @@ async function prepareDataAndStoreIt(user_info){
     
     //we get the diseases from FastAPI
     const all_disease = [
-        {"disease_id":0,"disease_name":"Bacterial Spot","report":"this is the report of Bacterial Spot disease and dummy data","treatment":"this is the Bacterial Spot treatment section"},
-        {"disease_id":1,"disease_name":"Early Blight","report":"this is the report of  early blight disease and dummy data","treatment":"this is the early blight treatment section"},
-        {"disease_id":2,"disease_name":"Healthy","report":"this is the report of healthy disease and dummy data","treatment":"this is the Healthy treatment section"},
-        {"disease_id":3,"disease_name":"Late Blight","report":"this is the report of Late Blight disease and dummy data","treatment":"this is the Late Blight treatment section"},
-        {"disease_id":4,"disease_name":"Leaf Mold","report":"this is the report of  Leaf Mold disease and dummy data","treatment":"this is the Leaf Mold treatment section"},
-        {"disease_id":5,"disease_name":"Yellow Leaf Curl Virus","report":"this is the report of Yellow Leaf Curl Virus disease and dummy data","treatment":"this is the Yellow Leaf Curl Virus treatment section"}
+        {"disease_index":0,"disease_name":"Bacterial Spot","report":"this is the report of Bacterial Spot disease and dummy data","treatment":"this is the Bacterial Spot treatment section"},
+        {"disease_index":1,"disease_name":"Early Blight","report":"this is the report of  early blight disease and dummy data","treatment":"this is the early blight treatment section"},
+        {"disease_index":2,"disease_name":"Healthy","report":"this is the report of healthy disease and dummy data","treatment":"this is the Healthy treatment section"},
+        {"disease_index":3,"disease_name":"Late Blight","report":"this is the report of Late Blight disease and dummy data","treatment":"this is the Late Blight treatment section"},
+        {"disease_index":4,"disease_name":"Leaf Mold","report":"this is the report of  Leaf Mold disease and dummy data","treatment":"this is the Leaf Mold treatment section"},
+        {"disease_index":5,"disease_name":"Yellow Leaf Curl Virus","report":"this is the report of Yellow Leaf Curl Virus disease and dummy data","treatment":"this is the Yellow Leaf Curl Virus treatment section"}
     ];//this is fake data
 
     await add_disease_info(all_disease);
@@ -349,6 +332,7 @@ async function get_diseases_info(diseaseIndex) {
         const current_table = trans.objectStore(disease_table);
 
         const diseaseData = await current_table.get(diseaseIndex);
+        console.log("this is disease : " , diseaseData);
         trans.done;
 
         if(!diseaseData)return;
@@ -433,6 +417,30 @@ async function delete_report(report_id){
 
 }
 
+async function clear_DB_tables(){
+    try{
+        const db = await openConnection();
+        const trans =await  db.transaction([user_table, saved_reports_table, deleted_report_table , disease_table],"readwrite");
+        const current_table =await trans.objectStore(saved_reports_table);
+        await Promise.all([
+            trans.objectStore(user_table).clear(),
+            trans.objectStore(saved_reports_table).clear(),
+            trans.objectStore(deleted_report_table).clear(),
+            trans.objectStore(disease_table).clear()
+        ]);
+
+        trans.done;
+        return true
+
+        
+
+    }
+    catch(error){
+        alert(error.message);
+        return false;
+    }
+}
+
 
 
 
@@ -466,5 +474,6 @@ export default {
     get_all_reports_from_indexedDB,
     delete_report,
     get_report_by_id,
-    add_deleted_reports
+    add_deleted_reports,
+    clear_DB_tables
 }

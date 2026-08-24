@@ -214,17 +214,20 @@ async function saveReportProcess(diseaseData){
     let diseaseOtherInfo = await db.get_diseases_info(diseaseData.classIndex);
 
     let reportData = {
-        "report_id": newUUID,
+        "save_id": newUUID,
         "user_id": userID,
-        "disease_id": diseaseData.classIndex,
-        "report_name": reportRenameInput.value,
+        "disease_index": diseaseData.classIndex,
+        "plant_name": reportRenameInput.value,
         "confidence": diseaseData.confidence,
         "isSynced": false,
         "created_at": new Date().toISOString()
     };
     let isSaved = await db.store_report(reportData);
-    if(isSaved){
+    
+    if(isSaved && !reportData.isSynced){ //check if saved in indexedDB first
         const saveStatus = await sync.sendReportToMainDB(localStorage.getItem("user_token"), reportData);
+        if(saveStatus)
+            reportData.isSynced=true;
         goToMyReports(reportData);
         console.log("saved");
     }

@@ -263,6 +263,7 @@ async function logout_process(){
     sessionStorage.removeItem("current_page");
     localStorage.removeItem("user_token");
     localStorage.removeItem("user_data");
+    await DB.clear_DB_tables();
     window.location.href="/sign";
 }
 

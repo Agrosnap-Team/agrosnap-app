@@ -56,16 +56,16 @@ export async function startSavedReportsPage(reportData){
 
 export async function showReports(reportData){
         let allReports = await checkAllReports();
-        console.log("all reports:" , allReports);
+        console.log("all reports in show reports:" , allReports);
         if (allReports && allReports.length > 0){
             hideNoContentMsg();
             sortReports(allReports);
             for(let reportNum=0; reportNum<allReports.length;reportNum++){
                 createReportElement(allReports[reportNum]);
                 if(reportData != undefined || reportData != null){
-                    if (allReports[reportNum].report_id== reportData.report_id){
+                    if (allReports[reportNum].save_id== reportData.save_id){
                         console.log('the new report is : ' , allReports[reportNum]);
-                        highlightNewSavedReport(allReports[reportNum].report_id);
+                        highlightNewSavedReport(allReports[reportNum].save_id);
                     }
                 
                 }
@@ -124,6 +124,7 @@ function createReportElement(reportData){
         "/static/images/YLCV_disease.jpg"
     ];
 
+    console.log("in Create report , this is the report" , " " , reportData)
     let newReportCard = reportContainer.cloneNode(true); 
     let reportName = newReportCard.querySelector("#reportName");
     let createDate = newReportCard.querySelector("#saveDate");
@@ -135,9 +136,9 @@ function createReportElement(reportData){
     let savedTime = savedReportDateTime.toTimeString();
     savedReportDateTime = savedReportDateTime.toLocaleString("en-US");
 
-    newReportCard.id=reportData.report_id;
-    reportName.innerHTML=reportData.report_name;
-    reportImage.src = diseasesImages[reportData.disease_id];
+    newReportCard.id=reportData.save_id;
+    reportName.innerHTML=reportData.plant_name;
+    reportImage.src = diseasesImages[reportData.disease_index];
     createDate.innerHTML = savedReportDateTime;
     // newReportCard.removeAttribute('id');
     allReportsContainer.appendChild(newReportCard);
@@ -155,9 +156,9 @@ async function deleteReport(reportId){
 async function openReport(reportId){
         let reportInfo = await db.get_report_by_id(reportId);
         console.log("The report Info " , reportInfo);
-        let diseaseInfo = await db.get_diseases_info(reportInfo.disease_id);
+        let diseaseInfo = await db.get_diseases_info(reportInfo.disease_index);
         diseaseInfo ={
-            classIndex:diseaseInfo.disease_id,
+            classIndex:diseaseInfo.disease_index,
             confidence:reportInfo.confidence
         };
         console.log("And the disease ID is : " , diseaseInfo);
