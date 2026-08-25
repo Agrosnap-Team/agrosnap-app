@@ -107,11 +107,27 @@ window.addEventListener('online',async()=>{
     await sync.syncReports();
 });
 window.addEventListener('offline',()=>{
-    alert("You are in offline mode , there no internet connection \nNOTE:  to prevent losing data , don't lougout during offline mode ")
+    showOfflineModeDialog();
 
 });
 
+function showOfflineModeDialog(){
 
+    const offlineMode = document.getElementById("customModal");
+    const closeButton = document.getElementById("hideAlert");
+    const okButton = document.getElementById("confirmAndClose");
+    offlineMode.classList.add("showOfflineModeDialg");
+    closeButton.onclick = hideOfflineModeDialog;
+    okButton.onclick = hideOfflineModeDialog;
+    
+}
+
+function hideOfflineModeDialog(){
+
+    const offlineMode = document.getElementById("customModal");
+    offlineMode.classList.remove("showOfflineModeDialg");
+
+}
 
 window.onload =async function(){
      

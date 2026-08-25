@@ -109,11 +109,168 @@
     filter: brightness(0.7);
 
 }
+
+/*==================================================================
+   Offline mode dialog
+====================================================================*/
+
+#customModal{
+    opacity: 0;
+    visibility: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    /* Light green with 0.5 opacity */
+    background-color: rgba(237, 237, 237, 0.9);
+    /* High z-index to dominate the host page */
+    z-index: 2147483647;
+    /* Center the child container */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s ease-in-out;
+
+}
+
+#customModal.showOfflineModeDialg{
+    opacity: 1;
+    visibility: visible;
+}
+
+#customModal #offlineMode{
+    position: relative;
+    display: flex; /*should always be flex in js */
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    background-color: #ffffff;
+    border: 1px solid #389100;
+    width: 97%;
+    max-width: 500px;
+    padding: 2.5rem 1rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease-in-out;
+
+}
+
+#customModal #offlineMode #hideAlert{
+    position: absolute;
+    right: 13px;
+    top: 13px;
+    width: 20px;
+    height: 20px;
+    /* background-color: red; */
+    cursor: pointer;
+    transition: filter 0.3s ease-in-out;
+    background-image: url(../images/closePopup.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+
+}
+
+#customModal #offlineMode #hideAlert:hover{
+    filter: brightness(0.7);
+}
+
+
+#customModal #offlineMode #confirmContainer {
+    flex-wrap: wrap;
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+#customModal #offlineMode #confirmContainer #confirmAndClose{
+    width:150px;
+    max-width: 200px;
+    min-width: 120px;
+    height: 60px;
+    border-radius: 12px;
+    outline: none;
+    border: none;
+    background-color: #2a6b01;
+    font-size: 16px;
+    transition: filter 0.4s ease;
+    font-weight: bolder;
+    color: white;
+}
+
+#customModal #offlineMode #confirmContainer #confirmAndClose:hover{
+    filter: brightness(0.7);
+
+}
+
+#customModal #offlineMode #alertContentContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    gap: 15px; 
+    padding: 10px;
+}
+
+#customModal #offlineMode #alertContentContainer #imgIcon{
+    flex: 0 0 40px; 
+    height: 40px; 
+    background-image: url(../images/no-wifi.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain; 
+
+}
+
+#customModal #offlineMode #alertContentContainer #labels{
+    flex: 2; 
+    text-align: left;
+    display: flex;
+    flex-direction: row;
+    align-items: center; 
+    gap: 15px; 
+    padding: 5px;
+    margin-bottom: 5px;
+}
+
+#customModal #offlineMode #alertContentContainer #labels #offlineLabel{
+    flex: 1;
+    color: #285429;
+    text-align: center;
+    font-size: 20px;
+
+}
+
+#customModal #offlineMode #alertContentContainer #note{
+    flex: 3;
+    font-size: 15px;
+    padding: 10px;
+    border: 1px solid #4e7b32;
+    background-color: #c1e6aa;
+    color: #2d372d;
+    border-radius: 5px;
+    font-weight: bolder;
+    
+}
+
+
+
+
+
+
+/*===========================================================
+   sidebar
+=============================================================*/
 #sidebar_page{
     margin: 0px;
     padding: 0px;
     overflow: hidden;
 }
+
+
 
 
 #container{
@@ -269,6 +426,10 @@ flex-direction: row;
     height: 100vh;        /* give #main a real height so children can size against it */
     overflow-y: auto;     /*#main scrolls, not the whole page */ 
     background-color: white;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), url("../images/agrosnap%20logo.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
     overflow-x: hidden;
     position: relative;
 
@@ -395,7 +556,7 @@ flex-direction: row;
     justify-content: center;
     align-items:center;
     padding: 10px;
-    background-color: white;
+    background-color: transparent;
     transition: all 0.5s ease-in-out;
 }
 

@@ -169,7 +169,7 @@ async function storeInIndexedDB(allSavedReportsInDB) {
       if(!isStored){
         throw new Error(`can't save this report ${  allSavedReportsInDB[ reportNum ]  } `);
       }
-      console.log(`report ${allSavedReportsInDB[reportNum]} has been saved`)
+      console.log("report" , " allSavedReportsInDB[reportNum] " , "has been saved")
       
     }
 

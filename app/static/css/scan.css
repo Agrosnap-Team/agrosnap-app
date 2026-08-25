@@ -219,7 +219,7 @@
     height: 320px; /* Fixed size, but responsive width */
     border: 4px dashed #389100; /* Solid green border matching UI */
     border-radius: 8px;
-    background-color: rgba(56, 145, 0, 0.1); /* Very soft green tint */
+    background-color: rgba(224, 249, 209, 0.9); /* Very soft green tint */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
     
     display: flex;
@@ -233,7 +233,7 @@
 }
 
 .upload-box:hover {
-    background-color: rgba(56, 145, 0, 0.15);
+    background-color: rgba(224, 249, 209, 1);
     transform: translateY(-2px); /* Lifts slightly when hovered */
 }
 
