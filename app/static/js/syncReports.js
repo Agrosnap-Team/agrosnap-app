@@ -11,8 +11,7 @@ import browserDB from "./databaseManager_IndexedDB.js";
 export async function getSavedReportsFromMainDB(token){
     try{
     if(!navigator.onLine){ //check connection , but not enough
-        alert("no internet connection");
-        return {success:false , data:{}};
+        return {success:false , data:[]};
     }
     if(!token)return {sucecss:false , data:[]};
 
@@ -227,6 +226,13 @@ async function syncReports(){
 
     let serverReports = await getSavedReportsFromMainDB(userCurrent);
     let indexedDBReports = await browserDB.get_all_reports_from_indexedDB();
+
+    //check before complete the sync
+    if (!serverReports.success) {
+    console.log("Could not fetch server reports. Skipping server synchronization.");
+    return;
+    }
+
 
     console.log("SERVER REPORTS : " , serverReports.data);
     console.log("INDEXEDDB REPORTS : " , indexedDBReports);

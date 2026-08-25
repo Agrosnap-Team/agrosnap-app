@@ -8,7 +8,7 @@ let reportContainer , allReportsContainer , noContentMsg , dialogContainer , del
 
 export async function startSavedReportsPage(reportData){
     showScanButton();
-    await sync.syncReports(); //get the newest update from sqlite3
+    await sync.syncReports(); //sync the newest update between indexedDB and sqlite3
     let isInitiated =  initiateElements();
     if(!isInitiated)return;
     showReports(reportData);
