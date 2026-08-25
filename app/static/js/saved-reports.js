@@ -1,5 +1,6 @@
 import db from "./databaseManager_IndexedDB.js";
 import {showScanButton , show_report} from "./dynamic_pages.js";
+import sync from "./syncReports.js";
 
 
 
@@ -7,12 +8,12 @@ let reportContainer , allReportsContainer , noContentMsg , dialogContainer , del
 
 export async function startSavedReportsPage(reportData){
     showScanButton();
+    await sync.syncReports(); //get the newest update from sqlite3
     let isInitiated =  initiateElements();
     if(!isInitiated)return;
     showReports(reportData);
     allReportsContainer.addEventListener('click',async function (clickedItem) {
         if(clickedItem.target.classList.contains("more-btn")){
-            console.log("clicked item is : " , clickedItem.target.closest(".saved-reports").id);
             const parentItem = clickedItem.target.closest(".saved-reports");
             reportToDelete = parentItem;             
 
@@ -22,8 +23,6 @@ export async function startSavedReportsPage(reportData){
 
         else if(clickedItem.target.closest(".saved-reports")){
             clickedReportCard = clickedItem.target.closest(".saved-reports");
-            console.log("in the method");
-            console.log(`the clicked Card is ${clickedReportCard.id}`);
             openReport(clickedReportCard.id);
 
 
@@ -47,6 +46,10 @@ export async function startSavedReportsPage(reportData){
                 reportToDelete = null;
             });
 
+            await sync.syncReports();
+
+
+
         });
 
         cancelDeletionButton.addEventListener('click',hideDeleteDialog);
@@ -55,8 +58,8 @@ export async function startSavedReportsPage(reportData){
 }
 
 export async function showReports(reportData){
+        //synced first if any new reports should store from sqlite3 , in case if any report added from different device
         let allReports = await checkAllReports();
-        console.log("all reports in show reports:" , allReports);
         if (allReports && allReports.length > 0){
             hideNoContentMsg();
             sortReports(allReports);
@@ -103,7 +106,7 @@ function initiateElements(){
     return false;
 }
 
-async function checkAllReports(){
+export async function checkAllReports(){
     const allReports = await db.get_all_reports_from_indexedDB();
     console.log("this is check , and the reports is : " , allReports);
     if(allReports.length<=0){
@@ -124,13 +127,11 @@ function createReportElement(reportData){
         "/static/images/YLCV_disease.jpg"
     ];
 
-    console.log("in Create report , this is the report" , " " , reportData)
     let newReportCard = reportContainer.cloneNode(true); 
     let reportName = newReportCard.querySelector("#reportName");
     let createDate = newReportCard.querySelector("#saveDate");
     let reportImage = newReportCard.querySelector("#diseaseImg");
     newReportCard.classList.remove("hideReportCard");
-    console.log("this is the copied element  \n" , newReportCard );
     let savedReportDateTime= new Date(reportData.created_at);
     let savedDate = savedReportDateTime.toDateString();
     let savedTime = savedReportDateTime.toTimeString();
@@ -138,7 +139,7 @@ function createReportElement(reportData){
 
     newReportCard.id=reportData.save_id;
     reportName.innerHTML=reportData.plant_name;
-    reportImage.src = diseasesImages[reportData.disease_index];
+    reportImage.src = diseasesImages[reportData.disease_id];
     createDate.innerHTML = savedReportDateTime;
     // newReportCard.removeAttribute('id');
     allReportsContainer.appendChild(newReportCard);
@@ -156,11 +157,13 @@ async function deleteReport(reportId){
 async function openReport(reportId){
         let reportInfo = await db.get_report_by_id(reportId);
         console.log("The report Info " , reportInfo);
-        let diseaseInfo = await db.get_diseases_info(reportInfo.disease_index);
+        let diseaseInfo = await db.get_diseases_info(reportInfo.disease_id);
         diseaseInfo ={
-            classIndex:diseaseInfo.disease_index,
+            classIndex:diseaseInfo.disease_id,
             confidence:reportInfo.confidence
         };
+        localStorage.setItem("predictedDiseaseIndex",diseaseInfo.classIndex);
+        localStorage.setItem("confidence", diseaseInfo.confidence);
         console.log("And the disease ID is : " , diseaseInfo);
         sessionStorage.setItem("CallerPage",1);
         show_report(diseaseInfo);

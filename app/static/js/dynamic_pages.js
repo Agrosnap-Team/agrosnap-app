@@ -15,6 +15,7 @@ import handleToken from "./tokenDecoding.js";
 import DB from "./databaseManager_IndexedDB.js";
 import { initReport } from './single-report.js';
 import { startAboutPage } from './about.js';
+import sync from "./syncReports.js";
 
 
 if(sessionStorage.getItem("current_page")==null || sessionStorage.getItem("current_page")==undefined ){
@@ -102,13 +103,20 @@ document.addEventListener("click", (event) => { //when user opens profile and th
     }
 });
 
+window.addEventListener('online',async()=>{
+    await sync.syncReports();
+});
+window.addEventListener('offline',()=>{
+    alert("You are in offline mode , there no internet connection \nNOTE:  to prevent losing data , don't lougout during offline mode ")
+
+});
 
 
 
-
-window.onload = function(){
+window.onload =async function(){
      
     let saved_page = sessionStorage.getItem("current_page");
+    await sync.syncReports();
 
     let userToken = handleToken.getUserIdFromToken(localStorage.getItem("user_token"));
     let userFullName = DB.getUserByID(userToken).then(userData => {
@@ -258,12 +266,11 @@ function logoutConfirmationDialog(){
 
 
 async function logout_process(){
-    const userID = handleToken.getUserIdFromToken(localStorage.getItem("user_token"));
-    await DB.delete_user(userID);
-    sessionStorage.removeItem("current_page");
-    localStorage.removeItem("user_token");
-    localStorage.removeItem("user_data");
-    await DB.clear_DB_tables();
+    // const userID = handleToken.getUserIdFromToken(localStorage.getItem("user_token"));
+    // await DB.delete_user(userID); //remove user
+    await DB.clear_DB_tables(); // clear indexedDB
+    localStorage.clear(); // cleat local storage
+    sessionStorage.clear(); // clear session
     window.location.href="/sign";
 }
 

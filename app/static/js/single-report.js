@@ -145,6 +145,9 @@ function closeReport(){
     exitConfirmationButton.addEventListener('click',()=>{
     sessionStorage.setItem("current_page",sessionStorage.getItem("CallerPage"));
     backToCallerPage(sessionStorage.getItem("current_page"));
+    localStorage.removeItem("predictedDiseaseIndex");
+    localStorage.removeItem("confidence");
+
     });
 
     //click cancel
@@ -216,7 +219,7 @@ async function saveReportProcess(diseaseData){
     let reportData = {
         "save_id": newUUID,
         "user_id": userID,
-        "disease_index": diseaseData.classIndex,
+        "disease_id": diseaseData.classIndex,
         "plant_name": reportRenameInput.value,
         "confidence": diseaseData.confidence,
         "isSynced": false,

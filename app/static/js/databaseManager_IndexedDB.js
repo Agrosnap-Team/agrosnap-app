@@ -1,3 +1,4 @@
+
 import { openDB } from "/node_modules/idb/build/index.js";
 //to keep the connection open once
 let dbConnection;
@@ -25,7 +26,7 @@ async function openConnection() {
 
         if(!dbConnection){
 
-            dbConnection = await openDB("Agrosnap_database", 7 ,{
+            dbConnection = await openDB("AgrosnapBrowserDatabase", 1 ,{
 
             upgrade(db){
             console.log("Creating tables...");
@@ -82,7 +83,7 @@ async function create_users_table(db){
 
 async function create_disease_table(db){
     if(!db.objectStoreNames.contains(disease_table)){
-        const diseaseTable = db.createObjectStore(disease_table, {keyPath:"disease_index"});
+        const diseaseTable = db.createObjectStore(disease_table, {keyPath:"disease_id"});
     }
 }
 
@@ -128,8 +129,6 @@ async function add_new_user(newData){
             await   current_table.put(newData);
             
             console.log("added succesfully");
-            const the_new_user_id = await current_table.get(1);
-            console.log("his Id is " , the_new_user_id);
             await trans.done; //end the transaction
         }
 
@@ -184,9 +183,10 @@ async function add_deleted_reports(reportID){
             const deletionStatus = await delete_report(reportID);
             if(deletionStatus){
                 console.log("Report deleted successfully");
+                // await deleteReportPermenantly(reportID);
                 return true;
             }
-            return false;
+            return true;
             
         }
         else{
@@ -218,11 +218,8 @@ async function store_report(report_data){
         const trans = db.transaction(saved_reports_table,"readwrite");
         const current_table = trans.objectStore(saved_reports_table);
 
-        console.log("After swap : " , report_data);
-
         await current_table.put(report_data);
         trans.done;
-        console.log("the report has been sent to indexedDB successfully ✅");
         return true;
 
     }
@@ -237,11 +234,6 @@ async function store_report(report_data){
 
 
 
-async function get_all_reports_from_DB() {
-    // to get all saved reports from sqlite3 and will be stored in indexedDB 
-    
-
-}
 
 async function get_all_reports_from_indexedDB(){
     //will return all saved reports from indexedDB and will be used in the saved reports page
@@ -250,7 +242,6 @@ async function get_all_reports_from_indexedDB(){
     const current_table = trans.objectStore(saved_reports_table);
     const allReports = await current_table.getAll();
     trans.done;
-    console.log("all reports from indexedDB : ", allReports);
     return allReports;
 }
 
@@ -263,6 +254,16 @@ async function get_report_by_id(report_id){
     return report;
 }
 
+
+async function get_all_deleted_reports() {
+    const db = await openConnection();
+    const trans = db.transaction(deleted_report_table, "readonly");
+    const current_table = trans.objectStore(deleted_report_table);
+    const allDeletedReports = await current_table.getAll();
+    trans.done;
+    return allDeletedReports;
+
+}
 //==========================================================
 // This for get information from Sqlite3
 //==========================================================
@@ -282,12 +283,12 @@ async function prepareDataAndStoreIt(user_info){
     
     //we get the diseases from FastAPI
     const all_disease = [
-        {"disease_index":0,"disease_name":"Bacterial Spot","report":"this is the report of Bacterial Spot disease and dummy data","treatment":"this is the Bacterial Spot treatment section"},
-        {"disease_index":1,"disease_name":"Early Blight","report":"this is the report of  early blight disease and dummy data","treatment":"this is the early blight treatment section"},
-        {"disease_index":2,"disease_name":"Healthy","report":"this is the report of healthy disease and dummy data","treatment":"this is the Healthy treatment section"},
-        {"disease_index":3,"disease_name":"Late Blight","report":"this is the report of Late Blight disease and dummy data","treatment":"this is the Late Blight treatment section"},
-        {"disease_index":4,"disease_name":"Leaf Mold","report":"this is the report of  Leaf Mold disease and dummy data","treatment":"this is the Leaf Mold treatment section"},
-        {"disease_index":5,"disease_name":"Yellow Leaf Curl Virus","report":"this is the report of Yellow Leaf Curl Virus disease and dummy data","treatment":"this is the Yellow Leaf Curl Virus treatment section"}
+        {"disease_id":0,"disease_name":"Bacterial Spot","report":"this is the report of Bacterial Spot disease and dummy data","treatment":"this is the Bacterial Spot treatment section"},
+        {"disease_id":1,"disease_name":"Early Blight","report":"this is the report of  early blight disease and dummy data","treatment":"this is the early blight treatment section"},
+        {"disease_id":2,"disease_name":"Healthy","report":"this is the report of healthy disease and dummy data","treatment":"this is the Healthy treatment section"},
+        {"disease_id":3,"disease_name":"Late Blight","report":"this is the report of Late Blight disease and dummy data","treatment":"this is the Late Blight treatment section"},
+        {"disease_id":4,"disease_name":"Leaf Mold","report":"this is the report of  Leaf Mold disease and dummy data","treatment":"this is the Leaf Mold treatment section"},
+        {"disease_id":5,"disease_name":"Yellow Leaf Curl Virus","report":"this is the report of Yellow Leaf Curl Virus disease and dummy data","treatment":"this is the Yellow Leaf Curl Virus treatment section"}
     ];//this is fake data
 
     await add_disease_info(all_disease);
@@ -441,6 +442,26 @@ async function clear_DB_tables(){
     }
 }
 
+async function deleteReportPermenantly(reportId) {
+    try{
+
+        if(!reportId) return false;
+        const db = await openConnection();
+        const trans = await db.transaction(deleted_report_table,"readwrite");
+        const current_table = trans.objectStore(deleted_report_table);
+
+        await current_table.delete(reportId);
+        await trans.done;
+
+        return true;
+
+    }
+    catch(error){
+        return false;
+    }
+    
+}
+
 
 
 
@@ -475,5 +496,7 @@ export default {
     delete_report,
     get_report_by_id,
     add_deleted_reports,
-    clear_DB_tables
+    clear_DB_tables,
+    get_all_deleted_reports,
+    deleteReportPermenantly
 }
