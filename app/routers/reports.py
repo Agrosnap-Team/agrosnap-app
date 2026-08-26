@@ -46,7 +46,7 @@ def Save_scan_report(request_data : SaveReportRequest , user_info : dict = Depen
         cursor.execute(query
                      ,(request_data.save_id,
                        user_id,
-                       request_data.disease_index ,
+                       request_data.disease_id,
                        request_data.plant_name if request_data.plant_name else "Disease Report", # in case user dose not entre name when save report , by default save as "Disease Report "
                        f"{request_data.confidence:.2f}",
                        request_data.created_at))
@@ -117,7 +117,7 @@ def my_Report(user_info : dict = Depends(get_info_current_user)) ->list :
 # Function to let users delete their own saved report
 @router.delete("/delete-report/{save_id}")
 def delete_save_report(
-        save_id: int,
+        save_id: str,
         user_info: dict = Depends(get_info_current_user)
 ) -> dict:
     # 1. Extract the user_id from the authenticated token
