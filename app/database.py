@@ -60,7 +60,8 @@ class AgrosnapDatabase:
             FOREIGN KEY (user_id) REFERENCES users_info (user_id) ON DELETE CASCADE,
             FOREIGN KEY (disease_id) REFERENCES disease_Table (disease_id ) ON DELETE CASCADE, 
             -- Prevent a user from saving the exact same disease record multiple times 
-            UNIQUE(user_id, disease_id)
+            UNIQUE(save_id , disease_id)
+            
             
         
         )"""
@@ -279,7 +280,7 @@ class AgrosnapDatabase:
         #-> list: mean the data type of return will be as list
 
         query = """
-                    SELECT r.save_id, d.plant_name, d.disease_name, d.organic_treatment,  d.report
+                    SELECT r.save_id, r.plant_name, d.disease_name, d.organic_treatment,  d.report
                     FROM Save_report r
                     JOIN disease_Table d ON r.disease_id = d.disease_id
                     WHERE r.user_id = ?;
@@ -296,7 +297,7 @@ class AgrosnapDatabase:
 
     def get_disease_by_id(self, disease_id : int) :
         # fetches disease report using unique ID (match with AI model  index)
-        query = "SELECT disease_id, plant_name, disease_name, organic_treatment, report  FROM disease_Table WHERE disease_id = ?;"
+        query = "SELECT disease_id, disease_name, organic_treatment, report  FROM disease_Table WHERE disease_id = ?;"
         with self._get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute(query,(disease_id,))
@@ -411,7 +412,17 @@ class AgrosnapDatabase:
 if __name__ == '__main__':
     db = AgrosnapDatabase()
     db.init_database()
+    # db.insert_into_disease_Table("Bacterial Spot" , "no content" , "no content")
+    # db.insert_into_disease_Table("Early Blight" , "no content" , "no content")
+    # db.insert_into_disease_Table("Healthy" , "no content" , "no content")
+    # db.insert_into_disease_Table("Late Blight" , "no content" , "no content")
+    # db.insert_into_disease_Table("Leaf Mold" , "no content" , "no content")
+    data = db.get_disease_by_id(1)
+    print(data)
 
+    reports = db.get_user_report(1)
+    print(reports)
+    # db.insert_into_disease_Table("Yellow Leaf Curl Virus" , "no content" , "no content")
     # db.insert_into_disease_Table("tomato","jdhjfdsjfsdfjsdf","jdjsdajdbhsa")
     # db.insert_into_disease_Table("leaf_mold","dnfdsfdfnsmn","jsdssdjkdnzkjkxzjcnz")
     # db.insert_into_disease_Table("late_blight","djshjdhs","snjabsbnasnb")

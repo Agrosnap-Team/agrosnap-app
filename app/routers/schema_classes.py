@@ -66,7 +66,7 @@ class userSign_in(BaseModel):
 # this schema for what data should send to save report
 class SaveReportRequest(BaseModel):
     save_id:str
-    disease_index: int #this is the index of disease that store already in database
+    disease_id: int #this is the index of disease that store already in database
     plant_name :str
     confidence : float
     created_at: datetime

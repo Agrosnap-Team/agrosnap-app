@@ -1,3 +1,4 @@
+
 import { openDB } from "/node_modules/idb/build/index.js";
 //to keep the connection open once
 let dbConnection;
@@ -25,7 +26,7 @@ async function openConnection() {
 
         if(!dbConnection){
 
-            dbConnection = await openDB("Agrosnap_database", 4 ,{
+            dbConnection = await openDB("AgrosnapBrowserDatabase", 1 ,{
 
             upgrade(db){
             console.log("Creating tables...");
@@ -90,7 +91,7 @@ async function create_disease_table(db){
 async function create_saved_reports(db){
     if(!db.objectStoreNames.contains(saved_reports_table)){
 
-        const saved_report = db.createObjectStore(saved_reports_table,{keyPath:"report_id"});
+        const saved_report = db.createObjectStore(saved_reports_table,{keyPath:"save_id"});
 
     }
 
@@ -98,23 +99,10 @@ async function create_saved_reports(db){
 
 
 
-async function create_reports_details(db){
-
-
-    if(!db.objectStoreNames.contains(report_details)){
-
-    const saved_report = db.createObjectStore(report_details,{keyPath:"unique_report"});
-
-    saved_report.createIndex("reports_id_group","reports_id",{unique:false});
-
-}
-
-}
-
 
 async function create_deleted_reports(db){
     if(!db.objectStoreNames.contains(deleted_report_table)){
-        const deletedReports = db.createObjectStore(deleted_report_table,{keyPath:"report_id"});
+        const deletedReports = db.createObjectStore(deleted_report_table,{keyPath:"save_id"});
     }
 
 }
@@ -141,8 +129,6 @@ async function add_new_user(newData){
             await   current_table.put(newData);
             
             console.log("added succesfully");
-            const the_new_user_id = await current_table.get(1);
-            console.log("his Id is " , the_new_user_id);
             await trans.done; //end the transaction
         }
 
@@ -190,16 +176,17 @@ async function add_deleted_reports(reportID){
             const db = await openConnection();
             const trans = await db.transaction(deleted_report_table,"readwrite");
             const current_table = await trans.objectStore(deleted_report_table);
-            const deletedReport = { report_id: reportID };  //convert it to object
+            const deletedReport = { save_id: reportID };  //convert it to object
             await   current_table.put(deletedReport);
 
             trans.done;
             const deletionStatus = await delete_report(reportID);
             if(deletionStatus){
                 console.log("Report deleted successfully");
+                // await deleteReportPermenantly(reportID);
                 return true;
             }
-            return false;
+            return true;
             
         }
         else{
@@ -233,7 +220,6 @@ async function store_report(report_data){
 
         await current_table.put(report_data);
         trans.done;
-        console.log("the report has been sent to indexedDB successfully ✅");
         return true;
 
     }
@@ -248,11 +234,6 @@ async function store_report(report_data){
 
 
 
-async function get_all_reports_from_DB() {
-    // to get all saved reports from sqlite3 and will be stored in indexedDB 
-    
-
-}
 
 async function get_all_reports_from_indexedDB(){
     //will return all saved reports from indexedDB and will be used in the saved reports page
@@ -261,7 +242,6 @@ async function get_all_reports_from_indexedDB(){
     const current_table = trans.objectStore(saved_reports_table);
     const allReports = await current_table.getAll();
     trans.done;
-    console.log("all reports from indexedDB : ", allReports);
     return allReports;
 }
 
@@ -274,6 +254,16 @@ async function get_report_by_id(report_id){
     return report;
 }
 
+
+async function get_all_deleted_reports() {
+    const db = await openConnection();
+    const trans = db.transaction(deleted_report_table, "readonly");
+    const current_table = trans.objectStore(deleted_report_table);
+    const allDeletedReports = await current_table.getAll();
+    trans.done;
+    return allDeletedReports;
+
+}
 //==========================================================
 // This for get information from Sqlite3
 //==========================================================
@@ -343,6 +333,7 @@ async function get_diseases_info(diseaseIndex) {
         const current_table = trans.objectStore(disease_table);
 
         const diseaseData = await current_table.get(diseaseIndex);
+        console.log("this is disease : " , diseaseData);
         trans.done;
 
         if(!diseaseData)return;
@@ -427,12 +418,54 @@ async function delete_report(report_id){
 
 }
 
+async function clear_DB_tables(){
+    try{
+        const db = await openConnection();
+        const trans =await  db.transaction([user_table, saved_reports_table, deleted_report_table , disease_table],"readwrite");
+        const current_table =await trans.objectStore(saved_reports_table);
+        await Promise.all([
+            trans.objectStore(user_table).clear(),
+            trans.objectStore(saved_reports_table).clear(),
+            trans.objectStore(deleted_report_table).clear(),
+            trans.objectStore(disease_table).clear()
+        ]);
+
+        trans.done;
+        return true
+
+        
+
+    }
+    catch(error){
+        alert(error.message);
+        return false;
+    }
+}
+
+async function deleteReportPermenantly(reportId) {
+    try{
+
+        if(!reportId) return false;
+        const db = await openConnection();
+        const trans = await db.transaction(deleted_report_table,"readwrite");
+        const current_table = trans.objectStore(deleted_report_table);
+
+        await current_table.delete(reportId);
+        await trans.done;
+
+        return true;
+
+    }
+    catch(error){
+        return false;
+    }
+    
+}
 
 
 
-//==========================================================
-// Delete from tables
-//==========================================================
+
+
 
 //==========================================================
 // Start the info and this will export to dynamic.js 
@@ -462,5 +495,8 @@ export default {
     get_all_reports_from_indexedDB,
     delete_report,
     get_report_by_id,
-    add_deleted_reports
+    add_deleted_reports,
+    clear_DB_tables,
+    get_all_deleted_reports,
+    deleteReportPermenantly
 }

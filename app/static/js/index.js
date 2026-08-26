@@ -21,9 +21,10 @@ function move_to_sign_page(){
 
 }
 
-function check_if_user_logged_in(){
+async function check_if_user_logged_in(){
     let user_token = localStorage.getItem("user_token");
     if(user_token){
+        console.log("sheck any update ......");
         window.location.href="/sidebar";
     }
     else{

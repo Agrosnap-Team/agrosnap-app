@@ -1,5 +1,6 @@
 import db from "./databaseManager_IndexedDB.js";
 import {showScanButton , show_report} from "./dynamic_pages.js";
+import sync from "./syncReports.js";
 
 
 
@@ -7,24 +8,21 @@ let reportContainer , allReportsContainer , noContentMsg , dialogContainer , del
 
 export async function startSavedReportsPage(reportData){
     showScanButton();
+    await sync.syncReports(); //sync the newest update between indexedDB and sqlite3
     let isInitiated =  initiateElements();
     if(!isInitiated)return;
     showReports(reportData);
     allReportsContainer.addEventListener('click',async function (clickedItem) {
         if(clickedItem.target.classList.contains("more-btn")){
-            console.log("clicked item is : " , clickedItem.target.closest(".saved-reports").id);
             const parentItem = clickedItem.target.closest(".saved-reports");
             reportToDelete = parentItem;             
 
             showDeleteDialog();
 
-
         }
 
         else if(clickedItem.target.closest(".saved-reports")){
             clickedReportCard = clickedItem.target.closest(".saved-reports");
-            console.log("in the method");
-            console.log(`the clicked Card is ${clickedReportCard.id}`);
             openReport(clickedReportCard.id);
 
 
@@ -48,27 +46,29 @@ export async function startSavedReportsPage(reportData){
                 reportToDelete = null;
             });
 
+            await sync.syncReports();
+
+
+
         });
 
         cancelDeletionButton.addEventListener('click',hideDeleteDialog);
         closeDialogIcon.addEventListener('click',hideDeleteDialog);
-    
-    
 
 }
 
 export async function showReports(reportData){
+        //synced first if any new reports should store from sqlite3 , in case if any report added from different device
         let allReports = await checkAllReports();
-        console.log("all reports:" , allReports);
         if (allReports && allReports.length > 0){
             hideNoContentMsg();
             sortReports(allReports);
             for(let reportNum=0; reportNum<allReports.length;reportNum++){
                 createReportElement(allReports[reportNum]);
                 if(reportData != undefined || reportData != null){
-                    if (allReports[reportNum].report_id== reportData.report_id){
+                    if (allReports[reportNum].save_id== reportData.save_id){
                         console.log('the new report is : ' , allReports[reportNum]);
-                        highlightNewSavedReport(allReports[reportNum].report_id);
+                        highlightNewSavedReport(allReports[reportNum].save_id);
                     }
                 
                 }
@@ -106,7 +106,7 @@ function initiateElements(){
     return false;
 }
 
-async function checkAllReports(){
+export async function checkAllReports(){
     const allReports = await db.get_all_reports_from_indexedDB();
     console.log("this is check , and the reports is : " , allReports);
     if(allReports.length<=0){
@@ -132,16 +132,15 @@ function createReportElement(reportData){
     let createDate = newReportCard.querySelector("#saveDate");
     let reportImage = newReportCard.querySelector("#diseaseImg");
     newReportCard.classList.remove("hideReportCard");
-    console.log("this is the copied element  \n" , newReportCard );
     let savedReportDateTime= new Date(reportData.created_at);
     let savedDate = savedReportDateTime.toDateString();
     let savedTime = savedReportDateTime.toTimeString();
     savedReportDateTime = savedReportDateTime.toLocaleString("en-US");
 
-    newReportCard.id=reportData.report_id;
-    reportName.innerHTML=reportData.report_name;
-    reportImage.src=diseasesImages[reportData.disease_id];
-    createDate.innerHTML=savedReportDateTime;
+    newReportCard.id=reportData.save_id;
+    reportName.innerHTML=reportData.plant_name;
+    reportImage.src = diseasesImages[reportData.disease_id];
+    createDate.innerHTML = savedReportDateTime;
     // newReportCard.removeAttribute('id');
     allReportsContainer.appendChild(newReportCard);
 
@@ -149,8 +148,6 @@ function createReportElement(reportData){
 
 async function deleteReport(reportId){
 
-
-    
     let isDeleted = await db.add_deleted_reports(reportId);
     if(!isDeleted) return isDeleted;
     return isDeleted;
@@ -165,12 +162,15 @@ async function openReport(reportId){
             classIndex:diseaseInfo.disease_id,
             confidence:reportInfo.confidence
         };
+        localStorage.setItem("predictedDiseaseIndex",diseaseInfo.classIndex);
+        localStorage.setItem("confidence", diseaseInfo.confidence);
         console.log("And the disease ID is : " , diseaseInfo);
         sessionStorage.setItem("CallerPage",1);
         show_report(diseaseInfo);
 }
 
 function highlightNewSavedReport(newReportID){
+
     document.getElementById(newReportID).classList.add("highlightNewReport");
     document.getElementById(newReportID).addEventListener('animationend',()=>{
         document.getElementById(newReportID).classList.remove("highlightNewReport");
@@ -181,7 +181,9 @@ function highlightNewSavedReport(newReportID){
 
 function sortReports(reportsData){
     reportsData.sort((firstReport,secondReport) => {
+
         return new Date(secondReport.created_at) - new Date(firstReport.created_at);
+
     });
 }
 
