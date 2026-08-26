@@ -1,5 +1,4 @@
 #this file contain on @router.post("/save") ,@router.post("/delete")............
-import jwt
 from fastapi import APIRouter,HTTPException,Depends
 from fastapi.security import HTTPBearer,HTTPAuthorizationCredentials
 from app import database as db
