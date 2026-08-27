@@ -279,7 +279,7 @@ async function prepareDataAndStoreIt(user_info){
         "first_name" : user_info.first_name,
         "last_name":user_info.last_name
 
-    } //this data for test only and will be replaced by data from sqlite3 using fetch() method
+    } 
     
     //we get the diseases from FastAPI
     const all_disease = [

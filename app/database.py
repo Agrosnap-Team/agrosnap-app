@@ -280,7 +280,7 @@ class AgrosnapDatabase:
         #-> list: mean the data type of return will be as list
 
         query = """
-                    SELECT r.save_id, r.plant_name, d.disease_name, d.organic_treatment,  d.report
+                    SELECT r.save_id, r.plant_name, d.disease_name, d.disease_id, r.created_at, d.organic_treatment,  d.report
                     FROM Save_report r
                     JOIN disease_Table d ON r.disease_id = d.disease_id
                     WHERE r.user_id = ?;
@@ -412,13 +412,19 @@ class AgrosnapDatabase:
 if __name__ == '__main__':
     db = AgrosnapDatabase()
     db.init_database()
-    # db.insert_into_disease_Table("Bacterial Spot" , "no content" , "no content")
-    # db.insert_into_disease_Table("Early Blight" , "no content" , "no content")
-    # db.insert_into_disease_Table("Healthy" , "no content" , "no content")
-    # db.insert_into_disease_Table("Late Blight" , "no content" , "no content")
-    # db.insert_into_disease_Table("Leaf Mold" , "no content" , "no content")
+    db.insert_into_disease_Table("Bacterial Spot" , "no content" , "no content")
+    db.insert_into_disease_Table("Early Blight" , "no content" , "no content")
+    db.insert_into_disease_Table("Healthy" , "no content" , "no content")
+    db.insert_into_disease_Table("Late Blight" , "no content" , "no content")
+    db.insert_into_disease_Table("Leaf Mold" , "no content" , "no content")
+    db.insert_into_disease_Table("YLCV" , "no content" , "no content")
+
+
     data = db.get_disease_by_id(1)
     print(data)
+
+    user = db.get_user_by_id(1)
+    print(user)
 
     reports = db.get_user_report(1)
     print(reports)
