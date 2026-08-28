@@ -26,10 +26,12 @@ async function check_user_data(element) {
 
                 //check the response
                 if (!response.ok) {
+                    console.log("the response is not ok ");
         
                     let errorMessage;
                     if(Array.isArray(result.detail)){ //pyndatic errors
                         errorMessage=result.detail[0].msg;
+                        console.log("this is error");
                     }
                     else{
                         errorMessage=result.detail;
