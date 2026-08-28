@@ -229,10 +229,9 @@ async function saveReportProcess(diseaseData){
     
     if(isSaved && !reportData.isSynced){ //check if saved in indexedDB first
         const saveStatus = await sync.sendReportToMainDB(localStorage.getItem("user_token"), reportData);
-        if(saveStatus) //we have to put it as saveStatus.success
+        if(saveStatus.success) //we have to put it as saveStatus.success
             reportData.isSynced=true;
-
-
+            
         goToMyReports(reportData);
     }
 

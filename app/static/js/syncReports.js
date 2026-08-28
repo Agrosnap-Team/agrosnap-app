@@ -8,7 +8,7 @@ import browserDB from "./databaseManager_IndexedDB.js";
 
 
 /* once the user logged in , then we connect with sqlite3 and fetch all reports to indexedDB */
-export async function getSavedReportsFromMainDB(token){
+export async function getSavedReportsFromMainDB(token){ //return the sataus of the sqlite3 connection process
   try{
     if(!navigator.onLine){ //check connection , but not enough
         return {success:false , data:[] , details:"no internet connection"};
@@ -76,41 +76,50 @@ async function sendReportToMainDB(token , savedReports){
 
     console.log(savedReportJson.created_at , `The type ${typeof(savedReportJson.created_at)}`);
 
-    if(!navigator.onLine)return false; //check connectio
+    if(!navigator.onLine)return {success:false , data:[] , details:"no internet connection"}; //check connectio
     console.log("connected to internet");
 
-      const response = await fetch("/save",{
-        method:'POST',
-        headers:{
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-        },
-        body:JSON.stringify(savedReportJson)
-      }); // send report info to sqlite3 by fastAPI
+
+    //check the existance of token before send any request
+    if(!token)return {sucecss:false , data:[] , details:"token is not exist"}; //when no token exist
+
+    //send request to server will report info
+    const response = await fetch("/save",{
+      method:'POST',
+      headers:{
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+      },
+      body:JSON.stringify(savedReportJson)
+    }); // send report info to sqlite3 by fastAPI
 
     
     
 
-    if(!response.ok){
-        const errorData = await response.json();
-        console.log("SQLITE3 ERRORS");
-        console.log(response.status);
-        console.log(errorData.detail);
-        return false;
+  if(!response.ok){
+      const errorData = await response.json();
+      console.log("SQLITE3 ERRORS");
+      console.log(response.status);
+      console.log(errorData.detail);
+      return {success:false ,
+        details: errorData.detail,
+        responseType:response.status
       }
+    }
+
+
     const isSaved = await response.json();
-    console.log(`isSaved ?` , isSaved); //return the response and the status on request
     if(isSaved.status == 'success'){
       console.log(`marked as synced ${markedReportisSynced(savedReportJson)}`);
       await browserDB.store_report(markedReportisSynced(savedReportJson));
-      return true
+      return {success:true , details:"Saved successfully"};
     }
-    return false
+    return {success:false , details:isSaved.detail , requestType:isSaved.status};
 
   }
   catch(error){
     console.log("failed to save , " , error.message);
-    return false;
+    return {success:false , details:error.message};
   }
 
 
@@ -121,6 +130,9 @@ async function deleteReportsFromMainDB(token,reportID){
   try{
     //make it just for one report
     //send request with token and report id
+
+    //check the existance of token before send any request
+    if(!token)return {sucecss:false , data:[] , details:"token is not exist"}; //when no token exist
     
     if(reportID){
       const response = await fetch(`/delete-report/${reportID}`,
@@ -137,16 +149,17 @@ async function deleteReportsFromMainDB(token,reportID){
       console.log(`response of delete ${response.status}`);
       const deletedResult = await response.json();
       if(deletedResult.status =='success'){
-        console.log("the report deleted successfully");
+        console.log("the report deleted from main DB successfully");
         let permenant = await browserDB.deleteReportPermenantly(reportID);
-        console.log("the permenant ? " , permenant);
-        return true;
+        if(permenant)
+          return {success:true , details:deletedResult.message , requestType:200};
+        return {success:false , details:deletedResult.detail , requestType:deletedResult.status};
       }
-      return false;
+      return {success:false , details:deletedResult.detail , requestType:deletedResult.status};
     }
     else{
       console.log (`This report id ${reportID} is not exist or empty`);
-      return false;
+      return { success:false , details:"Token is not exist" };
     }
     
     //delete it from indexedDB [ report table]
@@ -156,9 +169,8 @@ async function deleteReportsFromMainDB(token,reportID){
   }
   catch(error){
     console.log(`Deletion failed in sqlite3 side , ${error.message}`);
-    return false;
+    return { success:false , details:error.message};
   }
-  
   
 
 }
@@ -201,7 +213,9 @@ function markedReportisSynced(perReport){
     return theReports;
 }
 
-let syncPromise = null;
+
+
+let syncPromise = null; //to store the cuurent sync process here to prevent multi call of sync
 
 //The actual sync method
 async function syncProcess() {
@@ -264,9 +278,11 @@ async function syncProcess() {
 
 }
 
+
+
+//this to prevent calling the sync method many time at the same time , so the sync method called then the other sync call will not start syncronization until the sync end
 async function syncReports(){
-    //connect to sqlite3 
-    //check if any report is not synced
+
 
   if(syncPromise){
     console.log("Sync already running...");
@@ -282,7 +298,6 @@ async function syncReports(){
     }
 
 
-  
 }
 
 
