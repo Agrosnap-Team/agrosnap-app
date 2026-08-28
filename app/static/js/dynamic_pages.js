@@ -32,6 +32,11 @@ const profile_Btn = document.getElementById("user-profile");
 let current_user_name = document.getElementById("user-name");
 const close_btn = document.getElementById("close-label");
 let scanButton = document.getElementById("scanPAge");
+let seassionExpiredAlert = document.getElementById("reCreatSessionDialog");
+let userPassword = document.getElementById("userPassword");
+let continueButton = document.getElementById("continue");
+let exitAccount = document.getElementById("logoutChoice");
+
 document.getElementById("logout-btn").addEventListener('click',logoutConfirmationDialog);
 
 scanButton.addEventListener("click",backToHome);
@@ -280,6 +285,26 @@ function logoutConfirmationDialog(){
 
 }
 
+
+function showSessionExpiredWarnning(){
+    seassionExpiredAlert.classList.remove("showToReLogin");
+}
+
+function hideSessionExpiredWarnning(){
+    seassionExpiredAlert.classList.add("showToReLogin");
+
+}
+
+async function mainSync(){
+    const syncStatus = await sync.syncReports();
+    if(syncStatus.details=="Invalid or expired token"){
+        showSessionExpiredWarnning();
+    }
+
+    return syncStatus;
+
+
+}
 
 async function logout_process(){
     // const userID = handleToken.getUserIdFromToken(localStorage.getItem("user_token"));

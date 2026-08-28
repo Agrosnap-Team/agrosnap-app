@@ -11,7 +11,7 @@ export async function startSavedReportsPage(reportData){
     await sync.syncReports(); //sync the newest update between indexedDB and sqlite3
     let isInitiated =  initiateElements();
     if(!isInitiated)return;
-    showReports(reportData);
+    await showReports(reportData);
     allReportsContainer.addEventListener('click',async function (clickedItem) {
         if(clickedItem.target.classList.contains("more-btn")){
             const parentItem = clickedItem.target.closest(".saved-reports");
@@ -22,9 +22,9 @@ export async function startSavedReportsPage(reportData){
         }
 
         else if(clickedItem.target.closest(".saved-reports")){
+
             clickedReportCard = clickedItem.target.closest(".saved-reports");
             openReport(clickedReportCard.id);
-
 
         }
       });
@@ -59,6 +59,13 @@ export async function startSavedReportsPage(reportData){
 
 export async function showReports(reportData){
         //synced first if any new reports should store from sqlite3 , in case if any report added from different device
+
+        //clear the old reports , this prevent the redundancy
+        allReportsContainer
+        .querySelectorAll(".generatedReportsCards")
+        .forEach(card => card.remove());
+
+
         let allReports = await checkAllReports();
         if (allReports && allReports.length > 0){
             hideNoContentMsg();
@@ -117,6 +124,8 @@ export async function checkAllReports(){
 }
 
 function createReportElement(reportData){
+
+
     //copy the element with its css styles , children and contents
     let diseasesImages=[
         "/static/images/bacterial_spot.jpeg",
@@ -127,11 +136,14 @@ function createReportElement(reportData){
         "/static/images/YLCV_disease.jpg"
     ];
 
+
+
     let newReportCard = reportContainer.cloneNode(true); 
     let reportName = newReportCard.querySelector("#reportName");
     let createDate = newReportCard.querySelector("#saveDate");
     let reportImage = newReportCard.querySelector("#diseaseImg");
-    newReportCard.classList.remove("hideReportCard");
+    newReportCard.classList.remove("hideReportCard");//to let the cards appear on screen
+    newReportCard.classList.add("generatedReportsCards");//we will use it to remove only the copied card , not the template
     let savedReportDateTime= new Date(reportData.created_at);
     let savedDate = savedReportDateTime.toDateString();
     let savedTime = savedReportDateTime.toTimeString();

@@ -256,6 +256,136 @@
     
 }
 
+/*==========================================
+   RE login to create Session Dialog
+============================================*/
+
+#reCreatSessionDialog{
+    opacity: 0;
+    visibility: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    /* Light green with 0.5 opacity */
+    background-color: rgba(237, 237, 237, 0.9);
+    /* High z-index to dominate the host page */
+    z-index: 2147483647;
+    /* Center the child container */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s ease-in-out;   
+
+}
+
+#reCreatSessionDialog.showToReLogin{
+    opacity: 1;
+    visibility: visible;
+}
+
+#reCreatSessionDialog #loginDialog{
+    position: relative;
+    display: flex; /*should always be flex in js */
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: #ffffff;
+    border: 1px solid #389100;
+    width: 97%;
+    max-width: 500px;
+    padding: 2.5rem 1rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease-in-out;
+
+}
+
+#reCreatSessionDialog #loginDialog #reLoginTitle{
+    color: #164f00;
+    text-align: center;
+
+}
+
+
+#reCreatSessionDialog #loginDialog #reLoginDetails{
+    padding: 20px;
+    font-size: clamp(0.9rem, 3.5vw, 1.1rem);
+    color: #1b3f0d;
+    line-height: 1;
+}
+
+#reCreatSessionDialog #loginDialog  #logoutWarnning{
+    font-size: clamp(0.85rem, 3vw, 0.95rem);
+    padding: 20px;
+    border: 1px solid #d3a348;
+    background-color: #f7f9ca;
+    color: #66510c;
+    border-radius: 5px;
+    font-weight: bolder;
+
+}
+
+
+#reCreatSessionDialog #loginDialog #sessionForm{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 1.2rem;
+    align-items: center;
+}
+
+
+#reCreatSessionDialog #loginDialog #sessionForm #userPassword{
+    width: 80%;
+    padding: 0.7rem 0.7rem;
+    font-size: 1rem;
+    border: 1px solid #46b402;
+    border-radius: 8px;
+    outline: none;
+    box-sizing: border-box;
+    transition: box-shadow 0.5s ease;
+}
+
+#reCreatSessionDialog #userPassword:focus {
+    border-color: #46b402;
+    /* تأثير ظل ناعم عند الكتابة */
+    box-shadow: 0 0 0 3px rgba(56, 145, 0, 0.15); 
+}
+
+
+#reCreatSessionDialog #loginDialog #sessionForm .reLoginBtns{
+    width:150px;
+    max-width: 250px;
+    min-width: 140px;
+    height: 50px;
+    border-radius: 12px;
+    outline: none;
+    border: none;
+    background-color: #2a6b01;
+    font-size: 16px;
+    transition: filter 0.4s ease;
+    font-weight: bolder;
+    color: white;
+}
+
+#reCreatSessionDialog #loginDialog #sessionForm .reLoginBtns#logoutChoice{
+    background-color: transparent;
+    color:#2a6b01;
+    font-weight: bold;
+    height: auto;
+
+
+}
+
+#reCreatSessionDialog #loginDialog #sessionForm .reLoginBtns:hover{
+    cursor: pointer;
+    filter: brightness(1.3);
+
+}
+
+
 
 
 

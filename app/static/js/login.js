@@ -66,8 +66,7 @@ async function check_user_data(element) {
                     //sync data from sqlite3 to indexedDB
                     const allSavedReports = await getSavedReportsFromMainDB(localStorage.getItem("user_token"));
                     console.log("all saved reports that fetched from sqlite3 " , allSavedReports.reportsData );                     
-
-                    DB.prepareDataAndStoreIt(allUserData); //store all user data in indexedDB
+                    await DB.prepareDataAndStoreIt(allUserData); //store all user data in indexedDB
                     
                     //store all user data in indexedDB
 

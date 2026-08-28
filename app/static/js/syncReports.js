@@ -9,11 +9,11 @@ import browserDB from "./databaseManager_IndexedDB.js";
 
 /* once the user logged in , then we connect with sqlite3 and fetch all reports to indexedDB */
 export async function getSavedReportsFromMainDB(token){
-    try{
+  try{
     if(!navigator.onLine){ //check connection , but not enough
-        return {success:false , data:[]};
+        return {success:false , data:[] , details:"no internet connection"};
     }
-    if(!token)return {sucecss:false , data:[]};
+    if(!token)return {sucecss:false , data:[] , details:"token is not exist"}; //when no token exist
 
     //send a request to fastAPI to get all saved reports in sqlite3
     const response = await fetch("/report",{
@@ -25,8 +25,16 @@ export async function getSavedReportsFromMainDB(token){
     });
 
 
-    if(!response.ok)
-        throw new Error(`Failed connection ${response.status}`);
+    if(!response.ok){
+        const errorData = await response.json();
+        console.log("SQLITE3 ERRORS");
+        console.log(response.status);
+        console.log(errorData.detail);
+        return {success:false ,
+          details: errorData.detail,
+          responseType:response.status
+        }
+    }
 
     //get all previously saved reports from sqlite3
     const allReports = await response.json();
@@ -46,8 +54,8 @@ export async function getSavedReportsFromMainDB(token){
 
   }
   catch(error){
-    alert("error with checking connection " , error.message);
-    return {success:false , data:[]}
+    // alert("error with checking connection " + error.message);
+    return {success:false , data:[] , details:error.message}
   }
 
 }
@@ -84,10 +92,12 @@ async function sendReportToMainDB(token , savedReports){
     
 
     if(!response.ok){
-      let errorDetails = await response.json();
-      throw new Error(`Couldn't save to main database, Status: ${response.status}, The error is: ${JSON.stringify(errorDetails)}`);
-      
-    }
+        const errorData = await response.json();
+        console.log("SQLITE3 ERRORS");
+        console.log(response.status);
+        console.log(errorData.detail);
+        return false;
+      }
     const isSaved = await response.json();
     console.log(`isSaved ?` , isSaved); //return the response and the status on request
     if(isSaved.status == 'success'){
@@ -102,11 +112,6 @@ async function sendReportToMainDB(token , savedReports){
     console.log("failed to save , " , error.message);
     return false;
   }
-
-
-
-
-
 
 
 }
@@ -196,10 +201,10 @@ function markedReportisSynced(perReport){
     return theReports;
 }
 
+let syncPromise = null;
 
-async function syncReports(){
-    //connect to sqlite3 
-    //check if any report is not synced
+//The actual sync method
+async function syncProcess() {
 
     const userCurrent = localStorage.getItem("user_token");
 
@@ -230,6 +235,8 @@ async function syncReports(){
     //check before complete the sync
     if (!serverReports.success) {
     console.log("Could not fetch server reports. Skipping server synchronization.");
+    console.log("Please re-sign again ");
+    console.log(serverReports.details);
     return;
     }
 
@@ -249,10 +256,33 @@ async function syncReports(){
     }
 
 
+
+
     //check if any new changes should be reflected on indexedDB
     // await getSavedReportsFromMainDB(userCurrent);
-    console.log("The out of suync reports are",outOfSyncedReport);
+    console.log("The out of suync reports are",outOfSyncedReport);  
 
+}
+
+async function syncReports(){
+    //connect to sqlite3 
+    //check if any report is not synced
+
+  if(syncPromise){
+    console.log("Sync already running...");
+    return syncPromise;
+  }
+
+  syncPromise = syncProcess();
+  try {
+        return await syncPromise;
+    }
+    finally {
+        syncPromise = null;
+    }
+
+
+  
 }
 
 
