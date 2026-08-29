@@ -30,7 +30,7 @@ export async function loadModel() {
         model = await loadingModelProcess; 
         console.log("The model has been loaded successfully !");
 
-
+        await new Promise(resolve => requestAnimationFrame(resolve));
         //warmup 
         tf.tidy(() => {
         const dummy = tf.zeros([1, 260, 260, 3]);
@@ -51,7 +51,6 @@ export async function loadModel() {
 }
 catch(error){
     loadingModelProcess=null;
-    alert("this is in model.js , in loadModel(), " + error + " ,reset the loadingModelProcess");
 }
 
 }

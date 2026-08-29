@@ -1,7 +1,7 @@
 
 import handleData from "./tokenDecoding.js";
 import DB from "./databaseManager_IndexedDB.js";
-import { getSavedReportsFromMainDB } from "./syncReports.js";
+import { getSavedReportsFromMainDB , syncDiseases } from "./syncReports.js";
 
 
 document.addEventListener('click',check_user_data);
@@ -69,8 +69,9 @@ async function check_user_data(element) {
                     const allSavedReports = await getSavedReportsFromMainDB(localStorage.getItem("user_token"));
 
                     if(allSavedReports.success){
-                        console.log("all saved reports that fetched from sqlite3 " , allSavedReports.data );                     
+                        console.log("all saved reports that fetched from sqlite3 " , allSavedReports.data );                   
                         await DB.prepareDataAndStoreIt(allUserData); //store all user data in indexedDB
+                        
                     }
                     
                     //store all user data in indexedDB
@@ -108,6 +109,8 @@ function get_values_from_fields(){
     };
     return collected_data;
 }
+
+
 
 
 

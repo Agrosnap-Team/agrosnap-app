@@ -412,12 +412,6 @@ class AgrosnapDatabase:
 if __name__ == '__main__':
     db = AgrosnapDatabase()
     db.init_database()
-    db.insert_into_disease_Table("Bacterial Spot" , "no content" , "no content")
-    db.insert_into_disease_Table("Early Blight" , "no content" , "no content")
-    db.insert_into_disease_Table("Healthy" , "no content" , "no content")
-    db.insert_into_disease_Table("Late Blight" , "no content" , "no content")
-    db.insert_into_disease_Table("Leaf Mold" , "no content" , "no content")
-    db.insert_into_disease_Table("YLCV" , "no content" , "no content")
 
 
     data = db.get_disease_by_id(1)
@@ -426,8 +420,8 @@ if __name__ == '__main__':
     user = db.get_user_by_id(1)
     print(user)
 
-    reports = db.get_user_report(1)
-    print(reports)
+    # reports = db.get_user_report(1)
+    # print(reports)
     # db.insert_into_disease_Table("Yellow Leaf Curl Virus" , "no content" , "no content")
     # db.insert_into_disease_Table("tomato","jdhjfdsjfsdfjsdf","jdjsdajdbhsa")
     # db.insert_into_disease_Table("leaf_mold","dnfdsfdfnsmn","jsdssdjkdnzkjkxzjcnz")

@@ -223,7 +223,11 @@ async function fit_the_page(curr_page,additionalData) {
         console.error("something went wrong , " + error);
     })
 
-    .finally(() => hideLoadingProgress());
+    .finally(() => {
+        setTimeout(hideLoadingProgress,200);
+    }
+        
+);
 }
 
 

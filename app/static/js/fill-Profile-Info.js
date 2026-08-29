@@ -3,6 +3,7 @@ import DB from "./databaseManager_IndexedDB.js";
 
 async function setInfo(){
     try{
+    
     const user_id = handleData.getUserIdFromToken(localStorage.getItem("user_token"));
 
     console.log("user_id from token , ",user_id);

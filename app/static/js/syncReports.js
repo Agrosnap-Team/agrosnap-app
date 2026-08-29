@@ -126,6 +126,31 @@ async function sendReportToMainDB(token , savedReports){
 }
 
 
+export async function syncDiseases(){
+  //if diseases are available
+  //if token is not available
+  //if token expired 
+  const response = await fetch("/diseases",{
+    method:'GET',
+    headers:{'Content-Type': 'application/json'}
+  });
+
+  console.log("STATUS:", response.status);
+  console.log("OK:", response.ok);
+  console.log("URL:", response.url);
+
+  const diseases = await response.json();
+  if(!response.ok)return {success:false, responseStatus:response.status, details:diseases.detail};
+  if(!diseases.status) return {success:false,responseStatus:404,details:"No diseases synced"};
+  console.log("THE DISEASES : \n");
+  console.log(diseases.diseases);
+
+}
+
+
+
+
+
 async function deleteReportsFromMainDB(token,reportID){
   try{
     //make it just for one report
@@ -226,8 +251,10 @@ let syncPromise = null; //to store the cuurent sync process here to prevent mult
 //The actual sync method
 async function syncProcess() {
 
-    const userCurrent = localStorage.getItem("user_token");
+   let resultOfSync = await syncDiseases();  
+   console.log(resultOfSync);
 
+    const userCurrent = localStorage.getItem("user_token");
 
     //checking the out of synced reports
     let outOfSyncedReport=[];

@@ -13,7 +13,7 @@
     /* Light green with 0.5 opacity */
     background-color: rgba(237, 237, 237, 0.9);
     /* High z-index to dominate the host page */
-    z-index: 2147483647;
+    z-index: 2147483647999;
     /* Center the child container */
     display: flex;
     flex-direction: column;
