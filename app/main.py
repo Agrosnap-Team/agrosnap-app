@@ -3,8 +3,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
-from app.routers import authentication,reports
-
+from app.routers import authentication,reports,sync
 
 # this is the CEO have archive (contains all URL & Method write )
 app = FastAPI(
@@ -15,7 +14,7 @@ app = FastAPI(
 #connect the routers  with main server
 app.include_router(authentication.router)
 app.include_router(reports.router)
-
+app.include_router(sync.router)
 
 #========================================================================
 # These are mandatory for let fastAPI know the locations of files/folders
