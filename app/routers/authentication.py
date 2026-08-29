@@ -18,7 +18,7 @@ SECRET_KEY = "SUPER_SECRET_KEY_DONT_TELL_ANYONE"
 # the algorthm use to encrypt the token
 ALGORITHM = "HS256"
 #expier of token
-ACCESS_TOKEN_EXPIRE_MINUTES = 2
+ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
 # instantiation an isolated router
 router = APIRouter()

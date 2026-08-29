@@ -23,6 +23,11 @@
     <script  src="/node_modules/@tensorflow/tfjs/dist/tf.js"></script>
 </head>
 <body id="sidebar_page">
+    <div id="loadingOverlay">
+        <div id="loadingCircle"></div>
+        <div id="loadingTitle">LOADING ... </div>
+
+    </div>
     
     <div id="container">
         <div id="dialogContainer">
@@ -65,6 +70,7 @@
                 </div>
                 <form id="sessionForm">
                     <input type="password" id="userPassword" placeholder="Enter your password">
+                    <label id="errorMsg"></label>
                     <button type="submit" class="reLoginBtns" id="continue">Continue</button>
                     <button type="submit" class="reLoginBtns" id="logoutChoice">Logout</button>
                 </form>

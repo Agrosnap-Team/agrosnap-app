@@ -1,3 +1,78 @@
+/*==============================================
+    LOADING 
+================================================*/
+
+#loadingOverlay{
+    opacity: 0;
+    visibility: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    /* Light green with 0.5 opacity */
+    background-color: rgba(237, 237, 237, 0.9);
+    /* High z-index to dominate the host page */
+    z-index: 2147483647;
+    /* Center the child container */
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s ease-in-out;
+}
+#loadingOverlay.showLoadingProgress{
+    opacity: 1;
+    visibility: visible;
+}
+
+#loadingOverlay #loadingCircle{
+    display: flex; /*should always be flex in js */
+    flex-direction: column;
+    align-items: center;
+    width:150px;
+    height: 150px ;
+    border: 10px solid #008000;
+    border-right: 10px solid transparent;
+    border-radius: 50%;
+    animation: rotateLoadingCircle 2s linear infinite;
+    
+
+}
+
+@keyframes rotateLoadingCircle {
+    0%{transform: rotate(0deg);border-color:#008000;border-right-color: transparent;}
+    50%{transform: rotate(180deg);border-color:#63a263 ;border-right-color: transparent;}
+    100%{transform: rotate(360deg);border-color:#008000 ;border-right-color: transparent;}
+    
+}
+
+#loadingOverlay #loadingTitle{
+    color:#008000;
+    font-weight: bolder;
+    font-size: 22px;
+    /* animation: titleFilter 2s ease-in-out infinite; */
+    text-shadow: 0px 0.5px 2px black;
+}
+
+@keyframes titleFilter {
+
+    0%{filter: brightness(1);}
+    50%{filter: brightness(1.7);}
+    100%{filter: brightness(1);}
+    
+}
+
+
+
+
+
+
+
+/*==============================================
+    LOGOUT
+================================================*/
 
 #dialogContainer{
     opacity: 0;
@@ -17,6 +92,7 @@
     align-items: center;
     transition: all 0.2s ease-in-out;
 }
+
 
  #dialogContainer.showLogutDialog{
     opacity: 1;
@@ -293,7 +369,7 @@
     gap: 0.5rem;
     background-color: #ffffff;
     border: 1px solid #389100;
-    width: 97%;
+    width: 80%;
     max-width: 500px;
     padding: 2.5rem 1rem;
     border-radius: 12px;
@@ -332,8 +408,33 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    gap: 1.2rem;
+    gap: 0.5rem;
     align-items: center;
+}
+
+#reCreatSessionDialog #loginDialog #sessionForm #errorMsg{
+    /* background-color: rgb(234, 138, 138);
+    border: 1px solid rgb(207, 61, 61); */
+    display: none;
+    width:70%;
+    /* padding: 5px; */
+    font-weight: bold;
+}
+
+#reCreatSessionDialog #loginDialog #sessionForm #errorMsg::first-letter{
+    text-transform: uppercase;
+}
+
+#reCreatSessionDialog #loginDialog #sessionForm #successMsg{
+    display: inline;
+    color:rgb(36, 81, 24);
+}
+
+
+#reCreatSessionDialog #loginDialog #sessionForm #errorMsg.showErrorMsg{
+    display: inline;
+    color:rgb(134, 9, 9);
+    
 }
 
 
@@ -346,6 +447,10 @@
     outline: none;
     box-sizing: border-box;
     transition: box-shadow 0.5s ease;
+}
+
+#reCreatSessionDialog #loginDialog #sessionForm #userPassword.invalidPassword{
+    border: 2px solid #7f0c0c;
 }
 
 #reCreatSessionDialog #userPassword:focus {

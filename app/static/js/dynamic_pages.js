@@ -24,7 +24,6 @@ sessionStorage.setItem("current_page", 0);
 
 window.addEventListener('storage', function(event) {
     
-    // بنفحص إذا العنصر اللي تغير أو انحذف هو الـ Token تبعنا
     if (event.key ==='user_token'&& event.newValue === null) {
         logout_process();
 
@@ -41,10 +40,13 @@ const profile_Btn = document.getElementById("user-profile");
 let current_user_name = document.getElementById("user-name");
 const close_btn = document.getElementById("close-label");
 let scanButton = document.getElementById("scanPAge");
-let seassionExpiredAlert = document.getElementById("reCreatSessionDialog");
+let sessionExpiredAlert = document.getElementById("reCreatSessionDialog");
 let userPassword = document.getElementById("userPassword");
 let continueButton = document.getElementById("continue");
 let exitAccount = document.getElementById("logoutChoice");
+let errorMsg = document.getElementById("errorMsg");
+let loading=document.getElementById("loadingOverlay");
+
 
 document.getElementById("logout-btn").addEventListener('click',logoutConfirmationDialog);
 
@@ -176,6 +178,9 @@ window.onload =async function(){
 
 async function fit_the_page(curr_page,additionalData) {
 
+    showLoadingProgress();
+    await new Promise(resolve => requestAnimationFrame(resolve));
+
     console.log("the parameters:" , additionalData);
 
     const allPages = [
@@ -216,7 +221,9 @@ async function fit_the_page(curr_page,additionalData) {
 
     .catch(error =>{
         console.error("something went wrong , " + error);
-    }); 
+    })
+
+    .finally(() => hideLoadingProgress());
 }
 
 
@@ -296,7 +303,7 @@ function logoutConfirmationDialog(){
 
 
 function showSessionExpiredWarnning(){
-    seassionExpiredAlert.classList.add("showToReLogin");
+    sessionExpiredAlert.classList.add("showToReLogin");
     console.log(exitAccount);
     exitAccount.onclick=()=>{
         console.log("this is show method");
@@ -308,15 +315,43 @@ function showSessionExpiredWarnning(){
 
 function hideSessionExpiredWarnning(){
     console.log("hide dialog");
-    seassionExpiredAlert.classList.remove("showToReLogin");
+    sessionExpiredAlert.classList.remove("showToReLogin");
+
+}
+
+function showFailedTokenCreationMsg(msg){
+    userPassword.classList.add("invalidPassword");
+    errorMsg.classList.add("showErrorMsg");
+    errorMsg.innerHTML=" " +msg;
+
+
+}
+
+function hideFailedTokenCreationMsg(){
+    userPassword.classList.remove("invalidPassword");
+    errorMsg.classList.remove("showErrorMsg");
+}
+
+function showSuccessTokenCreationMsg(msg){
+    errorMsg.classList.add("successMsg");
+    errorMsg.innerHTML=" " +msg;
+
+}
+
+function hideSuccessTokenCreationMsg(){
+    errorMsg.classList.remove("successMsg");
 
 }
 
 function checkUserPassword(event){
+
     event.preventDefault();
+    hideFailedTokenCreationMsg();
+    hideSuccessTokenCreationMsg();
+    void sessionExpiredAlert.offsetWidth;
     console.log(userPassword);
     let enteredPassword=userPassword.value.trim();
-    if(!enteredPassword)return;
+    if(!enteredPassword){showFailedTokenCreationMsg("Password can not be empty"); return;}
     console.log("The Entered Password is: " , enteredPassword);
     console.log("The current username: " , handleToken.getUserUsernameFromToken(localStorage.getItem("user_token")));
     RequestNewToken(enteredPassword);
@@ -325,6 +360,7 @@ function checkUserPassword(event){
 }
 
 async function  RequestNewToken(enteredPassword){
+
     try{
 
         const userID = handleToken.getUserUsernameFromToken(localStorage.getItem("user_token"));
@@ -337,10 +373,12 @@ async function  RequestNewToken(enteredPassword){
         headers:{"Content-Type": "application/json"},
         body:JSON.stringify(userData)
         });//end of response
-
-        if(!response.ok){hideSessionExpiredWarnning();showOfflineModeDialog();}
-        
         const result = await response.json();
+
+        if(!response.ok)
+            showFailedTokenCreationMsg("Incorrect password. Please try again");
+        
+        
         if(result.create_token){
             console.log("The old token is: " , localStorage.getItem("user_token"));
             localStorage.setItem("user_token",result.create_token);
@@ -358,14 +396,15 @@ async function  RequestNewToken(enteredPassword){
             };
             await DB.prepareDataAndStoreIt(allUserData);
             await mainSync();
+            showSuccessTokenCreationMsg("New token has been created ✅")
             hideSessionExpiredWarnning();
         }
-
 
 
     }
     catch(e){
         console.log("The new token request has been failed !! " , e.message);
+        showFailedTokenCreationMsg("Please check your internet connection..")
         hideOfflineModeDialog();
     }
 
@@ -380,6 +419,19 @@ export async function mainSync(){
 
     return syncStatus;
 
+
+}
+
+function showLoadingProgress(){
+    console.log("LOADING PAGE : " , sessionStorage.getItem("current_page"));
+
+    loading.classList.add("showLoadingProgress");
+
+
+}
+
+function hideLoadingProgress(){
+    loading.classList.remove("showLoadingProgress");
 
 }
 

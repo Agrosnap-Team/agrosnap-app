@@ -21,6 +21,9 @@ let scanUploadbtns , healthyDialog , okButton , closeHealthyPopupIcon;
 export async function initElements(){
 
     hideScanButton();
+    setTimeout(()=>{
+        console.log("------ this is timeout");
+    },2000);
     
 
 

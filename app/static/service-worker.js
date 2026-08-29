@@ -10,7 +10,7 @@
 // └── ...
 
 
-const CACHE_NAME = "agrosnapApp-v14";
+const CACHE_NAME = "agrosnapApp-v15";
 console.log("this is service worker, " + CACHE_NAME);
 const FILES_TO_CACHE = [
 
@@ -32,7 +32,6 @@ const FILES_TO_CACHE = [
     "/static/css/general_style.css",
     "/static/css/signStyle.css",
     "/static/css/sign-choices.css",
-    "/static/css/login.css",
     "/static/css/registration.css",
     "/static/css/sidebar.css",
     "/static/css/scan.css",
