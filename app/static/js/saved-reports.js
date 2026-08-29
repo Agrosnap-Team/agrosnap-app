@@ -1,6 +1,6 @@
 import db from "./databaseManager_IndexedDB.js";
-import {showScanButton , show_report} from "./dynamic_pages.js";
-import sync from "./syncReports.js";
+import {showScanButton , show_report , mainSync} from "./dynamic_pages.js";
+
 
 
 
@@ -8,7 +8,7 @@ let reportContainer , allReportsContainer , noContentMsg , dialogContainer , del
 
 export async function startSavedReportsPage(reportData){
     showScanButton();
-    await sync.syncReports(); //sync the newest update between indexedDB and sqlite3
+    await mainSync(); //sync the newest update between indexedDB and sqlite3
     let isInitiated =  initiateElements();
     if(!isInitiated)return;
     await showReports(reportData);
@@ -46,7 +46,7 @@ export async function startSavedReportsPage(reportData){
                 reportToDelete = null;
             });
 
-            await sync.syncReports();
+            await mainSync();
 
 
 

@@ -4,10 +4,11 @@ import { jwtDecode } from "/node_modules/jwt-decode/build/esm/index.js";
 function decodeToken(encodedToken) {
         // decode the token 
         try{
-        const decodedData = jwtDecode(encodedToken);
-        console.log(decodedData);
-        localStorage.setItem("user_data",JSON.stringify(decodedData));
-        return decodedData;
+        if(!encodedToken)return;
+            const decodedData = jwtDecode(encodedToken);
+            console.log(decodedData);
+            localStorage.setItem("user_data",JSON.stringify(decodedData));
+            return decodedData;
         }
         catch(error){
             console.log(error);

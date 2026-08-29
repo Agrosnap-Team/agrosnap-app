@@ -23,9 +23,7 @@ export function initElements(){
     hideScanButton();
     
 
-    if(localStorage.getItem("user_token")===null || localStorage.getItem("user_token")===undefined){
-        window.location.href="/sign";
-    }
+
 
 
     // initModel();

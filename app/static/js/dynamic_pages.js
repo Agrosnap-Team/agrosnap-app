@@ -22,6 +22,15 @@ if(sessionStorage.getItem("current_page")==null || sessionStorage.getItem("curre
 sessionStorage.setItem("current_page", 0);
 }
 
+window.addEventListener('storage', function(event) {
+    
+    // بنفحص إذا العنصر اللي تغير أو انحذف هو الـ Token تبعنا
+    if (event.key ==='user_token'&& event.newValue === null) {
+        logout_process();
+
+    }
+});
+
 console.log("dynamic pages loaded");
 
 
@@ -109,7 +118,7 @@ document.addEventListener("click", (event) => { //when user opens profile and th
 });
 
 window.addEventListener('online',async()=>{
-    await sync.syncReports();
+    await mainSync();
 });
 window.addEventListener('offline',()=>{
     showOfflineModeDialog();
@@ -137,7 +146,7 @@ function hideOfflineModeDialog(){
 window.onload =async function(){
      
     let saved_page = sessionStorage.getItem("current_page");
-    await sync.syncReports();
+    await mainSync();
 
     let userToken = handleToken.getUserIdFromToken(localStorage.getItem("user_token"));
     let userFullName = DB.getUserByID(userToken).then(userData => {
@@ -287,17 +296,85 @@ function logoutConfirmationDialog(){
 
 
 function showSessionExpiredWarnning(){
-    seassionExpiredAlert.classList.remove("showToReLogin");
+    seassionExpiredAlert.classList.add("showToReLogin");
+    console.log(exitAccount);
+    exitAccount.onclick=()=>{
+        console.log("this is show method");
+        hideSessionExpiredWarnning();
+        logout_process();
+    };
+    continueButton.onclick=checkUserPassword;
 }
 
 function hideSessionExpiredWarnning(){
-    seassionExpiredAlert.classList.add("showToReLogin");
+    console.log("hide dialog");
+    seassionExpiredAlert.classList.remove("showToReLogin");
 
 }
 
-async function mainSync(){
+function checkUserPassword(event){
+    event.preventDefault();
+    console.log(userPassword);
+    let enteredPassword=userPassword.value.trim();
+    if(!enteredPassword)return;
+    console.log("The Entered Password is: " , enteredPassword);
+    console.log("The current username: " , handleToken.getUserUsernameFromToken(localStorage.getItem("user_token")));
+    RequestNewToken(enteredPassword);
+    
+
+}
+
+async function  RequestNewToken(enteredPassword){
+    try{
+
+        const userID = handleToken.getUserUsernameFromToken(localStorage.getItem("user_token"));
+        const userData ={
+            identifier: userID,
+            password : enteredPassword
+        } 
+        const response = await fetch("/login",{
+        method:"POST",
+        headers:{"Content-Type": "application/json"},
+        body:JSON.stringify(userData)
+        });//end of response
+
+        if(!response.ok){hideSessionExpiredWarnning();showOfflineModeDialog();}
+        
+        const result = await response.json();
+        if(result.create_token){
+            console.log("The old token is: " , localStorage.getItem("user_token"));
+            localStorage.setItem("user_token",result.create_token);
+            localStorage.setItem("other_info",JSON.stringify(result.user_info));
+            const decodedData = handleToken.decodeToken(result.create_token);
+            console.log("The new token is: " , localStorage.getItem("user_token"));
+
+            let allUserData = {
+                user_id: decodedData.user_id,
+                username: decodedData.username,
+                email: decodedData.Email,
+                first_name: result.user_info.first_name,
+                last_name: result.user_info.last_name,
+                exp: decodedData.exp
+            };
+            await DB.prepareDataAndStoreIt(allUserData);
+            await mainSync();
+            hideSessionExpiredWarnning();
+        }
+
+
+
+    }
+    catch(e){
+        console.log("The new token request has been failed !! " , e.message);
+        hideOfflineModeDialog();
+    }
+
+}
+
+export async function mainSync(){
     const syncStatus = await sync.syncReports();
-    if(syncStatus.details=="Invalid or expired token"){
+    console.log('the sync status is : ' , syncStatus.responseStatus);
+    if(syncStatus.responseStatus == 401){
         showSessionExpiredWarnning();
     }
 
@@ -307,6 +384,7 @@ async function mainSync(){
 }
 
 async function logout_process(){
+    console.log("logout method");
     // const userID = handleToken.getUserIdFromToken(localStorage.getItem("user_token"));
     // await DB.delete_user(userID); //remove user
     await DB.clear_DB_tables(); // clear indexedDB

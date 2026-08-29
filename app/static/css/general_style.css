@@ -29,16 +29,19 @@ body {
     visibility: hidden;
     color: rgb(200, 3, 3);
     text-transform:lowercase;
-    font-weight: bolder;
+    font-weight: bold;
     text-align: center;
-    letter-spacing: 1.2px;
+    letter-spacing: 1px;
     word-spacing: 2px;
     background-color: rgb(250, 170, 152);
+    border: 1px solid rgb(186, 50, 50);
     height: 30px;
     box-sizing: border-box;
     margin: 5px;
-    padding: 5px;
+    padding: 10px;
     height: fit-content;
+    font-size: 18px;
+    border-radius: 5px;
 
 }
 
