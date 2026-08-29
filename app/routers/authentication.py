@@ -114,7 +114,7 @@ def login(login_data: userSign_in):
         # check if user is registered .
         # if get user by identifier return None the condition  "if not user" is like  ask if None this mean  no user  then raise exception
         if not user:
-            raise HTTPException(status_code=400, detail="User not registered")
+            raise HTTPException(status_code=400, detail=f"user not registered")
 
         #convert the password that enter to bytes for exampl if we enter Tala#123 -> b'Tala#123'
         login_password = login_data.password.encode('utf-8')

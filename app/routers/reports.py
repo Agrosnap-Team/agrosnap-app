@@ -46,7 +46,7 @@ def Save_scan_report(request_data : SaveReportRequest , user_info : dict = Depen
         cursor.execute(query
                      ,(request_data.save_id,
                        user_id,
-                       request_data.disease_id ,
+                       request_data.disease_id,
                        request_data.plant_name if request_data.plant_name else "Disease Report", # in case user dose not entre name when save report , by default save as "Disease Report "
                        f"{request_data.confidence:.2f}",
                        request_data.created_at))
