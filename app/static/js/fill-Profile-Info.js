@@ -20,8 +20,8 @@ async function setInfo(){
     }
 }
 
-export function init(){
+export async function init(){
     
-    setInfo();
+    await setInfo();
 }
 

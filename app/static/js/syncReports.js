@@ -147,9 +147,6 @@ async function deleteReportsFromMainDB(token,reportID){
       );
       if(!response.ok){
         const errorData = await response.json();
-        console.log("SQLITE3 ERRORS");
-        console.log(response.status);
-        console.log(errorData.detail);
         return {success:false ,
           details: errorData.detail,
           responseStatus:response.status
@@ -235,27 +232,42 @@ async function syncProcess() {
     //checking the out of synced reports
     let outOfSyncedReport=[];
     let allReports = await browserDB.get_all_reports_from_indexedDB();
-    if(allReports.length<=0)
+    if(allReports.length<=0) //no reports saved yet
       console.log(`No saved Reports`);
 
+    //loop for sync any out of sync reports and store it in sqlite3
     for(let reportNum=0;reportNum< allReports.length;reportNum++){
-        if(allReports[reportNum].isSynced==true)continue;
+
+      //skip any synced reports , which means this is already stored in sqlite3
+        if(allReports[reportNum].isSynced==true)continue; 
         outOfSyncedReport.push(allReports[reportNum]);
         const isSent = await sendReportToMainDB(userCurrent,allReports[reportNum]);
-        if(!isSent.success)
+
+        // 401 means unauthorized , so the token could be expired or not exist
+        if(!isSent.success && isSent.responseStatus===401) 
           return{success:false , details:isSent.details , responseStatus:isSent.responseStatus }
 
     }
-    console.log("The out of suync reports are",outOfSyncedReport);  
+    console.log("The out of sync reports are",outOfSyncedReport);  
 
-    //check if there any deleted reports
+    //check if there any deleted reports stored in delete table
     let allDeletedReports = await browserDB.get_all_deleted_reports();
     console.log("The deleted reports " , allDeletedReports);
     for(let reportNum =0 ; reportNum<allDeletedReports.length; reportNum++){
       console.log("in deletion loop");
         let isDeleted = await deleteReportsFromMainDB(userCurrent,allDeletedReports[reportNum].save_id); 
-        if(!isDeleted)
-          return{success:false , details:isDeleted.details , responseStatus:isDeleted.status }
+
+        /*================================================================
+        This when the user create and delete the report in offline mode , so this deleted report will not reach the
+        server , so when fastAPI try to find it in sqlite3 it will not be found to delete , so just 
+        delete it from indexedDB in delete table
+        ===================================================================*/
+        
+        if(!isDeleted.success && isDeleted.responseStatus === 404){
+          console.log('Failed to delete : ',isDeleted.details);
+          await browserDB.deleteReportPermenantly(allDeletedReports[reportNum].save_id);
+          // return{success:false , details:isDeleted.details , responseStatus:isDeleted.status }
+        }
     }
 
 

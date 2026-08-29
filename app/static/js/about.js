@@ -1,5 +1,5 @@
 import { showScanButton } from "./dynamic_pages.js";
 
-export function startAboutPage() {
+export async function startAboutPage() {
     showScanButton();
 }

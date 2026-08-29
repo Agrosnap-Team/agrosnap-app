@@ -12,7 +12,7 @@ export async function startSavedReportsPage(reportData){
     let isInitiated =  initiateElements();
     if(!isInitiated)return;
     await showReports(reportData);
-    allReportsContainer.addEventListener('click',async function (clickedItem) {
+    allReportsContainer.onclick = async function (clickedItem) {
         if(clickedItem.target.classList.contains("more-btn")){
             const parentItem = clickedItem.target.closest(".saved-reports");
             reportToDelete = parentItem;             
@@ -27,9 +27,9 @@ export async function startSavedReportsPage(reportData){
             openReport(clickedReportCard.id);
 
         }
-      });
+      };
 
-    confirmDeletionButton.addEventListener('click',async function(){
+    confirmDeletionButton.onclick = async function(){
             console.log(" confirm clicked !!");
             console.log("the delete report ", reportToDelete);
         
@@ -48,12 +48,9 @@ export async function startSavedReportsPage(reportData){
 
             await mainSync();
 
-
-
-        });
-
-        cancelDeletionButton.addEventListener('click',hideDeleteDialog);
-        closeDialogIcon.addEventListener('click',hideDeleteDialog);
+        };
+        cancelDeletionButton.onclick = hideDeleteDialog;
+        closeDialogIcon.onclick = hideDeleteDialog;
 
 }
 
@@ -186,7 +183,7 @@ function highlightNewSavedReport(newReportID){
     document.getElementById(newReportID).classList.add("highlightNewReport");
     document.getElementById(newReportID).addEventListener('animationend',()=>{
         document.getElementById(newReportID).classList.remove("highlightNewReport");
-    });
+    }, { once: true });
 
 
 }

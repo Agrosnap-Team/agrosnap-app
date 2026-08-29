@@ -194,7 +194,7 @@ async function fit_the_page(curr_page,additionalData) {
     .then(response => {
         return response.text();
     })
-    .then(HTML_data =>{
+    .then(async HTML_data =>{
         void document.getElementById("content").offsetWidth;
         if(curr_page != 4){
             document.getElementById("content").classList.add("changePagesAnimation");
@@ -210,7 +210,7 @@ async function fit_the_page(curr_page,additionalData) {
 
         if(clicked_page.initJSFunction){ //if we have an exported functions that should work once the page called
 
-            clicked_page.initJSFunction(additionalData);//call the function that belong to specific page
+            await clicked_page.initJSFunction(additionalData);//call the function that belong to specific page
         }
     })
 

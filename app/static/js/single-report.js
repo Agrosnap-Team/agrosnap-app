@@ -19,7 +19,7 @@ let alertPopUp , reportRenameInput;
 // other variables
 const pageIndex = 5;
 
-export function initReport(diseaseInfo){
+export async function initReport(diseaseInfo){
 
     showScanButton();
     let isElementsInitiated=initiateElements();

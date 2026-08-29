@@ -18,7 +18,7 @@ let convertedImg;
 let scanUploadbtns , healthyDialog , okButton , closeHealthyPopupIcon;
 
 
-export function initElements(){
+export async function initElements(){
 
     hideScanButton();
     
