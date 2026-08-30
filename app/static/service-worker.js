@@ -57,6 +57,7 @@ const FILES_TO_CACHE = [
     "/static/js/saved-reports.js",
     "/static/js/about.js",
     "/static/js/syncReports.js",
+    "/static/js/web-worker.js",
 
     
     // Images
