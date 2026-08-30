@@ -1,0 +1,40 @@
+[
+  {
+    "disease_name": "bacterial spot",
+    "organic_treatment": "Apply organic copper fungicides early. Prune affected leaves, avoid overhead watering, and practice strict crop rotation.",
+    "report": "Small, water-soaked dark lesions on leaves and fruit that turn brown and scab-like. Leaves yellow around spots"
+  },
+
+   {
+    "disease_name": "early blight",
+    "organic_treatment": "Spray copper soap or Bacillus subtilis. Prune lower branches to improve airflow and apply mulch to prevent soil-splash.",
+     "report": "Concentric rings (\"target spots\") with yellow halos starting on older, lower foliage"
+   },
+
+     {
+    "disease_name": "healthy",
+    "organic_treatment": "Maintain consistent watering, balanced compost nutrients, and clear row spacing to prevent disease onset.",
+       "report": "Vigorous green leaves, strong stems, no dark spots, curling, or fungal fuzz."
+     },
+
+
+   {
+    "disease_name": "late blight",
+    "organic_treatment": "Remove infected plants immediately (cannot be cured once established). Preventatively apply organic copper spray in cool, wet weather.",
+     "report": "Rapidly spreading dark, greasy leaf lesions and firm, brown rot on fruit. White fungal fuzz appears in high humidity."
+   },
+
+   {
+    "disease_name": "leaf mold",
+    "organic_treatment": "Increase greenhouse ventilation and drop humidity below 85%. Apply bio-fungicides like Bacillus amyloliquefaciens or neem oil.",
+     "report": "Pale yellow spots on upper leaf surfaces paired with olive-green to grey fuzzy mold on the undersides."
+   } ,
+
+   {
+    "disease_name": "yellow leaf curl virus",
+    "organic_treatment": "Control whiteflies (the virus vector) using insecticidal soaps, neem oil, or yellow sticky traps. Remove and destroy infected plants.",
+     "report": "Upward curling leaves, yellow margins, severe plant stunting, and flower drop."
+   }
+
+
+]

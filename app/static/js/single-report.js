@@ -61,7 +61,7 @@ async function fillReportStructure(index,confidence){
 
         //fill the elements with data of disease to represent it in user interface
         reportTitle.innerHTML = the_disease.disease_name;
-        diseaseContent.innerHTML = the_disease.report;
+        diseaseContent.innerHTML = the_disease.disease_info;
         treatmentContent.innerHTML = the_disease.treatment;
         progPercent.innerHTML = `${confidence}%`;
         progLine.style.width = `${confidence}%`;

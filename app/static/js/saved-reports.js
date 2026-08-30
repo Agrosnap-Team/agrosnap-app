@@ -68,7 +68,7 @@ export async function showReports(reportData){
             hideNoContentMsg();
             sortReports(allReports);
             for(let reportNum=0; reportNum<allReports.length;reportNum++){
-                createReportElement(allReports[reportNum]);
+               await createReportElement(allReports[reportNum]);
                 if(reportData != undefined || reportData != null){
                     if (allReports[reportNum].save_id== reportData.save_id){
                         console.log('the new report is : ' , allReports[reportNum]);
@@ -120,8 +120,9 @@ export async function checkAllReports(){
     return allReports;
 }
 
-function createReportElement(reportData){
-
+async function createReportElement(reportData){
+    const diseaseInfo = await db.get_diseases_info(reportData.disease_id);
+    console.log("the reports area:  " , diseaseInfo);
 
     //copy the element with its css styles , children and contents
     let diseasesImages=[
@@ -139,6 +140,7 @@ function createReportElement(reportData){
     let reportName = newReportCard.querySelector("#reportName");
     let createDate = newReportCard.querySelector("#saveDate");
     let reportImage = newReportCard.querySelector("#diseaseImg");
+    let reportContent = newReportCard.querySelector("#repContent");
     newReportCard.classList.remove("hideReportCard");//to let the cards appear on screen
     newReportCard.classList.add("generatedReportsCards");//we will use it to remove only the copied card , not the template
     let savedReportDateTime= new Date(reportData.created_at);
@@ -150,6 +152,7 @@ function createReportElement(reportData){
     reportName.innerHTML=reportData.plant_name;
     reportImage.src = diseasesImages[reportData.disease_id];
     createDate.innerHTML = savedReportDateTime;
+    reportContent.innerHTML=diseaseInfo.disease_info;
     // newReportCard.removeAttribute('id');
     allReportsContainer.appendChild(newReportCard);
 

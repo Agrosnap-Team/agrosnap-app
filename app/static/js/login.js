@@ -69,8 +69,10 @@ async function check_user_data(element) {
                     const allSavedReports = await getSavedReportsFromMainDB(localStorage.getItem("user_token"));
 
                     if(allSavedReports.success){
-                        console.log("all saved reports that fetched from sqlite3 " , allSavedReports.data );                   
-                        await DB.prepareDataAndStoreIt(allUserData); //store all user data in indexedDB
+                        console.log("all saved reports that fetched from sqlite3 " , allSavedReports.data );   
+                        let resultOfSync = await syncDiseases();  
+                        console.log(resultOfSync);                
+                        await DB.prepareDataAndStoreIt(allUserData,resultOfSync); //store all user data in indexedDB
                         
                     }
                     

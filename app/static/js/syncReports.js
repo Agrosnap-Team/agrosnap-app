@@ -144,10 +144,29 @@ export async function syncDiseases(){
   if(!diseases.status) return {success:false,responseStatus:404,details:"No diseases synced"};
   console.log("THE DISEASES : \n");
   console.log(diseases.diseases);
+  let diseasesIndexedDBStructure=[];
+  for (let diseaseNum=0; diseaseNum<diseases.diseases.length; diseaseNum++){
+      diseasesIndexedDBStructure.push(reFormatDiseasesData(diseases.diseases[diseaseNum]));
+  }
+
+  console.log("The diseases after re structure it: ");
+  console.log(diseasesIndexedDBStructure);
+
+  return diseasesIndexedDBStructure;
+
 
 }
 
 
+function reFormatDiseasesData(diseasesData){
+  diseasesData = {
+    disease_id:parseInt(diseasesData.disease_id)-1,
+    disease_name:diseasesData.disease_name.charAt(0).toUpperCase() + diseasesData.disease_name.slice(1),
+    disease_info:diseasesData.report,
+    treatment:diseasesData.organic_treatment
+  }
+  return diseasesData;
+}
 
 
 
@@ -251,8 +270,6 @@ let syncPromise = null; //to store the cuurent sync process here to prevent mult
 //The actual sync method
 async function syncProcess() {
 
-   let resultOfSync = await syncDiseases();  
-   console.log(resultOfSync);
 
     const userCurrent = localStorage.getItem("user_token");
 
