@@ -70,13 +70,13 @@ export async function initModel(convertedImage){
     console.log("the Result of model is : ", result);
     // const prob = await result.data();
     const maxPercentage = result.argMax(1);
-    const classIndex = maxPercentage.dataSync()[0];
+    const disease_id = maxPercentage.dataSync()[0];
 
 
     //for confidence percentage
     const probabilities = await result.data();
 
-    let confidence = probabilities[classIndex];
+    let confidence = probabilities[disease_id];
     confidence = (confidence * 100).toFixed(2);
 
     console.log("the confidence is : ", confidence);
@@ -85,7 +85,7 @@ export async function initModel(convertedImage){
     maxPercentage.dispose();
     result.dispose();
     processedImg.dispose();
-    return {classIndex, confidence};
+    return {disease_id, confidence};
 
 }
 

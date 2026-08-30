@@ -178,7 +178,7 @@ async function openReport(reportId){
         localStorage.setItem("confidence", diseaseInfo.confidence);
         console.log("And the disease ID is : " , diseaseInfo);
         sessionStorage.setItem("CallerPage",1);
-        show_report(diseaseInfo);
+        show_report(reportInfo);
 }
 
 function highlightNewSavedReport(newReportID){

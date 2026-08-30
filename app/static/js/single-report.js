@@ -16,22 +16,23 @@ let  saveButton , downloadButton , closeButton , confirmRenameButton , renameClo
 // the popup
 let alertPopUp , reportRenameInput;
 
+
 // other variables
 const pageIndex = 5;
-
 export async function initReport(diseaseInfo){
 
     showScanButton();
+    console.log("in initReport", diseaseInfo);
     let isElementsInitiated=initiateElements();
     if(isElementsInitiated){
-        fillReportStructure(diseaseInfo.classIndex,diseaseInfo.confidence);
+        fillReportStructure(diseaseInfo.disease_id,diseaseInfo.confidence);
         closeButton.addEventListener('click',closeReport);
         saveButton.addEventListener('click',showRenameDialog);
         renameCloseMark.addEventListener('click',hideRenameDialog);
         confirmRenameButton.addEventListener('click',()=>saveReportProcess(diseaseInfo));
-        downloadButton.addEventListener('click',()=>{
-            downloadReport(0);
-        });
+        downloadButton.onclick= ()=>{
+            downloadReport(diseaseInfo.disease_id,diseaseInfo.plant_name);
+        };
         
     }
     else{
@@ -225,18 +226,17 @@ async function saveReportProcess(diseaseData){
         "isSynced": false,
         "created_at": new Date().toISOString()
     };
+    allReportData = reportData;
     let isSaved = await db.store_report(reportData);
     
     if(isSaved && !reportData.isSynced){ //check if saved in indexedDB first
         const saveStatus = await sync.sendReportToMainDB(localStorage.getItem("user_token"), reportData);
         if(saveStatus.success) //we have to put it as saveStatus.success
             reportData.isSynced=true;
-            
         goToMyReports(reportData);
-    }
-
 
     hideRenameDialog();
+}
 }
 
 async function setDiseaseImage(diseaseIndex){
@@ -254,14 +254,28 @@ async function setDiseaseImage(diseaseIndex){
 }
 
 
-function downloadReport(reportIndex){
+function downloadReport(diseaseID,reportName){
+
+    const reportsPDFs =[
+        {name:"Bacterial Spot",pdf:"/static/ReportsPdf/Bacterial_Spot.pdf"},
+        {name:"Early Blight",pdf:"/static/ReportsPdf/Early_Blight.pdf"},
+        {name:"Healthy" , pdf:"/static/ReportsPdf/healthy.pdf"},
+        {name:"Late Blight",pdf:"/static/ReportsPdf/Late_Blight.pdf"},
+        {name:"Leaf Mold",pdf:"/static/ReportsPdf/Leaf_Mold.pdf"},
+        {name:"Yellow Leaf Curl Viruse",pdf:"/static/ReportsPdf/YLCV.pdf"}
+    ];
+    
+    if(!reportName){
+        reportName=reportsPDFs[diseaseID].name;
+    }
+    
 
     console.log("we are in downloadReport()");
     const reportLink = document.createElement("a");
 
-    reportLink.href="../static/ReportsPdf/testReport.pdf";
-    reportLink.download = "Report Disease.pdf";
-
+    reportLink.href=reportsPDFs[diseaseID].pdf;
+    console.log(reportLink);
+    reportLink.download = reportName;
     reportLink.click();
 
 }

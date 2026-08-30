@@ -10,7 +10,7 @@
 // └── ...
 
 
-const CACHE_NAME = "agrosnapApp-v15";
+const CACHE_NAME = "agrosnapApp-v16";
 console.log("this is service worker, " + CACHE_NAME);
 const FILES_TO_CACHE = [
 
@@ -82,6 +82,13 @@ const FILES_TO_CACHE = [
     "/static/images/no-wifi.png",
     "/static/images/synchronize.png",
 
+    //PDFs
+    "/static/ReportsPdf/Bacterial_Spot.pdf",
+    "/static/ReportsPdf/Early_Blight.pdf",
+    "/static/ReportsPdf/healthy.pdf",
+    "/static/ReportsPdf/Late_Blight.pdf",
+    "/static/ReportsPdf/Leaf_Mold.pdf",
+    "/static/ReportsPdf/YLCV.pdf",
 
     // PWA
     "/static/manifest.json",
@@ -109,9 +116,6 @@ const FILES_TO_CACHE = [
 
 ];
 
-// const MODEL_FILES=[
-
-// ];
 
 self.addEventListener("install", event => {
     console.log("Installation started , service-worker.js");

@@ -247,12 +247,12 @@ async function checkThePlantLeaf(){
          return;
         }
 
-    localStorage.setItem("predictedDiseaseIndex",predictedDisease.classIndex);
+    localStorage.setItem("predictedDiseaseIndex",predictedDisease.disease_id);
     localStorage.setItem("confidence", predictedDisease.confidence);
     sessionStorage.setItem("CallerPage",sessionStorage.getItem("current_page"));
     console.log("this is checkThePlantLeaf() , and the predicted disease is : ",predictedDisease);
     clearBox();
-    if(predictedDisease.classIndex === 2){ // if the result is healthy , then show the healthy popup
+    if(predictedDisease.disease_id === 2){ // if the result is healthy , then show the healthy popup
         showHealthyPopup();
         return;
     }
