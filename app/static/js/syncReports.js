@@ -27,9 +27,7 @@ export async function getSavedReportsFromMainDB(token){ //return the sataus of t
 
     if(!response.ok){
         const errorData = await response.json();
-        console.log("SQLITE3 ERRORS");
-        console.log(response.status);
-        console.log(errorData.detail);
+
         return {success:false ,
           details: errorData.detail,
           responseStatus:response.status
@@ -39,14 +37,14 @@ export async function getSavedReportsFromMainDB(token){ //return the sataus of t
     //get all previously saved reports from sqlite3
     const allReports = await response.json();
     if(allReports.length<=0)return {success:true , data:[] , details:"No data",responseStatus:200}; // if no reports are in sqlite3
-    console.log('The returned reports' , allReports);
+
     let syncedReports=[]; // put reports together
 
     for(let perReport =0 ; perReport<allReports.length;perReport++){
        let signleSyncedReport = markedReportisSynced(allReports[perReport]); // change isSynced = true
        syncedReports.push(signleSyncedReport); //add the report to array [] 
     }
-    console.log("the syncedReport before send to indexedDB , " , syncedReports);
+
     const isStored = await storeInIndexedDB(syncedReports);
     
     
@@ -74,10 +72,10 @@ async function sendReportToMainDB(token , savedReports){
       created_at: new Date(savedReports.created_at).toISOString()
     }
 
-    console.log(savedReportJson.created_at , `The type ${typeof(savedReportJson.created_at)}`);
+  
 
     if(!navigator.onLine)return {success:false , data:[] , details:"no internet connection" , responseStatus:0}; //check connectio
-    console.log("connected to internet");
+
 
 
     //check the existance of token before send any request
@@ -98,9 +96,7 @@ async function sendReportToMainDB(token , savedReports){
 
   if(!response.ok){
       const errorData = await response.json();
-      console.log("SQLITE3 ERRORS");
-      console.log(response.status);
-      console.log(errorData.detail);
+
       return {success:false ,
         details: errorData.detail,
         responseStatus:response.status
@@ -110,7 +106,6 @@ async function sendReportToMainDB(token , savedReports){
 
     const isSaved = await response.json();
     if(isSaved.status == 'success'){
-      console.log(`marked as synced ${markedReportisSynced(savedReportJson)}`);
       await browserDB.store_report(markedReportisSynced(savedReportJson));
       return {success:true , details:"Saved successfully",responseStatus:200};
     }
@@ -118,7 +113,7 @@ async function sendReportToMainDB(token , savedReports){
 
   }
   catch(error){
-    console.log("failed to save , " , error.message);
+
     return {success:false , details:error.message  ,responseStatus:500};
   }
 
@@ -135,22 +130,17 @@ export async function syncDiseases(){
     headers:{'Content-Type': 'application/json'}
   });
 
-  console.log("STATUS:", response.status);
-  console.log("OK:", response.ok);
-  console.log("URL:", response.url);
 
   const diseases = await response.json();
   if(!response.ok)return {success:false, responseStatus:response.status, details:diseases.detail};
   if(!diseases.status) return {success:false,responseStatus:404,details:"No diseases synced"};
-  console.log("THE DISEASES : \n");
-  console.log(diseases.diseases);
+
   let diseasesIndexedDBStructure=[];
   for (let diseaseNum=0; diseaseNum<diseases.diseases.length; diseaseNum++){
       diseasesIndexedDBStructure.push(reFormatDiseasesData(diseases.diseases[diseaseNum]));
   }
 
-  console.log("The diseases after re structure it: ");
-  console.log(diseasesIndexedDBStructure);
+
 
   return diseasesIndexedDBStructure;
 
@@ -196,10 +186,8 @@ async function deleteReportsFromMainDB(token,reportID){
           responseStatus:response.status
       }
       }
-      console.log(`response of delete ${response.status}`);
       const deletedResult = await response.json();
       if(deletedResult.status =='success'){
-        console.log("the report deleted from main DB successfully");
         let permenant = await browserDB.deleteReportPermenantly(reportID);
         if(permenant)
           return {success:true , details:deletedResult.message , responseStatus:200};
@@ -208,7 +196,7 @@ async function deleteReportsFromMainDB(token,reportID){
       return {success:false , details:deletedResult.detail , responseStatus:deletedResult.status};
     }
     else{
-      console.log (`This report id ${reportID} is not exist or empty`);
+
       return { success:false , details:"Token is not exist" ,responseStatus:404};
     }
     
@@ -228,7 +216,7 @@ async function deleteReportsFromMainDB(token,reportID){
 
 async function storeInIndexedDB(allSavedReportsInDB) {
   try{
-    console.log("you are in storeInIndexedDB , the passed report ", allSavedReportsInDB);
+  
 
     for(let reportNum =0 ; reportNum<allSavedReportsInDB.length; reportNum++){
 
@@ -236,7 +224,7 @@ async function storeInIndexedDB(allSavedReportsInDB) {
       if(!isStored){
         throw new Error(`can't save this report ${  allSavedReportsInDB[ reportNum ]  } `);
       }
-      console.log("report" , " allSavedReportsInDB[reportNum] " , "has been saved")
+      
       
     }
 
@@ -292,13 +280,13 @@ async function syncProcess() {
           return{success:false , details:isSent.details , responseStatus:isSent.responseStatus }
 
     }
-    console.log("The out of sync reports are",outOfSyncedReport);  
+  
 
     //check if there any deleted reports stored in delete table
     let allDeletedReports = await browserDB.get_all_deleted_reports();
-    console.log("The deleted reports " , allDeletedReports);
+
     for(let reportNum =0 ; reportNum<allDeletedReports.length; reportNum++){
-      console.log("in deletion loop");
+
         let isDeleted = await deleteReportsFromMainDB(userCurrent,allDeletedReports[reportNum].save_id); 
 
         /*================================================================
@@ -308,7 +296,6 @@ async function syncProcess() {
         ===================================================================*/
         
         if(!isDeleted.success && isDeleted.responseStatus === 404){
-          console.log('Failed to delete : ',isDeleted.details);
           await browserDB.deleteReportPermenantly(allDeletedReports[reportNum].save_id);
           // return{success:false , details:isDeleted.details , responseStatus:isDeleted.status }
         }
@@ -320,10 +307,7 @@ async function syncProcess() {
 
     //check before complete the sync
     if (!serverReports.success) {
-    console.log("Could not fetch server reports. Skipping server synchronization.");
-    console.log("Please re-sign again ");
-    console.log(serverReports.details);
-    return {success:false, details:serverReports.details, responseStatus:serverReports.responseStatus};
+      return {success:false, details:serverReports.details, responseStatus:serverReports.responseStatus};
     }
 
 
@@ -357,13 +341,11 @@ async function syncReports(){
 
 
   if(syncPromise){
-    console.log("Sync already running...");
     return syncPromise;
   }
 
   syncPromise = syncProcess();
   try {
-        console.log("Sync is under proceessing")
         return await syncPromise;
     }
     finally {
@@ -379,7 +361,7 @@ function creatSetOfReports(serverReports){
 
   //create a set of server reports id
   const setOfServerReports = new Set(serverReports.map(currentReport => currentReport.save_id));
-  console.log("this is the server reports set -> " , setOfServerReports);
+
 
   return setOfServerReports;
 

@@ -53,11 +53,9 @@ async function fillReportStructure(index,confidence){
             }
 
         //this index will used to retreive the disease info from indexedDB
-        console.log("this is fillReportStructure() , and the index is ", index);
 
         //get the disease info from indexedDB
         let the_disease = await db.get_diseases_info(index);
-        console.log(the_disease);
         await setDiseaseImage(index);
 
         //fill the elements with data of disease to represent it in user interface
@@ -125,14 +123,12 @@ function initiateElements(){
     let elements = {progressesContainer , progPercent , progLine , reportContainer, reportTitle , diseaseImg , diseaseContent ,  treatmentContent , saveButton , downloadButton , closeButton , confirmRenameButton , renameCloseMark , exitCloseMark , renameDialog , closeDialog  , exitConfirmationButton , cancelCloseReport , alertPopUp , reportRenameInput};
     for(let key in elements){
         if(elements[key] === undefined || elements[key] === null){
-            console.log(`this ${key} is null`);
             continue;
         }
         definedElements++;
     }
 
     if(definedElements == Object.keys(elements).length ){
-    console.log(`defined ${definedElements} out of ${Object.keys(elements).length}`);
     return true;
     }
     return false;
@@ -162,15 +158,12 @@ function closeReport(){
 }
 
 function showAlert(){
-    console.log("this is show alert");
-    console.log(alertPopUp);
     document.getElementById("popup").classList.add("showPopup");
 }
 
 
 
 function hideAlert(){
-    console.log("this is hide alert");
     document.getElementById("popup").classList.remove("showPopup");
     reportRenameInput.value = "";
 }
@@ -184,7 +177,6 @@ function showRenameDialog(){
 }
 
 function hideRenameDialog(){
-    console.log("this is hide report dialog function");
     reportRenameInput.classList.remove("emptyInput");
     hideAlert();
     renameDialog.classList.remove("showRenameConfirmation");
@@ -249,7 +241,6 @@ async function setDiseaseImage(diseaseIndex){
         "/static/images/YLCV_disease.jpg"
 
     ];
-    console.log("this is setDiseaseImage() , and the disease index is ",diseaseIndex , " and the image path is ",imagesPaths[diseaseIndex]);
     diseaseImg.src = imagesPaths[diseaseIndex];
 }
 
@@ -279,14 +270,11 @@ function downloadReport(diseaseID,reportName){
     }
 
 
-    console.log("The target report ",the_report);
     
 
-    console.log("we are in downloadReport()");
     const reportLink = document.createElement("a");
 
     reportLink.href=reportsPDFs[diseaseID].pdf;
-    console.log(reportLink);
     reportLink.download = reportName;
     localStorage.removeItem("openedDB");
     reportLink.click();

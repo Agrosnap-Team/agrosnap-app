@@ -11,7 +11,7 @@ const saved_reports_table = "saved_reports";
 const report_details = "report_details";
 const deleted_report_table = "deleted_reports";
 
-console.log("IndexedDB file loaded");
+
 
 
 //==========================================================
@@ -22,16 +22,14 @@ async function openConnection() {
 
 
     try{
-        console.log("Opening database...");
+
 
         if(!dbConnection){
 
             dbConnection = await openDB("AgrosnapBrowserDatabase", 1 ,{
 
             upgrade(db){
-            console.log("Creating tables...");
 
-            console.log("DB , tables and connection has been created successfully");
             // here where we create our tables
             create_users_table(db);
             create_disease_table(db);
@@ -128,7 +126,6 @@ async function add_new_user(newData){
             const current_table = trans.objectStore(user_table);
             await   current_table.put(newData);
             
-            console.log("added succesfully");
             await trans.done; //end the transaction
         }
 
@@ -155,7 +152,6 @@ async function add_disease_info(all_diseases) {
             await Promise.all( all_diseases.map(  row => current_table.put(row)  ) );
 
             trans.done;
-            console.log("add all successfully");
 
         }
 
@@ -172,7 +168,7 @@ async function add_deleted_reports(reportID){
 
 
         if(reportID){
-            console.log("the report id is: " , reportID);
+
             const db = await openConnection();
             const trans = await db.transaction(deleted_report_table,"readwrite");
             const current_table = await trans.objectStore(deleted_report_table);
@@ -182,7 +178,6 @@ async function add_deleted_reports(reportID){
             trans.done;
             const deletionStatus = await delete_report(reportID);
             if(deletionStatus){
-                console.log("Report deleted successfully");
                 // await deleteReportPermenantly(reportID);
                 return true;
             }
@@ -292,10 +287,9 @@ async function prepareDataAndStoreIt(user_info,all_disease){
     // ];//this is fake data
 
     await add_disease_info(all_disease);
-    console.log("this is the user info which prepared : \n",new_user);
 
     await add_new_user(new_user);
-    console.log("the user has been added to indexedDB");
+
 }
 
 
@@ -333,7 +327,6 @@ async function get_diseases_info(diseaseIndex) {
         const current_table = trans.objectStore(disease_table);
 
         const diseaseData = await current_table.get(diseaseIndex);
-        console.log("this is disease : " , diseaseData);
         trans.done;
 
         if(!diseaseData)return;
@@ -378,7 +371,6 @@ async function delete_user(user_id){
         await current_table.delete(user_id);
 
         await trans.done;
-        console.log("deleted successfully");
     }
     catch(error){
         console.log("deletion failed , " ,error);
@@ -398,7 +390,6 @@ async function delete_report(report_id){
             await current_table.delete(report_id);
             await trans.done;
 
-            console.log("report deleted successfully");
             return true;
 
         }

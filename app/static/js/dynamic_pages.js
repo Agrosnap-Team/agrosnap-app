@@ -167,7 +167,7 @@ window.onload =async function(){
     // Convert the string to a number. If it's the first visit (null), default to 0.
     // var current_page = saved_page !== null ? parseInt(saved_page, 10) : 0;
 
-    console.log("this is window.onload() , and the diseaseInfo is : ", diseaseInfo);
+ 
     fit_the_page(saved_page,diseaseInfo);
     highlightActiveTab(saved_page);
     change_page_name(saved_page);
@@ -187,7 +187,6 @@ async function fit_the_page(curr_page,additionalData) {
     showLoadingProgress();
     await new Promise(resolve => requestAnimationFrame(resolve));
 
-    console.log("the parameters:" , additionalData);
 
     const allPages = [
         {path:"/scan",initJSFunction:initElements},
@@ -262,8 +261,7 @@ function change_page_name(index){
 
 export function show_report(diseaseInfo){
   //this function will send a report index page and call the fit_the_page()
-  // will fetch the page and call its js file/ js functions
-  console.log("this is show_report() , and the diseaseInfo is : ", diseaseInfo);
+  // will fetch the page and call its js file/ js functions;
   const thePage=5; // index of the page
   change_page_name(thePage);
   highlightActiveTab(sessionStorage.getItem("current_page"));
@@ -289,7 +287,6 @@ export function backToCallerPage(callerPageIndex){
 
 export function goToMyReports(reportData){
     const myReportsPageIndex = 1;
-    console.log("this is goToMyReports() , and the reportData is : ", reportData);
     change_page_name(myReportsPageIndex);
     fit_the_page(myReportsPageIndex,reportData);
     highlightActiveTab(myReportsPageIndex);
@@ -314,9 +311,7 @@ function logoutConfirmationDialog(){
 
 function showSessionExpiredWarnning(){
     sessionExpiredAlert.classList.add("showToReLogin");
-    console.log(exitAccount);
     exitAccount.onclick=()=>{
-        console.log("this is show method");
         hideSessionExpiredWarnning();
         logout_process();
     };
@@ -324,7 +319,6 @@ function showSessionExpiredWarnning(){
 }
 
 function hideSessionExpiredWarnning(){
-    console.log("hide dialog");
     sessionExpiredAlert.classList.remove("showToReLogin");
 
 }
@@ -359,11 +353,8 @@ function checkUserPassword(event){
     hideFailedTokenCreationMsg();
     hideSuccessTokenCreationMsg();
     void sessionExpiredAlert.offsetWidth;
-    console.log(userPassword);
     let enteredPassword=userPassword.value.trim();
     if(!enteredPassword){showFailedTokenCreationMsg("Password can not be empty"); return;}
-    console.log("The Entered Password is: " , enteredPassword);
-    console.log("The current username: " , handleToken.getUserUsernameFromToken(localStorage.getItem("user_token")));
     RequestNewToken(enteredPassword);
     
 
@@ -413,7 +404,6 @@ async function  RequestNewToken(enteredPassword){
 
     }
     catch(e){
-        console.log("The new token request has been failed !! " , e.message);
         showFailedTokenCreationMsg("Please check your internet connection..")
         hideOfflineModeDialog();
     }
@@ -422,7 +412,6 @@ async function  RequestNewToken(enteredPassword){
 
 export async function mainSync(){
     const syncStatus = await sync.syncReports();
-    console.log('the sync status is : ' , syncStatus.responseStatus);
     if(syncStatus.responseStatus == 401){
         showSessionExpiredWarnning();
     }
@@ -433,7 +422,6 @@ export async function mainSync(){
 }
 
 function showLoadingProgress(){
-    console.log("LOADING PAGE : " , sessionStorage.getItem("current_page"));
 
     loading.classList.add("showLoadingProgress");
 
@@ -446,7 +434,6 @@ function hideLoadingProgress(){
 }
 
 async function logout_process(){
-    console.log("logout method");
     // const userID = handleToken.getUserIdFromToken(localStorage.getItem("user_token"));
     // await DB.delete_user(userID); //remove user
     await DB.clear_DB_tables(); // clear indexedDB

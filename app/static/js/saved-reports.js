@@ -30,19 +30,14 @@ export async function startSavedReportsPage(reportData){
       };
 
     confirmDeletionButton.onclick = async function(){
-            console.log(" confirm clicked !!");
-            console.log("the delete report ", reportToDelete);
         
             const deletionStatus = await deleteReport(reportToDelete.id);
             if(!deletionStatus)return `deleted status ${deletionStatus}`;
             hideDeleteDialog();
             reportToDelete.classList.add("removeReportCardWithAnimation");
             reportToDelete.addEventListener('animationend',async function(){
-                console.log("done");
                 reportToDelete.remove();
                 let remainReports = await checkAllReports();
-                console.log(`the report ${reportToDelete.id} has been deleted`);
-                console.log("the remain reports : ", remainReports);
                 reportToDelete = null;
             });
 
@@ -71,7 +66,7 @@ export async function showReports(reportData){
                await createReportElement(allReports[reportNum]);
                 if(reportData != undefined || reportData != null){
                     if (allReports[reportNum].save_id== reportData.save_id){
-                        console.log('the new report is : ' , allReports[reportNum]);
+
                         highlightNewSavedReport(allReports[reportNum].save_id);
                     }
                 
@@ -98,13 +93,11 @@ function initiateElements(){
     let elements = {reportContainer , allReportsContainer , noContentMsg , dialogContainer , deletionDialog , closeDialogIcon , confirmDeletionButton,cancelDeletionButton};
     for(let key in elements){
         if(elements[key] === undefined || elements[key] === null){
-            console.log(`this ${key} is null`);
             continue;
         }
         definedElements++;
     }
     if(definedElements == Object.keys(elements).length ){
-        console.log("elements have been initiated successfully !");
         return true;
     }
     return false;
@@ -112,9 +105,7 @@ function initiateElements(){
 
 export async function checkAllReports(){
     const allReports = await db.get_all_reports_from_indexedDB();
-    console.log("this is check , and the reports is : " , allReports);
     if(allReports.length<=0){
-        console.log("no reports remained");
         showNoContentMsg();}
     else hideNoContentMsg();
     return allReports;
@@ -122,7 +113,6 @@ export async function checkAllReports(){
 
 async function createReportElement(reportData){
     const diseaseInfo = await db.get_diseases_info(reportData.disease_id);
-    console.log("the reports area:  " , diseaseInfo);
 
     //copy the element with its css styles , children and contents
     let diseasesImages=[
@@ -168,7 +158,6 @@ async function deleteReport(reportId){
 
 async function openReport(reportId){
         let reportInfo = await db.get_report_by_id(reportId);
-        console.log("The report Info " , reportInfo);
         let diseaseInfo = await db.get_diseases_info(reportInfo.disease_id);
         diseaseInfo ={
             classIndex:diseaseInfo.disease_id,
@@ -177,7 +166,6 @@ async function openReport(reportId){
         localStorage.setItem("predictedDiseaseIndex",diseaseInfo.classIndex);
         localStorage.setItem("confidence", diseaseInfo.confidence);
         localStorage.setItem("openedReport",JSON.stringify(reportInfo)); //convert JSON to string and store it in localStorage
-        console.log("And the disease ID is : " , diseaseInfo);
         sessionStorage.setItem("CallerPage",1);
         show_report(reportInfo);
 }

@@ -21,9 +21,6 @@ let scanUploadbtns , healthyDialog , okButton , closeHealthyPopupIcon;
 export async function initElements(){
 
     hideScanButton();
-    setTimeout(()=>{
-        console.log("------ this is timeout");
-    },2000);
     
 
 
@@ -40,7 +37,6 @@ export async function initElements(){
 
         }); 
 
-    console.log("this function called");
 
     //=============================================
     //  initiate the needed html elements 
@@ -130,7 +126,6 @@ export async function initElements(){
 
 function openFileManager(event){
     
-    console.log("clicked");
     event.stopPropagation();
     fileInput.click();
 }
@@ -146,7 +141,6 @@ function openPopup(){
         { console.log("you can't click until you clear the box" , canClick);
             return
         };
-    console.log("open popup");
     popupElement.classList.add("showPopup");
     
 
@@ -168,13 +162,11 @@ function closePhotoUploadPopup(){
 }
 
 function showHealthyPopup(){
-    console.log("show healthy popup");
     popupElement.classList.add("showPopup");
     healthyDialog.classList.add("showHealthyPopup");
 }
 
 function closeHealthyPopup(){
-    console.log("close healthy popup");
      healthyDialog.classList.remove("showHealthyPopup");
      popupElement.classList.remove("showPopup");
 }
@@ -277,8 +269,6 @@ async function convertImageToHTMLElement(selectedImg){
         await  previewImage.decode();
 
         //check the result before
-        // console.log("the image url : " , selectedImg);
-        // console.log("the HTML element is : ", previewImage );
 
         const modelResult = await initModel(previewImage);
         console.log("this is convertImageToHTMLElement , and the model result is : ", modelResult);
