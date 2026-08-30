@@ -221,7 +221,7 @@ async function saveReportProcess(diseaseData){
     let reportData = {
         "save_id": newUUID,
         "user_id": userID,
-        "disease_id": diseaseData.classIndex,
+        "disease_id": diseaseData.disease_id,
         "plant_name": reportRenameInput.value,
         "confidence": diseaseData.confidence,
         "isSynced": false,
