@@ -177,6 +177,12 @@ window.onload =async function(){
 
 
 async function fit_the_page(curr_page,additionalData) {
+    
+    if(curr_page !=5){
+        localStorage.removeItem("predictedDiseaseIndex");
+        localStorage.removeItem("confidence");
+        localStorage.removeItem("openedReport");
+    }
 
     showLoadingProgress();
     await new Promise(resolve => requestAnimationFrame(resolve));

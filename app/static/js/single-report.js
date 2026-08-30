@@ -148,14 +148,15 @@ function closeReport(){
     backToCallerPage(sessionStorage.getItem("current_page"));
     localStorage.removeItem("predictedDiseaseIndex");
     localStorage.removeItem("confidence");
+    localStorage.removeItem("openedReport");
 
     });
 
     //click cancel
-    cancelCloseReport.addEventListener('click',hideCloseReportDialog);
+    cancelCloseReport.onclick = hideCloseReportDialog;
 
     //click on X icon [close icon]
-    exitCloseMark.addEventListener('click',hideCloseReportDialog);
+    exitCloseMark.onclick = hideCloseReportDialog;
 
 
 }
@@ -226,7 +227,6 @@ async function saveReportProcess(diseaseData){
         "isSynced": false,
         "created_at": new Date().toISOString()
     };
-    allReportData = reportData;
     let isSaved = await db.store_report(reportData);
     
     if(isSaved && !reportData.isSynced){ //check if saved in indexedDB first
@@ -264,10 +264,22 @@ function downloadReport(diseaseID,reportName){
         {name:"Leaf Mold",pdf:"/static/ReportsPdf/Leaf_Mold.pdf"},
         {name:"Yellow Leaf Curl Viruse",pdf:"/static/ReportsPdf/YLCV.pdf"}
     ];
-    
-    if(!reportName){
-        reportName=reportsPDFs[diseaseID].name;
+    let the_report = JSON.parse(localStorage.getItem("openedReport"));
+    // let currentOpenedReport = JSON.parse(the_report); //convert the string to JSON
+    if(!the_report){
+        if(diseaseID==null || diseaseID == undefined) diseaseID = parseInt(localStorage.getItem("predictedDiseaseIndex"));
+        
+        if(!reportName){
+            reportName=reportsPDFs[diseaseID].name;
+        }
     }
+    else{
+        diseaseID = the_report.disease_id;
+        reportName = the_report.plant_name;
+    }
+
+
+    console.log("The target report ",the_report);
     
 
     console.log("we are in downloadReport()");
@@ -276,6 +288,7 @@ function downloadReport(diseaseID,reportName){
     reportLink.href=reportsPDFs[diseaseID].pdf;
     console.log(reportLink);
     reportLink.download = reportName;
+    localStorage.removeItem("openedDB");
     reportLink.click();
 
 }

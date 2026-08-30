@@ -176,6 +176,7 @@ async function openReport(reportId){
         };
         localStorage.setItem("predictedDiseaseIndex",diseaseInfo.classIndex);
         localStorage.setItem("confidence", diseaseInfo.confidence);
+        localStorage.setItem("openedReport",JSON.stringify(reportInfo)); //convert JSON to string and store it in localStorage
         console.log("And the disease ID is : " , diseaseInfo);
         sessionStorage.setItem("CallerPage",1);
         show_report(reportInfo);
