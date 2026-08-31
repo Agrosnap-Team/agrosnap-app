@@ -146,7 +146,7 @@ function disableButtons(){
     checkButton.classList.add("disabledButtons");
     checkButton.innerHTML = "Loading...";
     uploadBox.classList.add("preparingModel");
-    boxText.innerHTML="Preparing AI model . This will take few menitues...";
+    boxText.innerHTML="Preparing AI model.<br>This will take few minutes...";
 }
 
 

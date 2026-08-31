@@ -280,7 +280,7 @@ class AgrosnapDatabase:
         #-> list: mean the data type of return will be as list
 
         query = """
-                    SELECT r.save_id, r.plant_name, d.disease_name, d.disease_id, r.created_at, d.organic_treatment,  d.report
+                    SELECT r.save_id, r.plant_name, d.disease_name, d.disease_id, r.created_at
                     FROM Save_report r
                     JOIN disease_Table d ON r.disease_id = d.disease_id
                     WHERE r.user_id = ?;
@@ -414,11 +414,8 @@ if __name__ == '__main__':
     db.init_database()
 
 
-    data = db.get_disease_by_id(1)
-    print(data)
-
-    user = db.get_user_by_id(1)
-    print(user)
+    data = db.get_user_report(2);
+    print(data);
 
     # reports = db.get_user_report(1)
     # print(reports)

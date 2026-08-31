@@ -120,8 +120,21 @@ document.addEventListener("click", (event) => { //when user opens profile and th
 });
 
 window.addEventListener('online',async()=>{
-    await mainSync();
+        console.log("syncing");
+        await new Promise(resolve =>
+            setTimeout(resolve, 2000)
+        );
+
+        let syncedRequest = await mainSync();
+        console.log("the synced status: " , syncedRequest);
+        console.log("synced");
+        let currentPage = sessionStorage.getItem("current_page");
+        if(currentPage == 1) { 
+            fit_the_page(1); 
+        }
 });
+
+
 window.addEventListener('offline',()=>{
     showOfflineModeDialog();
 
@@ -146,28 +159,34 @@ function hideOfflineModeDialog(){
 }
 
 window.onload =async function(){
-     
-    let saved_page = sessionStorage.getItem("current_page");
-    await mainSync();
+    try{
+        let saved_page = sessionStorage.getItem("current_page");
+        console.log("syncing");
+        await mainSync();
+        console.log("synced");
 
-    let userToken = handleToken.getUserIdFromToken(localStorage.getItem("user_token"));
-    let userFullName = DB.getUserByID(userToken).then(userData => {
-        if (userData) {
-            current_user_name.textContent = userData.first_name + " " + userData.last_name;}
-        });
+        let userToken = handleToken.getUserIdFromToken(localStorage.getItem("user_token"));
+        let userFullName = DB.getUserByID(userToken).then(userData => {
+            if (userData) {
+                current_user_name.textContent = userData.first_name + " " + userData.last_name;}
+            });
 
-    diseaseInfo = {
-        disease_id: parseInt(localStorage.getItem("predictedDiseaseIndex")),
-        confidence: localStorage.getItem("confidence")
-    };
+        diseaseInfo = {
+            disease_id: parseInt(localStorage.getItem("predictedDiseaseIndex")),
+            confidence: localStorage.getItem("confidence")
+        };
 
-    // Convert the string to a number. If it's the first visit (null), default to 0.
-    // var current_page = saved_page !== null ? parseInt(saved_page, 10) : 0;
+        // Convert the string to a number. If it's the first visit (null), default to 0.
+        // var current_page = saved_page !== null ? parseInt(saved_page, 10) : 0;
 
- 
-    fit_the_page(saved_page,diseaseInfo);
-    highlightActiveTab(saved_page);
-    change_page_name(saved_page);
+    
+        fit_the_page(saved_page,diseaseInfo);
+        highlightActiveTab(saved_page);
+        change_page_name(saved_page);
+    }
+    catch(e){
+        console.log("failed  :", e.message);
+    }
 
     
 }
@@ -412,6 +431,8 @@ export async function mainSync(){
     if(syncStatus.responseStatus == 401){
         showSessionExpiredWarnning();
     }
+
+    console.log("Synced");
 
     return syncStatus;
 

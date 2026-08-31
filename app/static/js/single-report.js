@@ -30,8 +30,8 @@ export async function initReport(diseaseInfo){
         saveButton.addEventListener('click',showRenameDialog);
         renameCloseMark.addEventListener('click',hideRenameDialog);
         confirmRenameButton.addEventListener('click',()=>saveReportProcess(diseaseInfo));
-        downloadButton.onclick= ()=>{
-            downloadReport(diseaseInfo.disease_id,diseaseInfo.plant_name);
+        downloadButton.onclick= async()=>{
+            await downloadReport(diseaseInfo.disease_id,diseaseInfo.plant_name);
         };
         
     }
@@ -245,7 +245,7 @@ async function setDiseaseImage(diseaseIndex){
 }
 
 
-function downloadReport(diseaseID,reportName){
+async function downloadReport(diseaseID,reportName){
 
     const reportsPDFs =[
         {name:"Bacterial Spot",pdf:"/static/ReportsPdf/Bacterial_Spot.pdf"},
@@ -274,15 +274,36 @@ function downloadReport(diseaseID,reportName){
     }
 
 
-    
+    let pdfURL = reportsPDFs[diseaseID].pdf;
+    const requestPDFReport = await fetch(pdfURL);
+
+
+    if(!requestPDFReport.ok){
+        console.log("failed request ", requestPDFReport.status);
+    }
+
+    console.log("PDF response:", requestPDFReport);
+    console.log("PDF status:", requestPDFReport.status);
+    console.log(
+        "PDF content-type:",
+        requestPDFReport.headers.get("content-type")
+    );    
+    const blob = await requestPDFReport.blob();
+
+    console.log("PDF blob:", blob);
+    console.log("Blob type:", blob.type);
+    console.log("Blob size:", blob.size);
+
+    const url = URL.createObjectURL(blob);
+
+    console.log("this is url after creating it: ",url);
 
     const reportLink = document.createElement("a");
 
-    reportLink.href=reportsPDFs[diseaseID].pdf;
-    console.log(reportLink.href);
+    reportLink.href=url;
     reportLink.download = reportName;
     // localStorage.removeItem("openedReport");
     reportLink.click();
-
+    URL.revokeObjectURL(url);
 }
 

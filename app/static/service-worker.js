@@ -131,8 +131,8 @@ self.addEventListener("install", event => {
                 console.log("Cached:", file);
             }
             catch (e) {
-                console.error("Failed:", file, e);
-                console.log("This is service-worker.js , and something went error when cache the files" + e);
+                console.log("Failed:", file, e.message);
+                console.log("This is service-worker.js , and something went error when cache the files" + e.message);
             }
 
         }
@@ -201,8 +201,12 @@ self.addEventListener("fetch", event => {
                     return response;
                 })
                 .catch(error => {
-                    console.error("Network FAILED:", event.request.url, error);
-                    throw error;
+                    console.log("Network FAILED:", event.request.url, error.message);
+                    return new Response("You are offline and the resource is not cached.", {
+                        status: 503,
+                        statusText: "Service Unavailable",
+                        headers: new Headers({ "Content-Type": "text/plain" })
+                    });
                 });
 
             })
@@ -210,7 +214,7 @@ self.addEventListener("fetch", event => {
         );
 }
 catch(e){
-    console.log("something went error when fetching the pages in service worker , service_worker.js , fetch method ,"+ e)
+    console.log("something went error when fetching the pages in service worker , service_worker.js , fetch method ,"+ e.message);
 
 }
 
