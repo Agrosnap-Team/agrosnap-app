@@ -221,6 +221,7 @@
     border-radius: 8px;
     background-color: rgba(224, 249, 209, 0.9); /* Very soft green tint */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+    padding: 0px;
     
     display: flex;
     align-items: center;
@@ -232,17 +233,24 @@
     transition: transform 0.2s ease, background-color 0.2s ease , border-color 0.2 ease-in-out;
 }
 
+
+
 .upload-box:hover {
     background-color: rgba(224, 249, 209, 1);
     transform: translateY(-2px); /* Lifts slightly when hovered */
 }
 
+.upload-box.preparingModel{
+        filter: brightness(0.7);
+        cursor: progress;
+}
 
 #boxText {
     color: #666;
     font-family: sans-serif; /* Clean font for instructions */
     font-size: 1.1rem;
     text-align: center;
+    transition: all 0.4s linear;
 }
 
 /* Uploaded Image Preview */
@@ -284,6 +292,12 @@
     cursor: pointer;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     transition: opacity 0.2s ease;
+    
+}
+
+#send.disabledButtons , #clear-btn.disabledButtons{
+    cursor: not-allowed;
+    filter: brightness(0.6);
 }
 
 .button-group:hover {

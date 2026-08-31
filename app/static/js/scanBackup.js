@@ -118,9 +118,7 @@ export async function initElements(){
     clearButton.onclick= clearBox;
     checkButton.onclick= checkThePlantLeaf;
 
-     
-
-
+    
 
 }
 
