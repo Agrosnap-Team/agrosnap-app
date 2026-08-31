@@ -50,6 +50,7 @@ export async function startSavedReportsPage(reportData){
 }
 
 export async function showReports(reportData){
+        console.log("The reports:" , reportData);
         //synced first if any new reports should store from sqlite3 , in case if any report added from different device
 
         //clear the old reports , this prevent the redundancy
@@ -160,10 +161,10 @@ async function openReport(reportId){
         let reportInfo = await db.get_report_by_id(reportId);
         let diseaseInfo = await db.get_diseases_info(reportInfo.disease_id);
         diseaseInfo ={
-            classIndex:diseaseInfo.disease_id,
+            disease_id:diseaseInfo.disease_id,
             confidence:reportInfo.confidence
         };
-        localStorage.setItem("predictedDiseaseIndex",diseaseInfo.classIndex);
+        localStorage.setItem("predictedDiseaseIndex",diseaseInfo.disease_id);
         localStorage.setItem("confidence", diseaseInfo.confidence);
         localStorage.setItem("openedReport",JSON.stringify(reportInfo)); //convert JSON to string and store it in localStorage
         sessionStorage.setItem("CallerPage",1);

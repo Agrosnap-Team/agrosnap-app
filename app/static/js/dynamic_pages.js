@@ -156,11 +156,8 @@ window.onload =async function(){
             current_user_name.textContent = userData.first_name + " " + userData.last_name;}
         });
 
-
-
-
     diseaseInfo = {
-        classIndex: parseInt(localStorage.getItem("predictedDiseaseIndex")),
+        disease_id: parseInt(localStorage.getItem("predictedDiseaseIndex")),
         confidence: localStorage.getItem("confidence")
     };
 

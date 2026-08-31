@@ -208,7 +208,7 @@ async function saveReportProcess(diseaseData){
     }
     let newUUID = crypto.randomUUID();
     let userID = handleData.getUserIdFromToken(localStorage.getItem("user_token"));
-    let diseaseOtherInfo = await db.get_diseases_info(diseaseData.classIndex);
+    let diseaseOtherInfo = await db.get_diseases_info(diseaseData.disease_id);
 
     let reportData = {
         "save_id": newUUID,
@@ -255,16 +255,20 @@ function downloadReport(diseaseID,reportName){
         {name:"Leaf Mold",pdf:"/static/ReportsPdf/Leaf_Mold.pdf"},
         {name:"Yellow Leaf Curl Viruse",pdf:"/static/ReportsPdf/YLCV.pdf"}
     ];
-    let the_report = JSON.parse(localStorage.getItem("openedReport"));
-    // let currentOpenedReport = JSON.parse(the_report); //convert the string to JSON
+    let the_report = JSON.parse(localStorage.getItem("openedReport"));//convert the string to JSON
+
+    // if there is no value in local storage so this mean the current opened report is not saved yet , it is just for read 
     if(!the_report){
+        // So get the disease id from local storage where we stored the predicited disease from model
         if(diseaseID==null || diseaseID == undefined) diseaseID = parseInt(localStorage.getItem("predictedDiseaseIndex"));
         
         if(!reportName){
+            //as long as the generated report not saved yet , so save the report with the default name [ disease name not report name]
             reportName=reportsPDFs[diseaseID].name;
         }
     }
     else{
+        //if there is a value in local storage for openedReport , then take the disease id and report name from local
         diseaseID = the_report.disease_id;
         reportName = the_report.plant_name;
     }
@@ -275,8 +279,9 @@ function downloadReport(diseaseID,reportName){
     const reportLink = document.createElement("a");
 
     reportLink.href=reportsPDFs[diseaseID].pdf;
+    console.log(reportLink.href);
     reportLink.download = reportName;
-    localStorage.removeItem("openedDB");
+    // localStorage.removeItem("openedReport");
     reportLink.click();
 
 }
