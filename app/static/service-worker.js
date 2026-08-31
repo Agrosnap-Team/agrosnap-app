@@ -10,7 +10,7 @@
 // └── ...
 
 
-const CACHE_NAME = "agrosnapApp-v17";
+const CACHE_NAME = "Agrosanp-1";
 console.log("this is service worker, " + CACHE_NAME);
 const FILES_TO_CACHE = [
 
@@ -52,7 +52,6 @@ const FILES_TO_CACHE = [
     "/static/js/single-report.js",
     "/static/js/fill-Profile-Info.js",
     "/static/js/tokenDecoding.js",
-    "/static/js/model.js",
     "/static/js/scan.js", 
     "/static/js/saved-reports.js",
     "/static/js/about.js",

@@ -241,7 +241,7 @@
 }
 
 .upload-box.preparingModel{
-        filter: brightness(0.7);
+        filter: brightness(0.5);
         cursor: progress;
 }
 
