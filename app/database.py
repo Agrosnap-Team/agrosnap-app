@@ -414,7 +414,7 @@ if __name__ == '__main__':
     db.init_database()
 
 
-    data = db.get_user_report(2);
+    data = db.get_user_by_id(1)
     print(data);
 
     # reports = db.get_user_report(1)
