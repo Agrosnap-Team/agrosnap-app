@@ -61,7 +61,7 @@ const FILES_TO_CACHE = [
     
     // Images
     "/static/images/agronsnap_for_index.png",
-    "/static/images/agrosnap logo.PNG",
+    "/static/images/agrosnap_logo.PNG",
     "/static/images/agrosnap logo192x192.png",
     "/static/images/agrosnap logo512x512.png",
     "/static/images/delete.png",
