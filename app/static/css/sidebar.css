@@ -709,7 +709,7 @@ flex-direction: row;
     background-size: 60% 60%;
     box-shadow: 0px 2px 5px black;
     transition: filter 0.3s , background-size 0.3s , box-shadow 0.3s;
-    z-index: 1000000040505;
+    z-index: 100040505;
 }
 
 #main #scanPAge:hover{
