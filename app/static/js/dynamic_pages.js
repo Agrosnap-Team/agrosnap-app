@@ -122,7 +122,7 @@ document.addEventListener("click", (event) => { //when user opens profile and th
 window.addEventListener('online',async()=>{
         console.log("syncing");
         await new Promise(resolve =>
-            setTimeout(resolve, 2000)
+            setTimeout(resolve, 1000)
         );
 
         let syncedRequest = await mainSync();
