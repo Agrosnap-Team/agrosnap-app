@@ -6,7 +6,7 @@ document.getElementById("submit").addEventListener('click',complete_registration
 
 async function complete_registration_process(event) {
      
-    const based_url = "/signup";
+    const based_url = "/signup"; //endpoint written by FastAPI to handle HTML paths
     event.stopPropagation();
     event.preventDefault();//prevent the page to make refresh 
 
@@ -41,17 +41,12 @@ async function complete_registration_process(event) {
             if(process_results.status=="success"){
                 // alert("Origin : "+window.location.origin + "\nPathname: " + window.location.pathname);
                 document.getElementById("submit").innerHTML="Loading...";
+
+                appear_Successfully();
+                setTimeout(function(){
+                    window.location.href="/loginForm";
+                }, 500);
                 
-
-
-                // await new Promise(resolve => setTimeout(resolve, 400));
-
-                // window.location.href="./login.html"
-
-                window.location.href="/loginForm";
-                
-                // alert("here");
-                // alert("Origin : "+window.location.origin + "\nPathname: " + window.location.pathname);
             }
 
 
