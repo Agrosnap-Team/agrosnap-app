@@ -11,7 +11,7 @@
 
 
 const CACHE_NAME = "Agrosanp-1";
-console.log("this is service worker, " + CACHE_NAME);
+
 const FILES_TO_CACHE = [
 
     // Pages
@@ -116,6 +116,7 @@ const FILES_TO_CACHE = [
 
 ];
 
+console.log("this is service worker, " + CACHE_NAME);
 
 self.addEventListener("install", event => {
     console.log("Installation started , service-worker.js");
@@ -134,16 +135,11 @@ self.addEventListener("install", event => {
                 console.log("Failed:", file, e.message);
                 console.log("This is service-worker.js , and something went error when cache the files" + e.message);
             }
-
         }
 
         console.log("All files installed , service-worker.js ");
     })
-
-    
-
     );
-
 });
 
 self.addEventListener("activate", event => {
@@ -177,12 +173,8 @@ self.addEventListener("fetch", event => {
         }
 
         console.log("FETCH REQUEST:", event.request.url);
-
-
         event.respondWith(
-
             caches.match(event.request , { ignoreVary: true })
-
             .then(response => {
 
                 // If the file in cache then return it without connecting to FastAPI and network
@@ -192,9 +184,7 @@ self.addEventListener("fetch", event => {
                 }
 
                 // If not then go and take it from network
-                
                 console.log("Trying network:", event.request.url);
-
                 return fetch(event.request)
                 .then(response => {
                     console.log("Network SUCCESS:", event.request.url);

@@ -19,20 +19,18 @@ let scanUploadbtns , healthyDialog , okButton , closeHealthyPopupIcon;
 let modelThread = new Worker("/static/js/web-worker.js");
 let modelIsReady =false;
 
-
-
-
 //Will detect any messages that received from web wroker 
 modelThread.onmessage=(event)=>{
 
     if(event.data.type=="modelReady"){
         console.log("this is message");
-        //enable button to let user use AI model
+        
         console.log("model is ready ! ");
         modelIsReady=true;
         if(modelIsReady){
             canClick=true;
             if(canClick)
+                //enable button to let user use AI model
                 enableButtons();
         }
     }
@@ -186,6 +184,8 @@ function openPopup(){
 
 
 }
+
+
 function closePopup(){
     popupElement.classList.remove("showPopup");
 
@@ -253,18 +253,16 @@ function clearBox(){
 async function checkThePlantLeaf(){
     try{
     closePhotoUploadPopup();
-    const diseases =['bacterial_spot', 'early_blight', 'healthy', 'late_blight', 'leaf_mold', 'yellow_leaf_curl_virus'];
     uploadBox.classList.remove("error"); //remove red border 
-    
     //check if there any uploaded image before send it to AI 
     if(!selected_image){ 
-        //we used it to let the browser see the changes so the animation can removed,added and worked again
+        /*we used it to let the browser see the changes 
+        so the animation can removed,added and worked again*/
         void uploadBox.offsetWidth; 
         uploadBox.classList.add("error");
         return;
     }
         
-      
     canClick=false;
     previewImage.classList.add("checking-and-loading");
     checkButton.innerHTML="Loading...";
@@ -278,8 +276,6 @@ async function checkThePlantLeaf(){
     });
     
     //show_report(predictedDisease);
-    
-
     }
     catch(error){
         alert("this is in scan.js , in checkThePlantLeaf(), " + error);

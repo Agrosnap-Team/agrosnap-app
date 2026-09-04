@@ -1,7 +1,5 @@
 
 
-// console.log("this is one");
-// alert("Origin : "+window.location.origin + "\nPathname: " + window.location.pathname);
 document.getElementById("submit").addEventListener('click',complete_registration_process);
 
 async function complete_registration_process(event) {
@@ -39,7 +37,6 @@ async function complete_registration_process(event) {
             }
 
             if(process_results.status=="success"){
-                // alert("Origin : "+window.location.origin + "\nPathname: " + window.location.pathname);
                 document.getElementById("submit").innerHTML="Loading...";
 
                 appear_Successfully();

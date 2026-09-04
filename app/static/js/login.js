@@ -43,13 +43,10 @@ async function check_user_data(element) {
 
                 console.log("THIS IS THE RESULT OF TOKENS AFTER LOGIN: ", result);
                 if(result.create_token){
-                    console.log("token is exist " , result.create_token);
-                    console.log("user info is exist " , result.user_info);
 
                     localStorage.setItem("user_token",result.create_token);
                     localStorage.setItem("other_info",JSON.stringify(result.user_info));
                     
-
                     const decodedData = handleData.decodeToken(result.create_token);
                     console.log("this is the decoded data from create_token : ",decodedData);
 
@@ -77,9 +74,6 @@ async function check_user_data(element) {
                     }
                     
                     //store all user data in indexedDB
-
-
-                    // alert("redirecting...");
                     window.location.href="/sidebar";
                 }
                 
