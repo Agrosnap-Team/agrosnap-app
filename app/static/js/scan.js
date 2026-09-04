@@ -252,6 +252,7 @@ function clearBox(){
 
 async function checkThePlantLeaf(){
     try{
+    
     closePhotoUploadPopup();
     uploadBox.classList.remove("error"); //remove red border 
     //check if there any uploaded image before send it to AI 
@@ -264,6 +265,7 @@ async function checkThePlantLeaf(){
     }
         
     canClick=false;
+    clearButton.disabled = true;
     previewImage.classList.add("checking-and-loading");
     checkButton.innerHTML="Loading...";
     void uploadBox.offsetWidth;
@@ -304,6 +306,7 @@ async function prepareSelectedImage(selectedImg){
 
 
 function sendDataToGUI(diseaseInfo){
+    clearButton.disabled = false;
 
     console.log("What will send to GUI : " , diseaseInfo);
 

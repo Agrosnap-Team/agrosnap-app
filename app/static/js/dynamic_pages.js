@@ -366,9 +366,10 @@ function checkUserPassword(event){
     event.preventDefault();
     hideFailedTokenCreationMsg();
     hideSuccessTokenCreationMsg();
-    void sessionExpiredAlert.offsetWidth;
+    // void sessionExpiredAlert.offsetWidth;
     let enteredPassword=userPassword.value.trim();
     if(!enteredPassword){showFailedTokenCreationMsg("Password can not be empty"); return;}
+    showSuccessTokenCreationMsg("Please wait while we create a new token...");
     RequestNewToken(enteredPassword);
     
 
