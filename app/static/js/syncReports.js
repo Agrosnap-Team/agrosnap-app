@@ -6,7 +6,6 @@
 
 import browserDB from "./databaseManager_IndexedDB.js";
 
-
 /* once the user logged in , then we connect with sqlite3 and fetch all reports to indexedDB */
 export async function getSavedReportsFromMainDB(token){ //return the sataus of the sqlite3 connection process
   try{
@@ -23,7 +22,6 @@ export async function getSavedReportsFromMainDB(token){ //return the sataus of t
         'Content-Type': 'application/json'
     }
     });
-
 
     if(!response.ok){
         const errorData = await response.json();
@@ -147,7 +145,6 @@ export async function syncDiseases(){
 
 }
 
-
 function reFormatDiseasesData(diseasesData){
   diseasesData = {
     disease_id:parseInt(diseasesData.disease_id)-1,
@@ -157,8 +154,6 @@ function reFormatDiseasesData(diseasesData){
   }
   return diseasesData;
 }
-
-
 
 async function deleteReportsFromMainDB(token,reportID){
   try{
@@ -213,7 +208,6 @@ async function deleteReportsFromMainDB(token,reportID){
 
 }
 
-
 async function storeInIndexedDB(allSavedReportsInDB) {
   try{
   
@@ -251,10 +245,7 @@ function markedReportisSynced(perReport){
     return theReports;
 }
 
-
-
 let syncPromise = null; //to store the cuurent sync process here to prevent multi call of sync
-
 //The actual sync method
 async function syncProcess() {
 
@@ -302,20 +293,29 @@ async function syncProcess() {
     }
 
 
+    /*=============================================================================
+        This when the user delete a report in one device and the other device still
+        have it in indexedDB ,so when the user sync the reports in the second device,
+        the deleted report will be deleted from sqlite3 and the second device will
+        still have it in indexedDB , so we need to check if any report has been 
+        deleted in sqlite3 and delete it from indexedDB to keep the data consistent
+    =================================================================================*/
+
     let serverReports = await getSavedReportsFromMainDB(userCurrent);
     let indexedDBReports = await browserDB.get_all_reports_from_indexedDB();
 
     //check before complete the sync
     if (!serverReports.success) {
-      return {success:false, details:serverReports.details, responseStatus:serverReports.responseStatus};
+      return {
+         success:false, 
+         details:serverReports.details,
+         responseStatus:serverReports.responseStatus};
     }
-
 
     console.log("SERVER REPORTS : " , serverReports.data);
     console.log("INDEXEDDB REPORTS : " , indexedDBReports);
-    let setOfReportsID = creatSetOfReports(serverReports.data); //send server reports [ sqlite3 reports ] and get the set of reports with ID only
-
- 
+    //send server reports [ sqlite3 reports ] and get the set of reports with ID only
+    let setOfReportsID = creatSetOfReports(serverReports.data); 
 
     //compare the differences of indexedDB reports and sqlite3 reports
     for (let reportIndex =0;reportIndex<indexedDBReports.length;reportIndex++){
@@ -328,14 +328,11 @@ async function syncProcess() {
     return{success:true, responseStatus:200 , details:"synced successfully"}
 
 
-    //check if any new changes should be reflected on indexedDB
+    
     // await getSavedReportsFromMainDB(userCurrent);
 
 
 }
-
-
-
 //this to prevent calling the sync method many time at the same time , so the sync method called then the other sync call will not start syncronization until the sync end
 async function syncReports(){
 
@@ -355,7 +352,6 @@ async function syncReports(){
 
 }
 
-
 //this method to check if any report has been deleted by other devices for the same account
 function creatSetOfReports(serverReports){
 
@@ -366,7 +362,6 @@ function creatSetOfReports(serverReports){
   return setOfServerReports;
 
 }
-
 
 
 export default {

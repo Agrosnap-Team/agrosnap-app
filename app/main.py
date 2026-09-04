@@ -21,7 +21,6 @@ app.include_router(sync.router)
 #========================================================================
 
 app.mount("/app",StaticFiles(directory="app"),name="app")
-
 app.mount("/static",StaticFiles(directory="app/static"),name="static")
 app.mount("/node_modules", StaticFiles(directory="node_modules"), name="node_modules") #library related to indexedDB
 

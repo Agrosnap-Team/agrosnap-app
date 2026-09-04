@@ -8,7 +8,6 @@ let dbConnection;
 const user_table = "user_info"; 
 const disease_table = "diseases_info";
 const saved_reports_table = "saved_reports";
-const report_details = "report_details";
 const deleted_report_table = "deleted_reports";
 
 
@@ -29,22 +28,17 @@ async function openConnection() {
             dbConnection = await openDB("AgrosnapBrowserDatabase", 1 ,{
 
             upgrade(db){
-
             // here where we create our tables
             create_users_table(db);
             create_disease_table(db);
             create_saved_reports(db);
             create_deleted_reports(db);
-                
             }
-
         });  
 
         }//end if 
 
         return dbConnection;
-
-
     }
 
     catch(error){
@@ -109,7 +103,7 @@ async function create_deleted_reports(db){
 
 
 //==========================================================
-// ADD from sqlite3 to indexedDB
+//   ADD to indexedDB
 //==========================================================
 
 
@@ -140,7 +134,6 @@ async function add_new_user(newData){
     }
 }
 
-
 async function add_disease_info(all_diseases) {
     //After got the disease from fastAPI we add it to indexedDB
     try{
@@ -148,9 +141,7 @@ async function add_disease_info(all_diseases) {
             const db = await openConnection();    
             const trans = db.transaction(disease_table,"readwrite");
             const current_table = trans.objectStore(disease_table);
-
             await Promise.all( all_diseases.map(  row => current_table.put(row)  ) );
-
             trans.done;
 
         }
@@ -158,9 +149,7 @@ async function add_disease_info(all_diseases) {
     }
     catch(error){
         console.log("Adding disease failed , " , error.message);
-    }
-
-    
+    } 
 }
 
 async function add_deleted_reports(reportID){
@@ -200,12 +189,6 @@ async function add_deleted_reports(reportID){
 
 }
 
-
-//==========================================================
-// ADD reports to indexedDB
-//==========================================================
-
-
 async function store_report(report_data){
     try{
         if(report_data == null || report_data==undefined)return;
@@ -230,8 +213,16 @@ async function store_report(report_data){
 
 
 
+
+
+//==========================================================
+//   Data Retreival from indexedDB
+//==========================================================
+
+
 async function get_all_reports_from_indexedDB(){
-    //will return all saved reports from indexedDB and will be used in the saved reports page
+    /*will return all saved reports from 
+    indexedDB and will be used in the saved reports page*/
     const db = await openConnection();
     const trans = db.transaction(saved_reports_table, "readonly");
     const current_table = trans.objectStore(saved_reports_table);
@@ -249,7 +240,6 @@ async function get_report_by_id(report_id){
     return report;
 }
 
-
 async function get_all_deleted_reports() {
     const db = await openConnection();
     const trans = db.transaction(deleted_report_table, "readonly");
@@ -257,12 +247,7 @@ async function get_all_deleted_reports() {
     const allDeletedReports = await current_table.getAll();
     trans.done;
     return allDeletedReports;
-
 }
-//==========================================================
-// This for get information from Sqlite3
-//==========================================================
-
 
 async function prepareDataAndStoreIt(user_info,all_disease){
 
@@ -292,8 +277,6 @@ async function prepareDataAndStoreIt(user_info,all_disease){
 
 }
 
-
-
 async function getUserByID(userID) {
     try{
         if(!userID)return;
@@ -316,7 +299,6 @@ async function getUserByID(userID) {
     }
     
 }
-
 
 async function get_diseases_info(diseaseIndex) {
 
@@ -347,10 +329,8 @@ async function get_diseases_info(diseaseIndex) {
 }
 
 
-async function get_saved_reports() {
-    //this method to get all saved reports from indexedDB and will be used in the saved reports page
-    
-}
+
+
 
 
 
@@ -479,7 +459,6 @@ export default {
     add_disease_info,
     get_diseases_info,
     prepareDataAndStoreIt,
-    get_saved_reports,
     getUserByID,
     delete_user,
     store_report,

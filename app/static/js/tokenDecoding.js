@@ -1,6 +1,4 @@
 import { jwtDecode } from "/node_modules/jwt-decode/build/esm/index.js";
-
-
 function decodeToken(encodedToken) {
         // decode the token 
         try{
@@ -14,9 +12,7 @@ function decodeToken(encodedToken) {
             console.log(error);
             return error;
         }
-
   }
-
 function getUserIdFromToken(token) {
     try{
     const userData = decodeToken(token);

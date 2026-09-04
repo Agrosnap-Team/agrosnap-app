@@ -273,8 +273,6 @@ function change_page_name(index){
 }
 
 
-
-
 export function show_report(diseaseInfo){
   //this function will send a report index page and call the fit_the_page()
   // will fetch the page and call its js file/ js functions;
@@ -368,9 +366,10 @@ function checkUserPassword(event){
     event.preventDefault();
     hideFailedTokenCreationMsg();
     hideSuccessTokenCreationMsg();
-    void sessionExpiredAlert.offsetWidth;
+    // void sessionExpiredAlert.offsetWidth;
     let enteredPassword=userPassword.value.trim();
     if(!enteredPassword){showFailedTokenCreationMsg("Password can not be empty"); return;}
+    showSuccessTokenCreationMsg("Please wait while we create a new token...");
     RequestNewToken(enteredPassword);
     
 
@@ -432,11 +431,7 @@ export async function mainSync(){
         showSessionExpiredWarnning();
     }
 
-    console.log("Synced");
-
     return syncStatus;
-
-
 }
 
 function showLoadingProgress(){
@@ -452,12 +447,10 @@ function hideLoadingProgress(){
 }
 
 async function logout_process(){
-    // const userID = handleToken.getUserIdFromToken(localStorage.getItem("user_token"));
-    // await DB.delete_user(userID); //remove user
     await DB.clear_DB_tables(); // clear indexedDB
     localStorage.clear(); // cleat local storage
     sessionStorage.clear(); // clear session
-    window.location.href="/sign";
+    window.location.href="/sign"; //back to sign page 
 }
 
 
